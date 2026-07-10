@@ -1,21 +1,21 @@
 # Operator Intelligence Calculator Specification
 
-Version: v0.1 scoring execution foundation  
+Version: v0.2 scoring execution foundation  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/`  
 Status: Draft foundation for commercial v1.0
 
 ## Purpose
 
-This file defines the deterministic calculation order for criterion scores, category scores, score coverage, confidence outputs, and the Operator Score.
+This file defines the deterministic calculation order for criterion scores, category scores, evidence coverage, confidence outputs, and the Operator Score.
 
-It converts the existing criteria, anchors, weights, evidence thresholds, and framework gates into one auditable scoring procedure. It does not replace domain criteria or category sheets.
+It converts the existing criteria, anchors, weights, evidence thresholds, and framework gates into one auditable scoring procedure. It does not replace domain criteria or future category sheets.
 
 ## v1.0 connection
 
 Commercial v1.0 requires two qualified evaluators using the same evidence to produce materially similar results.
 
-This specification strengthens v1.0 readiness by providing:
+This specification provides:
 
 - one criterion scoring scale
 - one category aggregation method
@@ -24,9 +24,8 @@ This specification strengthens v1.0 readiness by providing:
 - confidence and coverage outputs
 - score-range rules
 - publication eligibility gates
-- calculation validation errors
-- deterministic calculation order
-- DecisionLedger and score-run traceability
+- deterministic validation errors
+- score-run and DecisionLedger traceability
 
 ## Source alignment
 
@@ -37,24 +36,25 @@ The calculator consumes:
 - `scoring/evidence-thresholds.md`
 - `scoring/confidence-model.md`
 - `scoring/weights.md`
+- `scoring/score-objects.md`
 - `scoring/unknown-data-handling.md`
 - `scoring/confidence-adjusted-scoring.md`
 - future approved category sheets
 
-It must also pass the scoring gates in `framework/governance-gate-index.md`.
+It must pass the scoring gates in `framework/governance-gate-index.md`.
 
 ## Core scoring principles
 
 1. Unknown is not zero.
 2. Not applicable is not unknown and requires documented justification.
-3. Performance score and evidence confidence are separate outputs.
-4. Evidence uncertainty must not be converted into an automatic performance penalty.
-5. Category weights must reconcile to 100% before an official Operator Score is published.
+3. Maturity and evidence confidence are separate outputs.
+4. Evidence uncertainty must not become an automatic performance penalty.
+5. Active category weights must reconcile to 100% before an official Operator Score is published.
 6. One signal must not be counted through overlapping criteria without approved boundary logic.
-7. Raw calculations retain decimal precision; client-facing scores round to the nearest whole number.
+7. Raw calculations retain decimal precision; client-facing values round only at display time.
 8. A precise score must not be published when evidence coverage does not support precision.
-9. Weight changes require a named profile, rationale, approval, and calculation record.
-10. Every published score must be reproducible from stored score objects.
+9. Weight changes require a named profile, rationale, approval, and rerun.
+10. Every published result must be reproducible from stored score objects.
 
 ## Canonical weighted categories
 
@@ -72,22 +72,20 @@ It must also pass the scoring gates in `framework/governance-gate-index.md`.
 | `analytics` | Analytics and reporting | `OI-AN-*` | 5% |
 | `competitive` | Competitive position | `OI-COMP-*` | 5% |
 
-The `messaging_offer` category combines messaging and offer criteria because the approved Operator Score weight model treats them as one category. The criterion records remain separate for findings, recommendations, and implementation routing.
+The `messaging_offer` category combines messaging and offer criteria because the approved Operator Score weight model treats them as one weighted category. Criterion records remain separate for findings and recommendation routing.
 
-Social criteria remain scoreable because they exist in the criteria library. Until a governed social finding library is approved, social score weaknesses may support existing governed findings or a methodology-gap record but must not create `OI-FIND-SOC-*` IDs.
+Social criteria remain scoreable because they exist in the criteria library. Until a governed social finding library is approved, social weaknesses may support existing findings or a methodology-gap record but must not create `OI-FIND-SOC-*` IDs.
 
-## Criterion score states
+## Criterion evaluation states
 
-| State | Meaning | Numeric contribution |
+| State | Meaning | Numeric treatment |
 |---|---|---|
-| `scored` | Evidence supports an anchor score | Uses approved score |
-| `unknown` | Evidence is insufficient | No point value; expands score range |
-| `not_applicable` | Criterion is structurally irrelevant to this business | Excluded from applicable weight with approval |
-| `blocked` | Evaluation cannot proceed because access, policy, conflict, or control boundary prevents scoring | Treated as unknown and flagged for review |
+| `scored` | Evidence supports an approved anchor | Included in observed score |
+| `unknown` | Evidence is insufficient | No point value; expands range |
+| `not_applicable` | Criterion is structurally irrelevant | Excluded after review |
+| `blocked` | Access, policy, conflict, system, or control boundary prevents evaluation | Treated as unknown plus governance flag |
 
 ## Criterion anchors
-
-Use the approved universal anchors unless a future category sheet defines stricter criterion-specific anchors.
 
 | Score | Operational meaning |
 |---:|---|
@@ -97,103 +95,87 @@ Use the approved universal anchors unless a future category sheet defines strict
 | 75 | Strong, commercially useful, and consistently implemented |
 | 100 | Mature, differentiated, measured, integrated, and governed |
 
-### Anchor rule
+Commercial v1.0 uses `0`, `25`, `50`, `75`, and `100` only unless an approved category sheet defines an interpolation rule and the score object records it.
 
-Commercial v1.0 criterion scores use `0`, `25`, `50`, `75`, or `100` only.
+## Criterion admission gate
 
-Do not interpolate between anchors unless an approved category sheet defines the interpolation rule and the score object records that rule.
+A criterion may be scored only when:
 
-## Criterion admission
-
-A criterion may be scored when:
-
-- applicable scope is confirmed
-- evidence meets the threshold in `scoring/evidence-thresholds.md`
-- the observation is distinguishable from interpretation
+- applicability is resolved
+- evidence meets the approved threshold
+- observation is separate from interpretation
 - confidence is assigned
-- the score anchor can be defended
+- the selected anchor is defensible
 - overlapping criteria have been checked
 
 Class D inferred evidence should normally produce `unknown`, `blocked`, or a validation task rather than a score penalty.
 
 ## Criterion weighting
 
-Default criterion weight inside a weighted category is equal:
+Default weighting inside each category is equal:
 
 ```text
 Criterion Weight = 1 ÷ Applicable Criterion Count
 ```
 
-A future category sheet may define non-equal criterion weights. When it does:
+A future category sheet may define non-equal weights only when:
 
-- weights must total 100% within the category
-- rationale must be documented
-- the version must be stored in the score run
-- no weight may be changed during a client assessment without rerunning the full category
+- internal weights total 100%
+- rationale and version are recorded
+- the active run identifies that version
+- any change triggers full category recalculation
 
 ## Category calculation
 
 For each category:
 
 ```text
-Known Criterion Weight = sum(weights for scored criteria)
-Unknown Criterion Weight = sum(weights for unknown or blocked criteria)
-Applicable Criterion Weight = Known Criterion Weight + Unknown Criterion Weight
+Known Weight = sum(weights for scored criteria)
+Unknown Weight = sum(weights for unknown or blocked criteria)
+Applicable Weight = Known Weight + Unknown Weight
 
 Observed Category Score =
-sum(criterion score × criterion weight) ÷ Known Criterion Weight
+sum(criterion score × criterion weight) ÷ Known Weight
 
-Category Coverage =
-Known Criterion Weight ÷ Applicable Criterion Weight
+Category Coverage = Known Weight ÷ Applicable Weight
 ```
 
-`not_applicable` criteria are excluded from applicable weight after the exclusion passes review.
+`not_applicable` criteria are excluded only after the exclusion is justified and approved.
 
-### Category score range
+## Category range
 
-Unknown criteria create a mathematically honest range:
+When confidence bounds are unavailable, use the unknown-only range:
 
 ```text
 Category Minimum =
-sum(known criterion score × weight) ÷ Applicable Criterion Weight
+sum(known criterion score × weight) ÷ Applicable Weight
 
 Category Maximum =
 [sum(known criterion score × weight)
-+ sum(100 × unknown criterion weight)]
-÷ Applicable Criterion Weight
++ sum(100 × unknown weight)]
+÷ Applicable Weight
 ```
 
-The observed category score describes the known evidence only. The minimum and maximum show how unresolved evidence could change the full category result.
+When confidence bounds are available, use the method in `scoring/confidence-adjusted-scoring.md`.
+
+The observed score describes known evidence. The range describes unresolved uncertainty.
 
 ## Category publication states
 
-| Coverage | State | Client-facing treatment |
-|---:|---|---|
-| 80–100% | `reportable` | Publish category score, confidence, coverage, and material unknowns |
-| 60–79.99% | `provisional` | Publish provisional score with range and validation note |
-| Below 60% | `range_only` | Do not publish a precise category score; publish range or insufficient-data state |
+| Coverage and controls | State | Client-facing treatment |
+|---|---|---|
+| 80–100%, confidence gates pass, no material blocker | `official` | Publish score, confidence, coverage, and material unknowns |
+| 60–79.99%, or confidence requires qualification | `provisional` | Publish provisional score with range and validation note |
+| Below 60%, or confidence is insufficient | `range_only` | Publish range or insufficient-data state, not a precise score |
+| Weight, duplicate, source, policy, or control-boundary integrity fails | `blocked` | Do not publish score |
 
-A category may be forced to `range_only` or `blocked` regardless of coverage when:
+A category may be forced to `range_only` or `blocked` regardless of numeric coverage when evidence conflicts, a material control boundary remains open, the criterion set does not represent the business, or mapping integrity fails.
 
-- a material control-boundary question is unresolved
-- evidence conflicts materially
-- the criterion set does not represent the business model
-- weight or duplicate-control integrity fails
-
-## Operator Score calculation
-
-The default formula is:
-
-```text
-Operator Score =
-sum(category score × category weight)
-```
+## Operator Score outputs
 
 The calculator produces three distinct outputs.
 
-### 1. Observed normalized score
-
-Uses only categories with an observed score:
+### Observed normalized score
 
 ```text
 Observed Normalized Operator Score =
@@ -201,29 +183,31 @@ sum(observed category score × included category weight)
 ÷ sum(included category weight)
 ```
 
-This value must always disclose how much category weight was included. It is not automatically eligible as the official Operator Score.
+This output must disclose the included active weight. It is not automatically the official Operator Score.
 
-### 2. Full Operator Score range
-
-Uses every active category and its minimum and maximum:
+### Full Operator Score range
 
 ```text
 Operator Minimum = sum(category minimum × category weight)
 Operator Maximum = sum(category maximum × category weight)
 ```
 
-### 3. Official Operator Score
+Use all active categories.
 
-An official point score is eligible only when all conditions pass:
+### Official Operator Score
+
+An official point score is eligible only when:
 
 - active category weights equal 100%
 - weighted evidence coverage is at least 80%
+- Operator confidence index is at least 0.65
 - no category weighted at 10% or more has coverage below 60%
-- no G4 control-boundary scoring issue is unresolved
-- duplicate-control and category-mapping checks pass
-- score-run validation produces no blocking errors
+- no high-materiality unknown invalidates the point estimate
+- no G4 scoring boundary is unresolved
+- duplicate and category-mapping checks pass
+- no blocking validation error remains
 
-When these conditions do not pass, publish a provisional score and range, or range only.
+When these gates fail, publish a provisional score and range, range only, or blocked state.
 
 ## Weighted evidence coverage
 
@@ -232,22 +216,18 @@ Weighted Evidence Coverage =
 sum(category coverage × category weight)
 ```
 
-Because active category weights total 100%, the result is a percentage from 0% to 100%.
-
-Coverage describes how much of the weighted model was evaluated. It does not describe business maturity.
+Coverage measures how much of the weighted model was evaluated. It does not measure maturity.
 
 ## Operator Score publication states
 
-| Condition | Publication state |
+| Condition | State |
 |---|---|
 | Official-score gates pass | `official` |
-| Weighted coverage is 65–79.99%, or one major category is below 60% coverage | `provisional` |
-| Weighted coverage is below 65% | `range_only` |
-| Weight, duplicate, source, policy, or control-boundary validation fails | `blocked` |
+| Weighted coverage is 65–79.99%, or confidence is at least 0.50 but below official threshold | `provisional` |
+| Weighted coverage is below 65%, confidence is below 0.50, or major categories remain unresolved | `range_only` |
+| Weight, duplicate, evidence-integrity, policy, approval, or control-boundary validation fails | `blocked` |
 
-## Maturity tier assignment
-
-Assign a maturity tier from the official or provisional point estimate only when a point estimate is permitted.
+## Maturity tiers
 
 | Score | Tier |
 |---:|---|
@@ -257,83 +237,78 @@ Assign a maturity tier from the official or provisional point estimate only when
 | 75–89 | High Performing |
 | 90–100 | Market Leader |
 
-When the score range crosses more than one tier, report the range and state that the maturity tier is not yet resolved.
+Assign a tier only when a point estimate is permitted. If the score range crosses more than one tier, the tier remains unresolved.
 
 ## Confidence integration
 
 Confidence does not reduce the raw maturity score.
 
-The calculator uses confidence to produce:
+It determines:
 
 - criterion uncertainty bounds
-- category confidence index
-- Operator Score confidence index
+- category and Operator confidence indexes
+- score range
 - publication state
 - validation flags
 - report wording
 
-The detailed method is defined in `scoring/confidence-adjusted-scoring.md`.
+Use `scoring/confidence-adjusted-scoring.md` as the authoritative method.
 
 ## Calculation order
 
-Run the calculator in this exact order:
-
-1. Load scoring version, criteria version, weight profile, and category map.
-2. Validate category weights.
+1. Load calculator, criteria, rubric, evidence, confidence, category-map, and weight-profile versions.
+2. Validate active category weights.
 3. Validate criterion IDs and category assignments.
-4. Resolve criterion applicability.
+4. Resolve applicability.
 5. Attach evidence and evidence class.
-6. Assign criterion state.
-7. Assign score anchor for scored criteria.
+6. Assign evaluation state.
+7. Assign anchor for scored criteria.
 8. Assign confidence.
 9. Run duplicate-control checks.
 10. Calculate criterion weights.
-11. Calculate category observed scores, coverage, bounds, confidence, and publication states.
+11. Calculate category observed scores, coverage, bounds, confidence, and states.
 12. Calculate weighted evidence coverage.
 13. Calculate observed normalized Operator Score.
-14. Calculate Operator Score minimum and maximum.
-15. Apply official, provisional, range-only, or blocked publication gate.
-16. Assign maturity tier only when permitted.
-17. Create validation errors and warnings.
-18. Persist score objects and score-run metadata.
-19. Generate client-safe score language.
-20. Link the result to findings and the DecisionLedger.
+14. Calculate full Operator Score range.
+15. Calculate Operator confidence index.
+16. Apply publication gate.
+17. Assign maturity tier only when permitted.
+18. Create validation errors and warnings.
+19. Persist score objects and run metadata.
+20. Generate client-safe language and DecisionLedger references.
 
-## Rounding rules
+## Rounding
 
-- Store raw criterion and category calculations to at least four decimal places.
-- Display category and Operator Scores as whole numbers.
-- Display coverage and confidence indexes as whole percentages.
+- Store calculations to at least four decimal places.
+- Display score, coverage, and confidence values as whole numbers.
 - Do not round category scores before calculating the Operator Score.
-- Do not convert a range into a point estimate by averaging its endpoints for client reporting.
+- Do not convert a range into a client-facing midpoint.
 
-## Validation errors
+## Blocking validation errors
 
-### Blocking errors
-
-- active category weights do not total 100%
+- active weights do not total 100%
 - criterion ID does not exist
-- criterion appears in more than one weighted category without approved mapping
-- scored criterion lacks admissible evidence
-- scored criterion lacks confidence
-- unknown criterion has a numeric score
+- criterion maps to overlapping weighted categories without approval
+- scored criterion lacks admissible evidence or confidence
+- unknown criterion contains a numeric score
 - not-applicable exclusion lacks reason or approval
-- published point score fails coverage gates
+- point score fails coverage or confidence gates
 - duplicate signal materially inflates score
-- score-run versions are missing
+- methodology versions are missing
+- required review or approval is absent
 
-### Warnings
+## Warnings
 
 - category coverage below 80%
 - low-confidence criterion affects a high-weight category
 - score range crosses maturity tiers
 - client-provided inputs are unreconciled
-- social score weakness lacks a governed finding route
-- category sheet is absent and equal criterion weights are being used
+- social weakness lacks a governed finding route
+- equal criterion weights are used because no category sheet exists
 
 ## Deterministic example
 
-Assume a category has four equally weighted applicable criteria:
+Four equally weighted applicable criteria produce:
 
 | Criterion | State | Score |
 |---|---|---:|
@@ -342,13 +317,11 @@ Assume a category has four equally weighted applicable criteria:
 | C | scored | 25 |
 | D | unknown | — |
 
-Each criterion weight is 25%.
-
 ```text
-Observed Category Score = (75 + 50 + 25) ÷ 3 = 50
-Category Coverage = 3 ÷ 4 = 75%
-Category Minimum = (75×.25 + 50×.25 + 25×.25) = 37.5
-Category Maximum = 37.5 + (100×.25) = 62.5
+Observed Score = (75 + 50 + 25) ÷ 3 = 50
+Coverage = 3 ÷ 4 = 75%
+Minimum = 37.5
+Maximum = 62.5
 ```
 
 Client-facing result:
@@ -356,23 +329,24 @@ Client-facing result:
 ```text
 Provisional category score: 50
 Evidence coverage: 75%
-Current defensible range: 38–63
+Defensible range: 38–63
 ```
 
 The unknown criterion is not scored as zero.
 
-## DecisionLedger minimum record
+## Canonical score-run summary
 
 ```yaml
 score_run_id: OI-SCORE-YYYY-NNN
 client_ref: ""
-calculator_version: "0.1"
+calculator_version: "0.2"
 criteria_version: ""
-weight_profile: default
 category_map_version: "0.1"
+weight_profile: default
 criterion_score_refs: []
 category_score_refs: []
 weighted_evidence_coverage: 0
+operator_confidence_index: 0
 observed_normalized_score: null
 operator_minimum: 0
 operator_maximum: 100
@@ -387,31 +361,31 @@ ledger_ref: OI-DL-YYYY-NNN
 
 ## Usage instructions
 
-1. Build criterion score objects from evidence.
+1. Build score objects from evidence.
 2. Resolve unknown and not-applicable states before aggregation.
 3. Validate weights and category mapping.
-4. Run category calculations without early rounding.
-5. Calculate score coverage and bounds.
-6. Apply confidence and publication rules.
-7. Store all objects and validation messages.
-8. Publish only the score form permitted by the admission gates.
-9. Link weak scored criteria to governed findings without creating duplicates.
-10. Recalculate when evidence, scope, applicability, or weights change.
+4. Calculate category outputs without early rounding.
+5. Calculate coverage, confidence, and bounds.
+6. Apply publication gates.
+7. Store validation messages and approvals.
+8. Publish only the permitted score form.
+9. Link weak criteria to governed findings without duplication.
+10. Recalculate when evidence, scope, applicability, confidence, or weights change.
 
 ## Completion check
 
-Before publishing an Operator Score, confirm:
+Before publication, confirm:
 
 - source versions are recorded
 - category weights total 100%
-- criterion IDs are valid
+- criterion IDs and mappings are valid
 - unknown is not scored as zero
-- not-applicable exclusions are justified
-- evidence coverage is disclosed
-- confidence is separate from maturity
+- exclusions are justified
+- coverage and confidence are disclosed
 - score bounds are calculated
-- publication state is correct
+- publication state is valid
 - tier assignment is permitted
 - duplicate controls pass
 - validation errors are resolved
+- review and approval are recorded
 - DecisionLedger traceability exists
