@@ -1,5 +1,13 @@
 # Operator Intelligence™
 
+## About
+
+Operator Intelligence is a governed Business Growth Systems Assessment for contractor and local-service businesses. It evaluates the connected systems that turn market attention into qualified inquiries, booked work, retained customers, and operational learning.
+
+The methodology assesses website structure, buyer experience, messaging, conversion, local SEO, Google Business Profile, reputation, trust, competitive position, offer and sales systems, automation, analytics, and AI readiness. Evidence is converted into the Operator Score™, governed findings, risk and opportunity records, prioritized recommendations, implementation packages, and a sequenced 90-day roadmap.
+
+Operator Intelligence is designed as a repeatable consulting product, not a generic marketing audit. Every recommendation must remain traceable from evidence through interpretation, business impact, confidence, priority, package, roadmap phase, action, and review.
+
 **Business Growth Systems Assessment (BGSA)** is a governed consulting framework for evaluating, scoring, and improving a company’s growth infrastructure.
 
 Operator Intelligence is not a generic website audit, SEO audit, or marketing review. It is a repeatable business assessment methodology for identifying where a company is creating demand, losing revenue, underusing automation, weakening trust, or failing to convert available market attention into booked work.
