@@ -1,113 +1,215 @@
-# Client Intake Template
+# Governed Client Intake Template
 
-## Business information
+Use this intake to establish assessment scope, evidence access, decision authority, and known limitations before scoring begins. Intake statements are context, not verified evidence, unless supported by an admissible source.
 
-Business name:
+## 1. Intake control
 
-Website:
+- Client:
+- Assessment ID:
+- Intake version:
+- Intake date:
+- Prepared by:
+- Primary client contact:
+- Executive sponsor:
+- Decision authority:
+- Intended assessment use:
+- Target publication state: `official` / `provisional` / `range_only` / `internal_only`
+- DecisionLedger intake record ID:
 
-Primary contact:
+## 2. Business and operating context
 
-Phone:
+- Business name:
+- Website:
+- Primary location:
+- Service area:
+- Operating model:
+- Primary services or products:
+- Material seasonal or urgent work:
+- Primary customer segments:
+- Current operating priorities:
+- Material constraints:
 
-Email:
+## 3. Assessment scope
 
-Location:
+### Included
 
-Service area:
+- Business units:
+- Locations:
+- Channels:
+- Workflows:
+- Systems:
+- Date range:
 
-## Business model
+### Excluded
 
-Primary services:
+- Explicit exclusions:
+- Reason for exclusion:
+- Known effect on coverage or interpretation:
 
-Highest-value services:
+### Scope gates
 
-Seasonal services:
+- [ ] Scope owner confirmed
+- [ ] Included systems identified
+- [ ] Exclusions disclosed
+- [ ] Assessment date range defined
+- [ ] Publication purpose documented
+- [ ] Material conflicts of interest disclosed
 
-Emergency or urgent services:
+## 4. Goals and decision questions
 
-Residential / commercial / both:
+Record the decisions this assessment must support. Do not convert aspirations into outcome claims.
 
-## Growth goals
+- Primary decision question:
+- Secondary decision questions:
+- Desired operational outcome:
+- Current baseline, if verified:
+- Claimed baseline, if unverified:
+- Required decision date:
+- Known dependencies:
 
-Primary goal:
+## 5. Current channels and systems
 
-Secondary goals:
+For each applicable channel or system, record owner, access state, and available evidence.
 
-Target monthly lead volume:
+| Channel or system | Owner | Access state | Evidence available | Date range | Notes |
+|---|---|---|---|---|---|
+| Website / CMS |  | `available` / `pending` / `blocked` / `not_applicable` |  |  |  |
+| Analytics |  |  |  |  |  |
+| Search Console |  |  |  |  |  |
+| Business profile / listings |  |  |  |  |  |
+| CRM |  |  |  |  |  |
+| Scheduling |  |  |  |  |  |
+| Email |  |  |  |  |  |
+| SMS |  |  |  |  |  |
+| Call tracking |  |  |  |  |  |
+| Paid media |  |  |  |  |  |
+| Social channels |  |  |  |  |  |
+| Review platform |  |  |  |  |  |
+| Workflow or automation platform |  |  |  |  |  |
+| AI systems or agents |  |  |  |  |  |
+| Other |  |  |  |  |  |
 
-Current monthly lead volume, if known:
+## 6. Evidence register
 
-Average job value, if known:
+Create one row per source. Client statements remain `reported` until corroborated.
 
-Close rate, if known:
+| Evidence ID | Source | Source owner | Type | Date range | Collection method | Verification state | Restrictions |
+|---|---|---|---|---|---|---|---|
+|  |  |  | `system` / `document` / `observation` / `interview` / `public` |  |  | `verified` / `reported` / `pending` / `rejected` |  |
 
-## Current channels
+### Evidence declarations
 
-Website:
+- [ ] Evidence owners are identified
+- [ ] Date ranges are recorded
+- [ ] Interview claims are marked `reported`
+- [ ] Public absence is not treated as proof of internal absence
+- [ ] Missing access is recorded as `unknown` or `blocked`, never as failure
+- [ ] Superseded or conflicting sources are retained and identified
 
-Google Business Profile:
+## 7. Known unknowns and blockers
 
-Facebook:
+| ID | Condition | State | Affected criteria or categories | Resolution owner | Required evidence | Publication effect |
+|---|---|---|---|---|---|---|
+|  |  | `unknown` / `blocked` |  |  |  |  |
 
-Instagram:
+Unknown and blocked conditions remain unscored. They must not be converted to zero, inferred failure, or unsupported certainty.
 
-YouTube:
+## 8. Current operating conditions
 
-Paid ads:
+Record client-reported conditions without pre-classifying them as findings.
 
-Directories:
+- Customer acquisition or demand concerns:
+- Customer experience concerns:
+- Workflow or handoff concerns:
+- Data quality or reporting concerns:
+- Tooling or integration concerns:
+- Governance, privacy, security, or compliance concerns:
+- AI use, planned AI use, or prohibited AI use:
+- Manual work or owner dependency:
+- Other material conditions:
 
-Referrals:
+## 9. Access and testing authorization
 
-## Current tools
+| Access or test | Authorized | Account owner | Access method | Allowed actions | Prohibited actions | Expiration |
+|---|---|---|---|---|---|---|
+|  | `yes` / `no` / `pending` |  |  |  |  |  |
 
-CRM:
+- [ ] Least-privilege access is required
+- [ ] Credentials will not be stored in the report or DecisionLedger
+- [ ] Live changes are prohibited unless separately authorized
+- [ ] Destructive, irreversible, or customer-facing tests are prohibited unless explicitly approved
+- [ ] Test data handling and deletion requirements are documented
+- [ ] Access revocation owner and date are defined
 
-Scheduling tool:
+## 10. Data handling and confidentiality
 
-Email marketing:
+- Data classification:
+- Personal or sensitive data present:
+- Regulated data present:
+- Approved storage location:
+- Retention period:
+- Redaction requirements:
+- Sharing restrictions:
+- Client-approved reviewers:
+- Required deletion or return date:
 
-SMS tool:
+## 11. Stakeholders and approvals
 
-Analytics:
+| Role | Name | Decision authority | Required review | Approval scope |
+|---|---|---|---|---|
+| Executive sponsor |  |  |  |  |
+| Operational owner |  |  |  |  |
+| System owner |  |  |  |  |
+| Data owner |  |  |  |  |
+| Security / privacy reviewer |  |  |  |  |
+| Report approver |  |  |  |  |
 
-Call tracking:
+## 12. Intake readiness decision
 
-Review request tool:
+- Evidence coverage estimate:
+- Material unknowns:
+- Material blockers:
+- Scope limitations:
+- Proposed assessment gate: `ALLOW` / `REVIEW` / `HALT`
+- Gate rationale:
+- Required next action:
+- Responsible owner:
+- DecisionLedger record ID:
 
-## Current bottlenecks
+### `ALLOW`
 
-Which problems are most painful right now?
+Use only when scope, authority, access, and minimum evidence requirements are sufficient to begin the authorized assessment.
 
-- Not enough leads
-- Low-quality leads
-- Poor website performance
-- Weak Google visibility
-- Weak reviews
-- Slow follow-up
-- Manual admin work
-- No tracking
-- No clear marketing plan
-- Too much owner involvement
-- Other: ________
+### `REVIEW`
 
-## Competitors
+Use when bounded gaps exist but work can proceed without misrepresenting coverage, confidence, or conclusions.
 
-Competitor 1:
+### `HALT`
 
-Competitor 2:
+Use when authorization, scope, evidence integrity, data handling, or safety requirements are insufficient. Dependent scoring and publication work must not proceed.
 
-Competitor 3:
+## 13. Client acknowledgement
 
-## Access needed
+The client confirms that supplied information is accurate to the best of its knowledge, disclosed limitations are complete, and access authorization is restricted to the stated assessment scope. Intake acceptance does not validate claims, authorize implementation, or guarantee business outcomes.
 
-- Website CMS
-- Domain/DNS
-- Google Business Profile
-- Google Analytics
-- Google Search Console
-- Facebook page
-- CRM
-- Call tracking
-- Other
+- Client representative:
+- Role:
+- Acknowledgement date:
+- Assessment lead:
+- Intake gate:
+- DecisionLedger record ID:
+
+## 14. Pre-assessment validation
+
+- [ ] Scope and exclusions are explicit
+- [ ] Decision authority is identified
+- [ ] Every evidence source has provenance and a date range
+- [ ] Reported claims are separated from verified evidence
+- [ ] Unknown and blocked conditions remain visible and unscored
+- [ ] Access and testing permissions are explicit
+- [ ] Data handling requirements are documented
+- [ ] Publication intent and limitations are recorded
+- [ ] Intake gate and rationale are logged in the DecisionLedger
+- [ ] No unsupported ROI, revenue, conversion, ranking, lead-loss, market-share, competitor-performance, or timeline claim is presented as fact
+
+Any failed authorization, evidence-integrity, data-handling, or scope-control check requires `HALT` until resolved or formally superseded.
