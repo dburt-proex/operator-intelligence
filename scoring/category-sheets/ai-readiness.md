@@ -1,6 +1,6 @@
 # AI Readiness Category Scoring Sheet
 
-Version: v0.1 scoring execution foundation  
+Version: v0.2 scoring execution foundation  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/category-sheets/`  
 Category key: `ai-readiness`  
@@ -27,13 +27,9 @@ AI interest, tool ownership, or prior experimentation is not readiness. Cross-do
 
 ## 2. Criterion inventory
 
-Included prefix:
+Included prefix: `OI-AI-*`
 
-```text
-OI-AI-*
-```
-
-| Criterion ID | Observable condition | Primary evidence | Default weighting |
+| Criterion ID | Observable condition | Primary evidence | Weighting |
 |---|---|---|---|
 | `OI-AI-001` | Core workflows are documented | SOPs, workflow maps, checklists | Equal |
 | `OI-AI-002` | Customer and operational data is structured | CRM schema, forms, sample records | Equal |
@@ -50,51 +46,41 @@ OI-AI-*
 
 Each criterion has one weighted owner: `ai-readiness`.
 
-## 3. Required evidence surfaces
+## 3. Evidence requirements
 
-### Primary evidence
+Primary evidence includes:
 
-- documented target workflow, trigger, owner, inputs, outputs, handoffs, exceptions, and completion state
-- CRM, form, spreadsheet, or system schema used by the proposed workflow
-- written AI use-case definition with scope and success condition
-- human approval and exception-handling rules
-- customer-facing allowed topics, blocked topics, commitments, disclaimers, and action limits
-- approved knowledge-source inventory with owner and review date
-- output, approval, correction, and action logs where required
+- target workflow, owner, inputs, outputs, handoffs, exceptions, and completion state
+- source-system or data-schema evidence
+- bounded use-case definition and success condition
+- human approval and exception rules
+- customer-facing boundaries and prohibited actions
+- approved knowledge sources with ownership and review dates
+- output, approval, correction, and action logs
 - privacy, access, retention, sharing, and prohibited-data rules
-- use-case risk ranking and pilot sequence
+- risk-ranked pilot sequence
 - escalation triggers, route, owner, and test evidence
-- prompt or system-instruction inventory with version control
-- QA sample, failure taxonomy, review cadence, and correction record
+- controlled prompt or system-instruction inventory
+- QA sample, failure taxonomy, cadence, and correction record
 
-### Supporting evidence
+Supporting evidence may include interviews, configuration screenshots, access-role reviews, sample transcripts, boundary tests, change logs, and incident records.
 
-- client interview
-- tool configuration screenshots
-- access-role review
-- sample transcripts
-- red-team or boundary tests
-- policy documents
-- change logs
-- vendor data-handling settings
-- incident or exception records
+The following cannot support a point score alone:
 
-### Evidence that cannot support a point score alone
-
-- AI tool subscription or login screen
+- an AI subscription or login screen
 - a successful demo without repeatable workflow evidence
 - vendor claims about safety, privacy, or accuracy
-- generic prompt examples not used in the workflow
+- generic prompts not used in the workflow
 - owner enthusiasm or stated intent
-- estimated time savings, revenue, or replacement capacity without validated operating data
+- estimated savings, revenue, or replacement capacity without validated operating data
 
 ## 4. Minimum evaluation scope
 
-An AI Readiness category score is admissible only when the evaluator reviews:
+A category result is admissible only when the evaluator reviews:
 
-1. at least one proposed or active AI use case
-2. the complete target workflow and named owner
-3. the required input data and source systems
+1. at least one proposed or active use case
+2. the complete target workflow and owner
+3. required inputs and source systems
 4. human review requirements
 5. customer-facing boundaries when applicable
 6. approved knowledge sources
@@ -102,88 +88,49 @@ An AI Readiness category score is admissible only when the evaluator reviews:
 8. output and approval logging
 9. escalation triggers and route
 10. prompt instructions
-11. at least ten representative test cases, or all available when fewer exist
+11. at least ten representative tests, or all available when fewer exist
 12. QA ownership, cadence, and corrective-action process
 
-When no AI use case is proposed or active, the category may still be assessed for baseline readiness, but client-facing conclusions must not imply implementation need.
+When no use case is proposed or active, baseline readiness may be assessed, but client-facing conclusions must not imply implementation need.
 
-If internal access is unavailable, affected criteria become `unknown` or `blocked`. Missing access is not score `0`.
+Unavailable internal evidence becomes `unknown` or `blocked`. Missing access is not score `0`.
 
-## 5. Applicability rules
+## 5. Applicability and weighting
 
 All criteria are normally applicable when AI use is active, proposed, or materially under consideration.
 
-Use `not_applicable` only when structural irrelevance is documented and approved. Examples:
+Use `not_applicable` only when structural irrelevance is documented and approved. Missing policy, missing tooling, incomplete implementation, or score impact do not justify `not_applicable`.
 
-- `OI-AI-005` when the use case is strictly internal, cannot communicate externally, and cannot make operational commitments
-- `OI-AI-007` when the bounded internal task has no material decision, customer, compliance, or execution consequence and logging is explicitly deemed unnecessary
-- `OI-AI-010` when the tool cannot encounter exceptions or route outputs beyond a fully deterministic, low-risk internal transform
-
-The following do not justify `not_applicable`:
-
-- no policy exists
-- the tool does not support the control
-- the business has not documented the workflow
-- implementation has not started
-- the criterion would reduce the score
-
-## 6. Weighting rule
-
-All applicable criteria use equal weighting.
+All applicable criteria use equal weighting:
 
 ```text
 Criterion Weight = 1 ÷ Applicable Criterion Count
 ```
 
-Unknown and blocked criteria remain inside applicable weight. Approved `not_applicable` criteria are removed before recalculation. Unequal weighting is prohibited without a versioned methodology change under `scoring/weight-rules.md`.
+Unknown and blocked criteria remain inside applicable weight. Approved `not_applicable` criteria are removed before recalculation. Unequal weighting requires a versioned methodology change under `scoring/weight-rules.md`.
 
-## 7. Category-specific anchors
+## 6. Maturity anchors
 
-Use only `0`, `25`, `50`, `75`, and `100`. Interpolation is not permitted.
+Use only `0`, `25`, `50`, `75`, and `100`. Interpolation is prohibited.
 
-### Workflow, data, and use-case definition — `OI-AI-001` through `OI-AI-003`
-
-| Score | Observable condition |
+| Anchor | General interpretation |
 |---:|---|
-| 0 | AI is active or proposed in an undefined workflow, required data is materially unusable, or the use case has no bounded task, owner, output, or success condition. |
-| 25 | Some process and data context exists, but scope, ownership, inputs, outputs, exceptions, or success measures remain materially incomplete. |
-| 50 | A functional workflow and use case are defined, but data quality, exception handling, ownership, or measurement remains partial. |
-| 75 | Workflow, owner, data, scope, outputs, exceptions, and success criteria are clear and implementation-ready. |
-| 100 | Definitions are version-controlled, tested, monitored, and governed through accountable change and review processes. |
+| 0 | Required control is absent, materially unsafe, unusable, or uncontrolled. |
+| 25 | Partial practice exists, but scope, ownership, enforcement, or evidence is materially weak. |
+| 50 | A functional baseline exists, but governance, testing, exception handling, or consistency remains incomplete. |
+| 75 | The control is clear, implemented, owned, tested, and suitable for the reviewed use case. |
+| 100 | The control is versioned, monitored, auditable, stress-tested, and governed through continuous improvement. |
 
-### Human control, boundaries, and escalation — `OI-AI-004`, `OI-AI-005`, `OI-AI-010`
+Apply these anchors to four criterion groups:
 
-| Score | Observable condition |
-|---:|---|
-| 0 | AI can issue sensitive, unsafe, binding, or out-of-scope outputs without required review or escalation. |
-| 25 | Some review or boundary language exists, but coverage is vague, incomplete, untested, or dependent on operator memory. |
-| 50 | Baseline approval, boundary, and escalation controls exist, but exception coverage, enforcement, testing, or ownership remains incomplete. |
-| 75 | Sensitive outputs, uncertainty, blocked topics, commitments, and exceptions are consistently routed through defined human controls. |
-| 100 | Control behavior is policy-driven, tested, logged, auditable, versioned, and routinely stress-tested against boundary cases. |
+- workflow, data, and use-case definition: `OI-AI-001` through `OI-AI-003`
+- human control, boundaries, and escalation: `OI-AI-004`, `OI-AI-005`, `OI-AI-010`
+- knowledge, privacy, and auditability: `OI-AI-006` through `OI-AI-008`
+- risk sequencing, prompt standards, and QA: `OI-AI-009`, `OI-AI-011`, `OI-AI-012`
 
-### Knowledge, privacy, and auditability — `OI-AI-006` through `OI-AI-008`
+## 7. Control-state overlay
 
-| Score | Observable condition |
-|---:|---|
-| 0 | AI relies on uncontrolled sources, sensitive data lacks rules, access is materially excessive, or consequential outputs cannot be reconstructed. |
-| 25 | Some sources, privacy expectations, or logs exist, but ownership, freshness, permissions, retention, or coverage remains weak. |
-| 50 | Approved sources, baseline data rules, and logging exist, but governance, review dates, approval history, or least-privilege enforcement remains incomplete. |
-| 75 | Knowledge, access, privacy, retention, outputs, approvals, and corrections are controlled and auditable across the use case. |
-| 100 | These controls are continuously governed through source ownership, access review, retention enforcement, integrity checks, and exception investigation. |
-
-### Risk sequencing, prompt standards, and QA — `OI-AI-009`, `OI-AI-011`, `OI-AI-012`
-
-| Score | Observable condition |
-|---:|---|
-| 0 | The first use case is materially high risk, behavior depends on uncontrolled prompts, or outputs are not reviewed despite consequential use. |
-| 25 | A pilot, prompt, or review practice exists, but risk selection, instruction quality, sampling, failure categorization, or correction is inconsistent. |
-| 50 | Low-risk sequencing, reusable instructions, and baseline QA exist, but versioning, test depth, cadence, metrics, or corrective action remains partial. |
-| 75 | Bounded pilots use controlled prompts, representative tests, recurring QA, named owners, and documented corrections. |
-| 100 | Risk sequencing, prompt controls, evaluation sets, failure analysis, corrective actions, and deployment decisions operate as a governed improvement loop. |
-
-## 8. Control-state overlay
-
-Maturity score and execution control state are separate.
+Maturity, evidence confidence, and execution control state are separate.
 
 | State | Use when |
 |---|---|
@@ -191,86 +138,106 @@ Maturity score and execution control state are separate.
 | `REVIEW` | AI may prepare or recommend, but a human must approve, correct, or handle exceptions before consequential use. |
 | `HALT` | Workflow, data, privacy, knowledge, boundary, review, audit, or escalation failures make implementation or continued use indefensible. |
 
-A strong category score does not authorize every use case. Each use case requires its own control-state decision.
+A strong category result does not authorize every use case. Each use case requires its own control-state decision.
 
-## 9. Confidence guidance
+## 8. Confidence and uncertainty
 
-| Confidence | AI-readiness-specific use |
-|---|---|
-| High | Direct workflow, configuration, policy, access, source, prompt, log, test, and QA evidence supports the selected anchor across required scope. |
-| Medium | Multiple artifacts support the result, but one important control, system surface, exception path, or test set remains incomplete. |
-| Low | Result depends mainly on interviews, narrow screenshots, self-reported practice, or untested controls. |
-| Unknown | Evidence is insufficient to select an anchor. |
+Use the approved confidence factors:
 
-Confidence remains separate from maturity and from ALLOW, REVIEW, or HALT routing.
+| Confidence | Factor |
+|---|---:|
+| high | 1.00 |
+| medium | 0.75 |
+| low | 0.50 |
+| unknown | not scored |
 
-## 10. Unknown, blocked, and not-applicable treatment
+```text
+Confidence Index = Σ confidence factors ÷ scored criterion count
+```
+
+Confidence remains separate from maturity and from `ALLOW`, `REVIEW`, or `HALT`.
+
+For unresolved applicable criteria, publish a defensible range:
+
+```text
+Lower Bound = known score total ÷ applicable criterion count
+Upper Bound = (known score total + maximum unresolved score total) ÷ applicable criterion count
+```
+
+Using zero in the lower-bound calculation does not convert an unknown criterion into a scored zero. It represents the minimum defensible category result while the state remains unresolved.
+
+## 9. Unknown, blocked, and not-applicable treatment
 
 Use `unknown` when required evidence was not supplied or cannot be verified.
 
-Use `blocked` when review or testing cannot proceed because of access, privacy, safety, legal, authorization, or technical restrictions.
-
-Use `not_applicable` only under Section 5.
+Use `blocked` when review or testing cannot proceed because of authorization, privacy, safety, legal, access, or technical restrictions.
 
 Do not:
 
 - replace unknown with zero
 - infer safety from absence of incidents
 - infer readiness from tool ownership
-- drop unknown or blocked weight
+- remove unknown or blocked weight
 - run live customer or production tests without authorization
 - expose sensitive data to test a control
 
-A material unknown involving sensitive data, binding commitments, customer-facing behavior, review, escalation, or auditability normally forces `range_only` or `blocked` publication and may require `HALT` routing.
+A material unknown involving sensitive data, binding commitments, customer-facing behavior, review, escalation, or auditability forces `range_only` or `blocked` publication and may require `HALT` routing.
 
-## 11. Duplicate-signal boundaries
+## 10. Duplicate-signal boundaries
 
-| Evidence condition | Primary scoring owner | Dependency treatment |
+| Evidence condition | Primary scoring owner | AI Readiness treatment |
 |---|---|---|
-| Workflow stages, reminders, handoffs, or CRM operations | Automation | AI Readiness scores whether the workflow is sufficiently defined for AI use. |
-| Data capture or reporting instrumentation | Analytics | AI Readiness scores structure, access, fitness, and governance for the use case. |
-| Customer-facing CTA or chatbot placement | Conversion | AI Readiness scores behavior boundaries and controls, not placement. |
-| Published service facts, FAQs, or policies | Messaging, Offer, Trust, or Website | AI Readiness scores source approval, ownership, freshness, and retrieval control. |
-| Public review outcomes | GBP or Trust | AI Readiness scores only AI-assisted review workflow controls when applicable. |
-| General software security or legal compliance | External specialist domain | Record limitation and require validation; do not imply certification. |
+| Workflow stages, reminders, handoffs, or CRM operations | Automation | Score only whether the workflow is sufficiently defined for AI use. |
+| Data capture or reporting instrumentation | Analytics | Score structure, access, fitness, and governance for the use case. |
+| Customer-facing CTA or chatbot placement | Conversion | Score behavior boundaries and controls, not placement. |
+| Published service facts, FAQs, or policies | Messaging, Offer, Trust, or Website | Score source approval, ownership, freshness, and retrieval control. |
+| Public review outcomes | GBP or Trust | Score only AI-assisted workflow controls when applicable. |
+| General software security or legal compliance | External specialist domain | Record the limitation and require validation; do not imply certification. |
 
-## 12. Finding and package routing
+## 11. Finding and package routing
 
 Weak criteria route only to approved `OI-FIND-AI-*` records in `framework/findings/ai-readiness-findings.md`.
 
 | Condition | Primary route | Roadmap phase |
 |---|---|---|
-| Undefined workflow, ownership, stages, or structured data | `OI-PKG-CRM-001` CRM and Follow-Up System or process prerequisite | Phase 3 before AI |
-| Missing operational measurement | `OI-PKG-DASH-001` Operator Dashboard Pack | Phase 3 before or alongside AI |
-| Controlled, bounded intake use case with prerequisites satisfied | `OI-PKG-AI-001` Governed AI Intake Assistant | Phase 4 — Governed AI Enablement |
-| Missing privacy, review, boundary, escalation, or audit controls | Validation and control remediation before AI package | Phase 1 correction or Phase 4 prerequisite |
+| Undefined workflow, ownership, stages, or structured data | `OI-PKG-CRM-001` or process prerequisite | Phase 3 before AI |
+| Missing operational measurement | `OI-PKG-DASH-001` | Phase 3 before or alongside AI |
+| Controlled bounded intake with prerequisites satisfied | `OI-PKG-AI-001` | Phase 4 — Governed AI Enablement |
+| Missing privacy, review, boundary, escalation, or audit controls | Validation and control remediation | Phase 0 or governed prerequisite |
 
-A category score does not automatically create a finding, authorize AI, or select a package. Every recommendation requires observation, evidence, interpretation, business impact, confidence, priority, control state, prerequisite route, package, roadmap phase, and DecisionLedger record.
+A category result does not automatically create a finding, authorize AI, or select a package. Unknown criteria create validation requirements, not implementation findings.
 
-## 13. Publication controls
+Every recommendation requires a valid finding, evidence, interpretation, bounded business impact, confidence, priority, control state, prerequisites, exactly one primary package, roadmap phase, and DecisionLedger record.
 
-`official` publication requires:
+## 12. Publication controls
+
+`official` requires:
 
 - minimum scope completed
-- category coverage at or above 80%
-- each assessed use case assigned ALLOW, REVIEW, or HALT
+- coverage at or above 80%
+- each assessed use case assigned `ALLOW`, `REVIEW`, or `HALT`
 - no unresolved material privacy, boundary, audit, review, or escalation unknown
 - duplicate-signal checks passed
 - valid DecisionLedger references for reported findings
 
-Use `provisional` when coverage is 60–79.99% or one non-critical internal control remains incompletely verified.
+Use:
 
-Use `range_only` when a material unknown could change readiness interpretation.
+- `provisional` when a bounded, non-material limitation remains
+- `range_only` when a material unknown could change readiness interpretation
+- `blocked` when authorization, privacy, access, safety, or unresolved control failures prevent a defensible result
 
-Use `blocked` when authorization, privacy, access, safety, or unresolved control failures prevent a defensible result.
-
-## 14. DecisionLedger minimum record
+## 13. DecisionLedger minimum record
 
 ```yaml
 category_key: ai-readiness
 criterion_ids: []
 use_case_id: ""
 evidence_refs: []
+observed_indicator: null
+coverage_percent: null
+confidence_index: null
+score_range: null
+publication_state: internal_only|official|provisional|range_only|blocked
 observation: ""
 interpretation: ""
 business_impact: ""
@@ -278,6 +245,7 @@ confidence: high|medium|low|unknown
 priority: critical|high|medium|low
 control_state: ALLOW|REVIEW|HALT
 finding_ids: []
+validation_required: []
 prerequisites: []
 primary_package: null
 dependent_packages: []
@@ -285,22 +253,28 @@ roadmap_phase: null
 unknowns: []
 blocked_conditions: []
 duplicate_check_passed: false
+implementation_authorized: false
 reviewed_by: ""
 ledger_ref: OI-DL-YYYY-NNN
 ```
 
-## 15. Validation messages
+## 14. Validation messages
 
 ### Blocking errors
 
 - `AI-EVID-001`: scored criterion lacks required evidence
 - `AI-SCOPE-001`: minimum evaluation scope is incomplete
 - `AI-STATE-001`: score conflicts with criterion state
-- `AI-CTRL-001`: assessed use case lacks ALLOW, REVIEW, or HALT decision
+- `AI-CONF-001`: confidence index is missing or cannot be reproduced
+- `AI-RANGE-001`: unresolved applicable weight lacks defensible bounds
+- `AI-PUB-001`: publication state conflicts with coverage or material unknowns
+- `AI-CTRL-001`: assessed use case lacks `ALLOW`, `REVIEW`, or `HALT`
 - `AI-PRIV-001`: material privacy or access boundary is unresolved
+- `AI-ROUTE-001`: unknown criterion creates a finding or package without validation
+- `AI-AUTH-001`: publication or review state is treated as implementation authorization
 - `AI-DUP-001`: readiness signal is double counted
 - `AI-TEST-001`: live workflow was tested without authorization
-- `AI-LEDGER-001`: reported finding lacks DecisionLedger traceability
+- `AI-LEDGER-001`: material output lacks DecisionLedger traceability
 
 ### Warnings
 
@@ -310,43 +284,70 @@ ledger_ref: OI-DL-YYYY-NNN
 - `AI-QA-001`: QA sample or correction process is incomplete
 - `AI-TOOL-001`: tool ownership is being mistaken for readiness
 
-## 16. Worked example
+## 15. Canonical worked example
 
-Assume 12 applicable criteria:
+The canonical regression fixture is:
 
-- 9 scored criteria total 525 points
-- 1 additional scored criterion scores 50
-- 2 criteria are `unknown`
+`scoring/examples/ai-readiness-worked-example.md`
 
-```text
-Known Criterion Count = 10
-Applicable Criterion Count = 12
-Observed Category Score = 575 ÷ 10 = 57.5
-Category Coverage = 10 ÷ 12 × 100 = 83.3%
+Its verified outputs are:
+
+```yaml
+observed_indicator: 57.50
+coverage_percent: 83.33
+confidence_index: 1.0000
+confidence_band: high
+score_range: [47.92, 64.58]
+publication_state: range_only
+unknowns:
+  - OI-AI-008
+  - OI-AI-010
+control_state:
+  internal_assistance: REVIEW
+  customer_facing_execution: HALT
+primary_package: null
+roadmap_phase: Phase 0 — Validation and Access
+implementation_authorized: false
 ```
 
-The published category score is `58`, with `83.3%` coverage. The two unknown criteria remain visible and may still force `range_only` or `HALT` when they concern privacy, review, escalation, or customer-facing boundaries.
+The two unknown controls remain inside applicable weight and prevent an official single-value score. They create validation requirements before finding creation or package routing.
 
-Example executive-safe statement:
+Executive-safe statement:
 
-> The business has a workable foundation for bounded internal AI assistance, but customer-facing use should remain under human review until privacy, escalation, and audit controls are fully verified.
+> The reviewed evidence supports a workable foundation for bounded internal AI assistance. Privacy, access, and escalation controls require validation before customer-facing or autonomous use can be considered.
 
-## 17. Completion checklist
+Do not state that the business is AI-ready without the range, coverage, unknowns, control state, and use-case boundary.
 
-Before publishing, confirm:
+## 16. Completion checklist
+
+Before publication, confirm:
 
 - all 12 criteria have valid states
 - minimum scope is complete
 - weights reconcile
 - unknown and blocked criteria retain applicable weight
+- score, coverage, confidence index, and bounds reproduce exactly
 - confidence, maturity, and control state remain separate
-- each use case has a bounded task, owner, inputs, outputs, exceptions, and success condition
+- each use case has bounded scope, ownership, inputs, outputs, exceptions, and success conditions
 - privacy, access, knowledge, review, boundary, escalation, audit, prompt, and QA controls are assessed
 - duplicate ownership checks pass
 - findings use approved `OI-FIND-AI-*` identifiers
+- unknowns route to validation before findings or packages
 - prerequisites precede Phase 4 implementation
+- implementation authorization is recorded separately
 - DecisionLedger references exist
 - client language avoids unsupported safety, compliance, accuracy, labor-replacement, revenue, or ROI claims
+
+## 17. Cross references
+
+- `scoring/examples/ai-readiness-worked-example.md`
+- `scoring/examples/index.md`
+- `scoring/confidence-adjusted-scoring.md`
+- `scoring/unknown-data-handling.md`
+- `scoring/calculator-spec.md`
+- `framework/findings/ai-readiness-findings.md`
+- `standards/publication-standard.md`
+- `standards/decision-ledger-standard.md`
 
 ## 18. v1.0 connection
 
