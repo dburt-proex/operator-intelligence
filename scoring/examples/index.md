@@ -1,6 +1,6 @@
 # Scoring Regression Fixture Index
 
-Version: v0.2 scoring validation registry  
+Version: v0.3 scoring validation registry  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/examples/`  
 Status: Commercial v1.0 control artifact
@@ -20,6 +20,7 @@ A fixture is a deterministic regression test, not a substitute for the governing
 | Automation | `scoring/examples/automation-worked-example.md` | 14-criterion calculation, confidence-adjusted range, validation-first routing, implementation authorization separation |
 | AI Readiness | `scoring/examples/ai-readiness-worked-example.md` | use-case control states, prerequisite gates, range-only publication, validation routing, DecisionLedger traceability |
 | Analytics | `scoring/examples/analytics-worked-example.md` | canonical 5% weight, 10-criterion calculation, confidence-adjusted range, attribution and outcome unknowns, validation-first routing |
+| Website Structure and UX | `scoring/examples/website-worked-example.md` | canonical 10% weight, 12-criterion calculation, confidence-adjusted range, competitor-evidence unknown handling, governed finding and package routing |
 
 Unlisted category examples remain illustrative until they satisfy this contract and are added through a versioned repository change.
 
