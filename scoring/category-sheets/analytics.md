@@ -1,6 +1,6 @@
 # Analytics Category Scoring Sheet
 
-Version: v0.1 scoring execution foundation  
+Version: v0.2 scoring execution foundation  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/category-sheets/`  
 Category key: `analytics`  
@@ -198,14 +198,20 @@ Installed tracking without tested accuracy cannot support a `75` or `100` anchor
 
 ## 9. Confidence guidance
 
-| Confidence | Analytics-specific use |
-|---|---|
-| High | Direct access, tested events, reconciled records, governed definitions, and repeated reporting evidence support the selected anchor. |
-| Medium | Exports, screenshots, or partial tests support the result, but one material source, period, or reconciliation step remains incomplete. |
-| Low | Result depends mainly on interviews, isolated screenshots, stale exports, or unverified installation. |
-| Unknown | Evidence is insufficient to select an anchor. |
+| Confidence | Factor | Analytics-specific use |
+|---|---:|---|
+| High | 1.00 | Direct access, tested events, reconciled records, governed definitions, and repeated reporting evidence support the selected anchor. |
+| Medium | 0.75 | Exports, screenshots, or partial tests support the result, but one material source, period, or reconciliation step remains incomplete. |
+| Low | 0.50 | Result depends mainly on interviews, isolated screenshots, stale exports, or unverified installation. |
+| Unknown | 0.00 | Evidence is insufficient to select an anchor. |
+
+```text
+Category Confidence Index = Sum of scored-criterion confidence factors ÷ Scored Criterion Count
+```
 
 Confidence remains separate from maturity. High confidence that data is unavailable does not establish poor operating performance.
+
+For defensible bounds, apply the approved confidence adjustment from `scoring/confidence-adjusted-scoring.md` to each scored criterion. Unknown criteria contribute `0–100` while remaining inside applicable weight. The resulting range is an evidence-bound estimate, not a statistical confidence interval.
 
 ## 10. Unknown, blocked, and not-applicable treatment
 
@@ -224,7 +230,7 @@ Do not:
 - reconstruct metrics without disclosing method and limitations
 - test live contact paths without authorization
 
-A material unknown affecting conversion events, source attribution, or estimate outcomes may force `range_only` or `blocked` publication.
+A material unknown affecting conversion events, source attribution, or estimate outcomes forces `range_only` or `blocked` publication until validation resolves the uncertainty.
 
 ## 11. Duplicate-signal boundaries
 
@@ -247,9 +253,11 @@ Weak criteria route only to approved `OI-FIND-AN-*` records in `framework/findin
 |---|---|---|
 | Missing or unverified analytics, Search Console, events, metrics, or reporting | Operator Dashboard Pack | Phase 3 — Automation and Reporting |
 | Missing source fields, statuses, outcomes, or record discipline | CRM and Follow-Up System | Phase 3 — Automation and Reporting |
-| Broken form or call path revealed during testing | Website Conversion Fix Pack plus CRM and Follow-Up System | Phase 1 — Quick Wins |
-| Weak review measurement tied to weak review workflow | Review Generation System plus Operator Dashboard Pack | Phase 3 — Automation and Reporting |
+| Broken form or call path revealed during testing | Website Conversion Fix Pack | Phase 1 — Quick Wins |
+| Weak review measurement tied to weak review workflow | Operator Dashboard Pack | Phase 3 — Automation and Reporting |
 | AI-assisted reporting proposed before metric stability | No AI routing until definitions, sources, review gates, and auditability are established | Phase 4 only after prerequisites |
+
+Each validated recommendation receives exactly one primary package. Related packages may be recorded only as dependencies. Unknown criteria route first to `Phase 0 — Validation and Access`, with `primary_package: null` and `implementation_authorized: false`.
 
 A category score does not automatically create a finding or recommendation. Every routed action requires observation, evidence, interpretation, impact, confidence, priority, package, roadmap phase, and DecisionLedger traceability.
 
@@ -261,15 +269,18 @@ A category score does not automatically create a finding or recommendation. Ever
 - category coverage at or above 80%
 - tested status for primary conversion events
 - documented metric definitions for reported KPIs
+- no unresolved material unknown
 - no unresolved duplicate-signal failure
 - no unsupported traffic, lead, conversion, revenue, close-rate, or ROI claims
 - valid DecisionLedger references for report findings
 
-Use `provisional` when coverage is 60–79.99% or one material source remains partially verified.
+Use `provisional` when coverage is 60–79.99% or one non-material source remains partially verified.
 
 Use `range_only` when unknown measurement conditions could materially change interpretation.
 
 Use `blocked` when access, privacy, ownership, authorization, or data-integrity failures prevent a defensible result.
+
+Publication does not authorize implementation.
 
 ## 14. DecisionLedger minimum record
 
@@ -281,16 +292,24 @@ metric_definitions: []
 observation: ""
 interpretation: ""
 measurement_impact: ""
+observed_indicator: null
+coverage_percent: null
+confidence_index: null
+confidence_band: high|medium|low|unknown
+score_range: [null, null]
+publication_state: official|provisional|range_only|blocked
+review_state: ALLOW|REVIEW|HALT
 confidence: high|medium|low|unknown
 priority: critical|high|medium|low
 finding_ids: []
+validation_required: false
 primary_package: null
 dependent_packages: []
 roadmap_phase: null
 unknowns: []
 blocked_conditions: []
 duplicate_check_passed: false
-publication_state: official|provisional|range_only|blocked
+implementation_authorized: false
 reviewed_by: ""
 ledger_ref: OI-DL-YYYY-NNN
 ```
@@ -305,6 +324,11 @@ ledger_ref: OI-DL-YYYY-NNN
 - `AN-DUP-001`: measurement condition is double counted
 - `AN-TEST-001`: tracking accuracy is claimed without testing
 - `AN-METRIC-001`: reported KPI lacks a governed definition
+- `AN-CONF-001`: confidence index is absent, nonnumeric, or unreproducible
+- `AN-BOUND-001`: defensible bounds are absent, incomplete, or conflict with criterion states
+- `AN-PUB-001`: publication state conflicts with coverage, material unknowns, or evidence gates
+- `AN-ROUTE-001`: unknown evidence creates an implementation recommendation or package assignment
+- `AN-AUTH-001`: implementation is represented as authorized without a separate approval record
 - `AN-CLAIM-001`: unsupported performance or ROI claim is present
 - `AN-LEDGER-001`: reported finding lacks DecisionLedger traceability
 
@@ -318,24 +342,53 @@ ledger_ref: OI-DL-YYYY-NNN
 
 ## 16. Worked example
 
-Assume 10 applicable criteria:
+Canonical regression fixture: `scoring/examples/analytics-worked-example.md`.
 
-- 7 scored criteria total 400 points
-- 1 additional scored criterion is 50
-- 2 criteria are `unknown`
+The fixture evaluates 10 applicable criteria: eight scored and two unknown. Five scored criteria have high confidence and three have medium confidence.
 
 ```text
-Known Criterion Count = 8
-Applicable Criterion Count = 10
+Known maturity total = 450
+Scored criterion count = 8
 Observed Category Score = 450 ÷ 8 = 56.25
-Category Coverage = 8 ÷ 10 × 100 = 80%
+Displayed observed indicator = 56
+
+Coverage = 8 ÷ 10 × 100 = 80.00%
+Confidence Index = ((5 × 1.00) + (3 × 0.75)) ÷ 8 = 0.90625
+Displayed confidence index = 0.9063
+
+Known lower-bound total = 412.5
+Known upper-bound total = 487.5
+Unknown lower-bound total = 0
+Unknown upper-bound total = 200
+Category Lower Bound = 412.5 ÷ 10 = 41.25
+Category Upper Bound = 687.5 ÷ 10 = 68.75
 ```
 
-The published category score is `56`, with `80%` coverage. The two unknown criteria remain visible and preserve uncertainty. They are not scored as zero and are not removed from applicable weight.
+```yaml
+score_value: null
+score_type: range
+observed_indicator: 56
+score_range: [41.25, 68.75]
+coverage_percent: 80.0
+confidence_index: 0.9063
+confidence_band: high
+publication_state: range_only
+material_unknowns:
+  - OI-AN-005
+  - OI-AN-006
+review_state: REVIEW
+validation_required: true
+primary_package: null
+roadmap_phase: "Phase 0 — Validation and Access"
+implementation_authorized: false
+ledger_ref: OI-DL-2026-011
+```
+
+The observed indicator is not an official category score. Lead-source attribution and estimate-outcome reporting are material unknowns, so publication remains `range_only` and implementation routing remains blocked pending validation.
 
 Executive-safe statement:
 
-> Core measurement is partially established, but source attribution and estimate-outcome reporting are not yet fully verified. Current data supports a directional baseline, not definitive performance or ROI conclusions.
+> Analytics maturity is supported by verified installation, core event tracking, reporting, and documented decision use across the reviewed scope. Lead-source attribution and estimate-outcome reporting remain unverified, so the current evidence supports a range of 41.25–68.75 rather than a single official category score. Validation is required before implementation routing or performance conclusions.
 
 ## 17. Completion checklist
 
@@ -343,14 +396,17 @@ Before publishing, confirm:
 
 - all 10 criteria have valid states
 - minimum scope is complete
-- weights reconcile
+- the canonical 5% category weight reconciles
+- observed indicator, coverage, confidence index, and bounds reproduce the registered fixture
 - unknown and blocked criteria retain applicable weight
 - confidence is separate from maturity
 - tracking installation is not treated as proof of accuracy
 - metric definitions, sources, owners, cadences, and action triggers exist where required
 - duplicate ownership checks pass
 - findings use approved `OI-FIND-AN-*` identifiers
-- package routing follows evidence and prerequisites
+- unknown criteria route to validation before implementation
+- each validated recommendation has exactly one primary package
+- publication and implementation authorization remain separate
 - DecisionLedger references exist
 - client language avoids unsupported traffic, conversion, revenue, close-rate, and ROI claims
 
