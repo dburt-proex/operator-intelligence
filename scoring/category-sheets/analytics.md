@@ -4,7 +4,7 @@ Version: v0.1 scoring execution foundation
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/category-sheets/`  
 Category key: `analytics`  
-Default Operator Score weight: 10%  
+Default Operator Score weight: 5%  
 Status: Draft foundation for commercial v1.0
 
 ## 1. Purpose and category boundary
