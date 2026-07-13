@@ -1,11 +1,11 @@
 # Automation Category Scoring Sheet
 
-Version: v0.1 scoring execution foundation  
+Version: v0.2 scoring execution foundation  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/category-sheets/`  
 Category key: `automation`  
 Default Operator Score weight: 10%  
-Status: Draft foundation for commercial v1.0
+Status: Commercial v1.0 candidate
 
 ## 1. Purpose and category boundary
 
@@ -26,11 +26,7 @@ Manual processes may score well when they are documented, reliable, owned, measu
 
 ## 2. Criterion inventory
 
-Included prefix:
-
-```text
-OI-AUTO-*
-```
+Included prefix: `OI-AUTO-*`
 
 | Criterion ID | Observable condition | Primary evidence | Default weighting |
 |---|---|---|---|
@@ -116,23 +112,29 @@ Use `not_applicable` only when structural irrelevance is documented and approved
 - `OI-AUTO-011` when the service model has no reasonable repeat, maintenance, seasonal, or reactivation path
 - `OI-AUTO-014` when a documented low-volume operating review provides equivalent decision visibility without a dashboard
 
-The following do not justify `not_applicable`:
+The following do not justify `not_applicable`: the process has not been built, evidence was not provided, the current tool lacks the capability, the criterion would lower the score, or the evaluator prefers a different tool.
 
-- the process has not been built
-- evidence was not provided
-- the current tool lacks the capability
-- the criterion would lower the score
-- the evaluator prefers a different tool
-
-## 6. Weighting rule
+## 6. Weighting and calculation rules
 
 All applicable criteria use equal weighting.
 
 ```text
 Criterion Weight = 1 ÷ Applicable Criterion Count
+Observed Category Score = Sum of scored maturity anchors ÷ Scored Criterion Count
+Coverage = Scored Applicable Weight ÷ Total Applicable Weight × 100
+Confidence Index = Sum of confidence factors for scored criteria ÷ Scored Criterion Count
 ```
 
-Unknown and blocked criteria remain inside applicable weight. Approved `not_applicable` criteria are removed before recalculation. Unequal weighting is prohibited without a versioned methodology change under `scoring/weight-rules.md`.
+Confidence factors:
+
+```text
+high = 1.00
+medium = 0.75
+low = 0.50
+unknown = 0.00
+```
+
+Unknown and blocked criteria remain inside applicable weight. Approved `not_applicable` criteria are removed before recalculation. Unknown is excluded from the observed maturity denominator because no anchor is defensible, but contributes `0–100` to defensible bounds. Unequal weighting is prohibited without a versioned methodology change under `scoring/weight-rules.md`.
 
 ## 7. Category-specific anchors
 
@@ -180,32 +182,24 @@ Use only `0`, `25`, `50`, `75`, and `100`. Interpolation is not permitted.
 
 ## 8. Confidence guidance
 
-| Confidence | Automation-specific use |
-|---|---|
-| High | Direct system access, safe tests, sample records, rules, logs, templates, and review evidence support the anchor across required scope. |
-| Medium | Multiple records and workflow evidence support the result, but one important channel, rule, sample, or monitoring surface remains incomplete. |
-| Low | Result depends mainly on interview statements, narrow screenshots, stale exports, or incomplete records. |
-| Unknown | Evidence is insufficient to select an anchor. |
+| Confidence | Factor | Automation-specific use |
+|---|---:|---|
+| High | 1.00 | Direct system access, safe tests, sample records, rules, logs, templates, and review evidence support the anchor across required scope. |
+| Medium | 0.75 | Multiple records and workflow evidence support the result, but one important channel, rule, sample, or monitoring surface remains incomplete. |
+| Low | 0.50 | Result depends mainly on interview statements, narrow screenshots, stale exports, or incomplete records. |
+| Unknown | 0.00 | Evidence is insufficient to select an anchor. |
 
 Confidence remains separate from maturity. A well-evidenced manual process may score higher than an unreliable automation.
 
+For defensible bounds, apply the approved confidence uncertainty to each scored anchor and `0–100` to each unknown criterion. Bounds are evidence ranges, not statistical confidence intervals.
+
 ## 9. Unknown, blocked, and not-applicable treatment
 
-Use `unknown` when required evidence was not supplied or cannot be verified.
+Use `unknown` when required evidence was not supplied or cannot be verified. Use `blocked` when review cannot proceed because of access, privacy, safety, authorization, or control restrictions. Use `not_applicable` only under Section 5.
 
-Use `blocked` when testing or review cannot proceed because of access, privacy, safety, authorization, or control restrictions.
+Do not replace unknown with zero, infer failure from missing access, drop unknown or blocked weight, award maturity because a tool is purchased, or test live customer workflows without authorization.
 
-Use `not_applicable` only under Section 5.
-
-Do not:
-
-- replace unknown with zero
-- infer failure from missing access
-- drop unknown or blocked weight
-- award maturity because a tool is purchased
-- test live customer workflows without authorization
-
-A high-materiality unknown affecting inquiry capture, ownership, notification, or follow-up may force `range_only` or `blocked` publication.
+A high-materiality unknown affecting inquiry capture, ownership, notification, recovery, or follow-up forces `range_only` or `blocked` publication until resolved.
 
 ## 10. Duplicate-signal boundaries
 
@@ -222,11 +216,11 @@ One operational condition may support several findings only when each measures a
 
 ## 11. Finding and recommendation routing
 
-Weak criteria route only to approved `OI-FIND-AUTO-*` records in `framework/findings/automation-findings.md`.
+Weak scored criteria route only to approved `OI-FIND-AUTO-*` records in `framework/findings/automation-findings.md`.
 
-Primary package routing:
+An unknown criterion may create a validation finding, but it may not authorize implementation. Validation findings use `primary_package: null`, route to `Phase 0 — Validation and Access`, and require a superseding DecisionLedger event before remediation routing.
 
-| Condition | Primary package | Roadmap phase |
+| Validated condition | Primary package | Roadmap phase |
 |---|---|---|
 | Scattered lead capture, unclear ownership, weak stages, or memory-based follow-up | `OI-PKG-CRM-001` CRM and Follow-Up System | Phase 3 — Automation and Reporting |
 | Broken visible form confirmation | `OI-PKG-WEB-001` Website Conversion Fix Pack | Phase 1 — Foundations and Critical Fixes |
@@ -234,24 +228,19 @@ Primary package routing:
 | Missing operational visibility | `OI-PKG-DASH-001` Operator Dashboard Pack | Phase 3 — Automation and Reporting |
 | Customer-facing AI workflow with adequate prerequisites | `OI-PKG-AI-001` Governed AI Intake Assistant | Phase 4 — Governed AI Enablement |
 
-A category score does not automatically create a finding or select a package. Every recommendation still requires observation, evidence, interpretation, business impact, confidence, priority, package, roadmap phase, and DecisionLedger record.
+A category score does not automatically create a finding or select a package. Every implementation recommendation requires a validated finding and exactly one primary package.
 
 ## 12. Publication controls
 
-`official` publication requires:
+`official` publication requires minimum scope completion, coverage at or above 80%, adequate material confidence, no unresolved material unknown, no unresolved G4 boundary, no duplicate-signal failure, verified critical capture evidence, and valid DecisionLedger references.
 
-- minimum scope completed
-- category coverage at or above 80%
-- no unresolved G4 boundary
-- no material duplicate-signal failure
-- tested or directly verified evidence for critical capture and notification claims
-- valid DecisionLedger references for reported findings
+Use:
 
-Use `provisional` when coverage is 60–79.99% or internal evidence limits assertion strength.
+- `provisional` when a bounded non-material limitation remains
+- `range_only` when a material unknown could change category interpretation
+- `blocked` when privacy, authorization, safety, evidence conflict, or control failure prevents a defensible result
 
-Use `range_only` when a material unknown could change category interpretation.
-
-Use `blocked` when privacy, authorization, safety, or unresolved control failures prevent a defensible result.
+A displayed observed indicator is not an official category score when publication state is `range_only`.
 
 ## 13. DecisionLedger minimum record
 
@@ -259,18 +248,25 @@ Use `blocked` when privacy, authorization, safety, or unresolved control failure
 category_key: automation
 criterion_ids: []
 evidence_refs: []
+observed_indicator: null
+coverage_percent: null
+confidence_index: null
+score_range: null
+publication_state: internal_only|official|provisional|range_only|blocked
 observation: ""
 interpretation: ""
 business_impact: ""
 confidence: high|medium|low|unknown
 priority: critical|high|medium|low
 finding_ids: []
+validation_required: false
 primary_package: null
 dependent_packages: []
 roadmap_phase: null
 unknowns: []
 blocked_conditions: []
 duplicate_check_passed: false
+implementation_authorized: false
 review_state: ALLOW|REVIEW|HALT
 reviewed_by: ""
 ledger_ref: OI-DL-YYYY-NNN
@@ -287,6 +283,11 @@ ledger_ref: OI-DL-YYYY-NNN
 - `AUTO-TEST-001`: live workflow was tested without authorization
 - `AUTO-GATE-001`: unresolved G4 control boundary exists
 - `AUTO-LEDGER-001`: reported finding lacks DecisionLedger traceability
+- `AUTO-CONF-001`: confidence index is missing, nonnumeric, or inconsistent with criterion factors
+- `AUTO-BOUND-001`: required lower or upper bound is missing or cannot be reproduced
+- `AUTO-PUB-001`: a single official score is published while a material unknown remains unresolved
+- `AUTO-ROUTE-001`: an unknown criterion is routed directly to implementation
+- `AUTO-AUTH-001`: publication or review approval is treated as implementation authorization
 
 ### Warnings
 
@@ -297,25 +298,33 @@ ledger_ref: OI-DL-YYYY-NNN
 
 ## 15. Worked example
 
-Assume 14 applicable criteria:
+The canonical regression fixture is `scoring/examples/automation-worked-example.md`.
 
-- 8 scored criteria total 500 points
-- 4 additional scored criteria total 200 points
-- 2 criteria are `unknown`
-- all criteria use equal weight
+Its verified result is:
 
-```text
-Known Criterion Count = 12
-Applicable Criterion Count = 14
-Observed Category Score = 700 ÷ 12 = 58.3333
-Category Coverage = 12 ÷ 14 × 100 = 85.7%
+```yaml
+observed_indicator: 58
+coverage_percent: 85.7
+confidence_index: 0.9167
+confidence_band: high
+score_range: [46.43, 67.86]
+publication_state: range_only
+material_unknowns:
+  - OI-AUTO-009
+  - OI-AUTO-014
+review_state: REVIEW
+validation_required: true
+primary_package: null
+roadmap_phase: "Phase 0 — Validation and Access"
+implementation_authorized: false
+ledger_ref: OI-DL-2026-010
 ```
 
-The published category score is `58`, with `85.7%` coverage. The two unknown criteria remain visible and widen uncertainty; they are not scored as zero and are not removed from applicable weight.
+The high confidence index applies only to known evidence. `OI-AUTO-009` remains material, so coverage above 80% and high confidence on scored criteria do not permit a single official score.
 
-Example executive-safe statement:
+Executive-safe statement:
 
-> Lead handling has a functional baseline, but follow-up, customer-history use, and failure monitoring are not yet consistently evidenced across the full workflow. The category result should be read with the documented evidence limitations.
+> Automation maturity is supported by a functional lead-management baseline across the reviewed records. Missed-inquiry recovery and recurring operating visibility remain unverified, so the current evidence supports a range of 46.43–67.86 rather than a single official category score. Validation is required before implementation routing.
 
 ## 16. Completion checklist
 
@@ -323,17 +332,30 @@ Before publishing, confirm:
 
 - all 14 criteria have valid states
 - minimum scope is complete
-- weights reconcile
+- weights and observed maturity reproduce
+- numeric confidence index reproduces from criterion factors
+- lower and upper bounds reproduce
 - unknown and blocked criteria retain applicable weight
-- confidence is assigned separately from maturity
-- manual processes are judged by reliability, not tool preference
+- confidence remains separate from maturity
 - duplicate ownership checks pass
 - findings use approved `OI-FIND-AUTO-*` identifiers
-- package routing follows evidence and prerequisites
-- AI work does not precede workflow, data, privacy, review, escalation, logging, and QA readiness
+- unknown findings route to validation before implementation
+- each implementation recommendation has exactly one primary package
+- publication state matches material unknowns and bounds
+- implementation authorization is recorded separately
 - DecisionLedger references exist
-- client language avoids unsupported lead-loss, revenue, capacity, or ROI claims
+- client language avoids unsupported lead-loss, revenue, capacity, savings, or ROI claims
 
-## 17. v1.0 connection
+## 17. Cross references
 
-This sheet makes automation scoring reproducible across evaluators and connects operational evidence to governed findings, controlled package routing, roadmap sequencing, publication gates, and auditable client reporting required for commercial v1.0.
+- `scoring/examples/automation-worked-example.md`
+- `scoring/calculator-spec.md`
+- `scoring/confidence-adjusted-scoring.md`
+- `scoring/unknown-data-handling.md`
+- `framework/findings/automation-findings.md`
+- `standards/publication-standard.md`
+- `standards/decision-ledger-standard.md`
+
+## 18. v1.0 connection
+
+This sheet makes Automation scoring reproducible across evaluators and connects operational evidence to governed findings, validation-first unknown handling, controlled package routing, roadmap sequencing, publication gates, and auditable client reporting required for commercial v1.0.
