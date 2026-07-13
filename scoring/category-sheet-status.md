@@ -1,6 +1,6 @@
 # Category Sheet Reconciliation Status
 
-Version: v0.1 commercial v1.0 scoring control  
+Version: v0.2 commercial v1.0 scoring control  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/`  
 Status: Active reconciliation register
@@ -23,7 +23,7 @@ A category is not eligible for commercial scoring use until its sheet, regressio
 
 | Category key | Sheet | Operator Score weight | Registered regression fixture | Reconciliation state |
 |---|---|---:|---|---|
-| `website` | `scoring/category-sheets/website.md` | 10% | none registered | `REVIEW` |
+| `website` | `scoring/category-sheets/website.md` | 10% | `scoring/examples/website-worked-example.md` | `REVIEW` |
 | `messaging_offer` | `scoring/category-sheets/messaging-offer.md` | 10% | none registered | `REVIEW` |
 | `conversion` | `scoring/category-sheets/conversion.md` | 15% | none registered | `REVIEW` |
 | `seo` | `scoring/category-sheets/seo.md` | 15% | none registered | `REVIEW` |
