@@ -1,11 +1,11 @@
 # Conversion Infrastructure Category Scoring Sheet
 
-Version: v0.1 scoring execution foundation  
+Version: v0.2 scoring execution foundation  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/category-sheets/`  
 Category key: `conversion`  
 Default Operator Score weight: 15%  
-Status: Draft foundation for commercial v1.0
+Status: Reconciled commercial v1.0 scoring contract
 
 ## 1. Purpose and category boundary
 
@@ -39,7 +39,7 @@ It does not independently score:
 
 Cross-domain effects must be recorded as dependencies rather than duplicate scores.
 
-## 2. Included criterion prefixes and criterion inventory
+## 2. Criterion inventory
 
 Included prefix:
 
@@ -102,7 +102,7 @@ Each criterion has one weighted owner: `conversion`.
 
 ## 4. Minimum evaluation scope
 
-A conversion score is admissible only when the evaluator reviews, where present:
+A conversion result is admissible only when the evaluator reviews, where present:
 
 1. homepage desktop and mobile primary CTA
 2. contact or estimate page
@@ -139,7 +139,7 @@ The following do not justify `not_applicable`:
 
 Confirmed absence after the required test may support score `0`. Missing internal access normally produces `unknown` or `blocked`.
 
-## 6. Criterion weighting rule
+## 6. Weighting and maturity rules
 
 All applicable conversion criteria use equal weighting.
 
@@ -147,15 +147,11 @@ All applicable conversion criteria use equal weighting.
 Criterion Weight = 1 ÷ Applicable Criterion Count
 ```
 
-Unknown and blocked criteria remain inside applicable weight.
+Unknown and blocked criteria remain inside applicable weight. Approved `not_applicable` criteria are removed before weights are recalculated.
 
-Approved `not_applicable` criteria are removed before weights are recalculated.
-
-Unequal weighting is prohibited until a versioned methodology change satisfies `scoring/weight-rules.md`.
+Use only approved maturity anchors: `0`, `25`, `50`, `75`, `100`. Interpolation is not permitted.
 
 ## 7. Category-specific anchor guidance
-
-Use only the approved anchors: `0`, `25`, `50`, `75`, `100`.
 
 ### CTA visibility, language, and placement — `OI-CONV-001`, `OI-CONV-002`, `OI-CONV-003`, `OI-CONV-008`
 
@@ -175,7 +171,7 @@ Use only the approved anchors: `0`, `25`, `50`, `75`, `100`.
 | 25 | Intake exists but is materially underqualified, overlong, confusing, inaccessible, or poorly matched to the service. |
 | 50 | The form captures a workable baseline but leaves material qualification, usability, or project-context gaps. |
 | 75 | Intake captures appropriate project and contact detail with friction matched to service complexity and buyer stage. |
-| 100 | Intake is tested, adaptive or intentionally segmented, measured for completion quality, governed, and integrated with operational requirements. |
+| 100 | Intake is tested, intentionally segmented, measured for completion quality, governed, and integrated with operational requirements. |
 
 ### Confirmation and response expectations — `OI-CONV-006`, `OI-CONV-010`
 
@@ -217,20 +213,32 @@ Use only the approved anchors: `0`, `25`, `50`, `75`, `100`.
 | 75 | Major inquiry paths consistently retain usable source, campaign, or page context through intake. |
 | 100 | Attribution is validated end to end, normalized, governed, monitored, and usable in reporting and operational decisions. |
 
-Interpolation is not permitted.
+## 8. Confidence index and defensible bounds
 
-## 8. Confidence assignment guidance
+Confidence remains separate from maturity.
 
-| Confidence | Conversion-specific use |
-|---|---|
-| High | Direct page evidence plus completed CTA, form, confirmation, mobile-call, and relevant source-capture tests support the anchor across required scope. |
-| Medium | Public evidence is strong, but one representative channel, service-page group, confirmation path, or internal attribution record remains incomplete. |
-| Low | The assessment relies on client claims, narrow sampling, unverified form behavior, stale records, or incomplete channel tests. |
-| Unknown | Evidence is insufficient to select a maturity anchor. |
+| Confidence | Factor | Criterion bound |
+|---|---:|---|
+| High | 1.00 | exact selected anchor |
+| Medium | 0.75 | selected anchor ±12.5 |
+| Low | 0.50 | selected anchor ±25 |
+| Unknown | 0.00 | 0–100 |
 
-High confidence in CTA visibility does not establish high confidence in form capture, confirmation, routing, or attribution.
+```text
+Category Confidence Index =
+Sum(Confidence Factor for Scored Criteria)
+÷ Scored Criterion Count
 
-Confidence remains separate from maturity score.
+Category Lower Bound =
+Sum(Criterion Lower Bounds)
+÷ Applicable Criterion Count
+
+Category Upper Bound =
+Sum(Criterion Upper Bounds)
+÷ Applicable Criterion Count
+```
+
+Unknown and blocked criteria remain inside the applicable denominator and contribute `0–100` until resolved. Confidence factors never multiply maturity scores.
 
 ## 9. Unknown, blocked, and not-applicable treatment
 
@@ -251,19 +259,9 @@ Common `blocked` conditions:
 - the form or booking tool is unavailable during the evaluation window
 - conflicting production and staging versions prevent reliable evaluation
 
-Every material unknown or block must record:
+Every material unknown or block must record its reason, affected criterion, required evidence, validation owner, materiality, next action, and publication effect.
 
-- reason code
-- affected criterion
-- evidence or test required
-- validation owner
-- materiality
-- next action
-- publication effect
-
-Unknown is not score `0`.
-
-Confirmed public absence may support score `0` only after the required search or test is completed.
+Unknown is not score `0`. Confirmed absence may support score `0` only after the required search or safe test is completed.
 
 ## 10. Duplicate-signal boundaries
 
@@ -276,9 +274,7 @@ Confirmed public absence may support score `0` only after the required search or
 | Analytics | Source-context capture readiness at inquiry | Event instrumentation, reporting, dashboards, interpretation, and decision use |
 | SEO and GBP | Conversion behavior after entry | Visibility, ranking, profile completeness, and traffic acquisition |
 
-One form may support several criteria only when each criterion measures a distinct condition.
-
-Duplicate scoring is prohibited when capture, routing, follow-up, attribution, or reporting are treated as the same signal.
+One form may support several criteria only when each criterion measures a distinct condition. Duplicate scoring is prohibited.
 
 ## 11. Finding and recommendation routing
 
@@ -290,18 +286,16 @@ Eligible primary finding domain:
 OI-FIND-CONV-*
 ```
 
-Common governed routing:
-
 | Evidence-backed condition | Primary route | Common package dependency |
 |---|---|---|
 | CTA visibility, specificity, or service-page placement is weak | Conversion finding | `OI-PKG-WEB-001` Website Conversion Fix Pack |
-| Intake cannot capture actionable project context | Conversion finding | Website conversion or intake remediation dependency |
+| Intake cannot capture actionable project context | Conversion finding | `OI-PKG-WEB-001` Website Conversion Fix Pack |
 | Submission is captured but not acknowledged, assigned, or followed up | Automation finding primary; conversion dependency | `OI-PKG-CRM-001` CRM and Follow-Up System |
 | Source data is not retained or usable | Analytics finding primary; conversion dependency | `OI-PKG-DASH-001` Operator Dashboard Pack |
 | Proof is invalid or insufficient | Trust finding primary | `OI-PKG-TRUST-001` Trust Proof System |
 | Conversion behavior cannot be safely verified | Validation record | No package commitment until validation passes |
 
-Routing requires observation, evidence, interpretation, business impact, confidence, priority, package fit, roadmap phase, and DecisionLedger traceability.
+Routing requires observation, evidence, interpretation, business impact, confidence, priority, one primary package, roadmap phase, and DecisionLedger traceability.
 
 Do not recommend a full rebuild when a narrower correction resolves the evidence-backed constraint.
 
@@ -314,17 +308,19 @@ Conversion results use the shared publication states:
 - `range_only`
 - `blocked`
 
-Additional conversion controls:
+Additional controls:
 
 - no `official` score without desktop and mobile CTA review
 - no `official` score without one safe end-to-end inquiry-path test
 - no `official` score when confirmation behavior is materially unknown
-- `OI-CONV-014` may remain unknown only when the score is published with coverage, range, and explicit attribution limitation
+- no `official` score while a material `OI-CONV-014` attribution unknown could change interpretation
+- an unresolved material attribution unknown requires `range_only` or `blocked`
 - a broken primary inquiry path requires `REVIEW` and may require `HALT`
 - privacy, billing, dispatch, or client-harm risk blocks unsafe testing
 - unresolved duplicate-domain ownership blocks publication
+- publication never authorizes implementation
 
-Client reporting must include coverage, confidence, score range, tested paths, and material limitations.
+Client reporting must include coverage, numeric confidence, defensible range, tested paths, material limitations, review state, and implementation authorization state.
 
 ## 13. DecisionLedger requirements
 
@@ -332,28 +328,36 @@ Each conversion result must retain:
 
 ```yaml
 category_key: conversion
-category_sheet_version: "0.1"
+category_sheet_version: "0.2"
 criterion_inventory_version: "criteria-library-v0.2"
+regression_fixture: scoring/examples/conversion-worked-example.md
 score_run_id: OI-SCORE-YYYY-NNN
 applicable_criteria: []
 scored_criteria: []
 unknown_criteria: []
 blocked_criteria: []
 not_applicable_criteria: []
-observed_score: null
-lower_bound: null
-upper_bound: null
-coverage: null
+score_type: official|observed_indicator|range|null
+observed_indicator: null
+score_range: [null, null]
+coverage_percent: null
 confidence_index: null
-publication_state: range_only
+confidence_band: high|medium|low|unknown
+publication_state: official|provisional|range_only|blocked
 material_unknowns: []
 tested_conversion_paths: []
 form_receipt_verified: false
 confirmation_verified: false
 source_capture_verified: false
+validation_required: false
 duplicate_check_passed: false
 finding_refs: []
 recommendation_refs: []
+primary_package: null
+dependent_packages: []
+roadmap_phase: null
+implementation_authorized: false
+review_state: ALLOW|REVIEW|HALT
 reviewed_by: ""
 approved_by: ""
 ledger_ref: OI-DL-YYYY-NNN
@@ -371,83 +375,59 @@ Evidence records must distinguish public observation, safe test result, internal
 | `CAT-CONVERSION-DUP-001` | Capture, routing, attribution, or reporting signal is scored twice | Assign one primary owner and record dependencies |
 | `CAT-CONVERSION-UNKNOWN-001` | High-materiality form, confirmation, or source-capture unknown remains unresolved | Obtain evidence or publish `range_only`/`blocked` |
 | `CAT-CONVERSION-WEIGHT-001` | Applicable weights do not reconcile to 100% | Recalculate after approved applicability decisions |
+| `CAT-CONVERSION-CONF-001` | Confidence index is missing, nonnumeric, or inconsistent with criterion factors | Recalculate from scored criterion confidence factors |
+| `CAT-CONVERSION-BOUNDS-001` | Published bounds omit confidence uncertainty or unresolved applicable weight | Recalculate all criterion bounds and retain unknown weight |
+| `CAT-CONVERSION-PUB-001` | Publication state conflicts with material unknowns or defensible range | Downgrade to `range_only` or `blocked` |
+| `CAT-CONVERSION-ROUTE-001` | Recommendation lacks a valid finding, one primary package, or roadmap phase | Repair evidence-first routing |
+| `CAT-CONVERSION-AUTH-001` | Publication or package routing is treated as implementation authorization | Set authorization to false until separately approved |
 | `CAT-CONVERSION-GATE-001` | Safe testing boundary is violated or a primary path is broken | Stop testing, document risk, and route to `REVIEW` or `HALT` |
 | `CAT-CONVERSION-LEDGER-001` | Required traceability is missing | Complete evidence, decision, routing, and approval records |
 
-## 15. Worked scoring example
+## 15. Canonical worked scoring example
 
-### Scenario
-
-A local contractor has clear CTAs, a functional estimate form, tap-to-call, and multiple inquiry paths. Confirmation behavior is verified. Lead-source capture cannot be inspected because CRM and form configuration access were not provided.
-
-### Criterion results
-
-| Criterion | State | Score | Confidence | Evidence summary |
-|---|---|---:|---|---|
-| OI-CONV-001 | scored | 75 | High | CTA visible on desktop and mobile hero |
-| OI-CONV-002 | scored | 75 | High | Estimate language matches buyer intent |
-| OI-CONV-003 | scored | 50 | High | CTAs present but inconsistent across service pages |
-| OI-CONV-004 | scored | 50 | High | Basic qualification fields present; location and urgency absent |
-| OI-CONV-005 | scored | 75 | Medium | Completion friction appears appropriate in tested path |
-| OI-CONV-006 | scored | 75 | High | Confirmation states receipt and response window |
-| OI-CONV-007 | scored | 100 | High | Tap-to-call works across tested mobile pages |
-| OI-CONV-008 | scored | 50 | Medium | Some service-specific prompts; several generic CTAs remain |
-| OI-CONV-009 | scored | 50 | Medium | Project detail field exists; no structured service context or upload |
-| OI-CONV-010 | scored | 75 | High | Response expectation appears on contact page and confirmation |
-| OI-CONV-011 | scored | 75 | High | Reviews appear near major CTAs |
-| OI-CONV-012 | scored | 75 | High | Phone and form paths both function |
-| OI-CONV-013 | scored | 50 | Medium | Urgent phone path exists but availability language is limited |
-| OI-CONV-014 | unknown | — | Unknown | CRM, hidden-field, and UTM retention evidence unavailable |
-
-### Calculation
+The controlled regression fixture is:
 
 ```text
-Applicable criteria = 14
-Scored criteria = 13
-Observed score = 875 ÷ 13 = 67.31
-Coverage = 13 ÷ 14 = 92.86%
-Lower bound = 875 ÷ 14 = 62.50
-Upper bound = (875 + 100) ÷ 14 = 69.64
-Confidence index = 90.38
+scoring/examples/conversion-worked-example.md
 ```
 
-Confidence index uses the governed confidence model and does not modify the observed maturity score.
+The fixture evaluates all 14 applicable criteria and produces:
 
-### Publication decision
-
-```yaml
-publication_state: provisional
-observed_score: 67.31
-score_range: [62.50, 69.64]
-coverage: 92.86
-confidence_index: 90.38
-material_unknowns:
-  - criterion_id: OI-CONV-014
-    reason_code: ACCESS_NOT_PROVIDED
-    evidence_required: Form configuration, CRM source fields, or verified attribution records
-    publication_effect: Attribution readiness remains unscored and range must be published
-finding_routing:
-  - OI-FIND-CONV-* candidate for inconsistent service-page CTAs and incomplete intake context
-  - analytics validation dependency for attribution readiness
-ledger_ref: OI-DL-YYYY-NNN
+```text
+Observed indicator = 67.31
+Coverage = 92.86%
+Confidence index = 0.9231
+Defensible range = 58.93–73.21
+Publication state = range_only
+Review state = REVIEW
+Implementation authorized = false
 ```
 
-The unknown attribution criterion is not converted to score `0`. No analytics or CRM package is committed until source-capture evidence is validated.
+`OI-CONV-014` remains unknown because form configuration, CRM source fields, and UTM retention evidence are unavailable. The unresolved applicable weight contributes `0–100` to the category range and cannot be removed or scored as zero.
+
+The verified intake-context weakness routes through `OI-FIND-CONV-005` to exactly one primary package, `OI-PKG-WEB-001`, in `Phase 1 — Quick Wins`. The attribution unknown routes to validation and does not independently create an Analytics, Automation, CRM, or Dashboard package commitment.
+
+Example executive-safe statement:
+
+> The reviewed conversion paths provide a functional baseline through visible estimate actions, working phone and form routes, and a verified confirmation state. The estimate form captures basic contact information but leaves material project-context gaps, while lead-source retention could not be verified. The current evidence therefore supports a range of 58.93–73.21 rather than a single official Conversion Infrastructure score. Validation and reviewed scope approval are required before implementation is authorized.
 
 ## 16. Completion checklist
 
 - [ ] All 14 `OI-CONV-*` criteria are mapped exactly once
 - [ ] Category boundary is explicit
 - [ ] Required evidence and safe test actions are documented
-- [ ] Minimum desktop, mobile, service-page, and inquiry-path scope is complete
+- [ ] Minimum desktop, mobile, service-page, and inquiry-path scope is complete or limitation is recorded
 - [ ] Applicability decisions are recorded
 - [ ] Equal weights reconcile to 100%
 - [ ] Anchor decisions use observable conditions
-- [ ] Confidence is separate from maturity
+- [ ] Confidence index is numeric and separate from maturity
+- [ ] Defensible bounds include confidence uncertainty and unresolved applicable weight
 - [ ] Unknown and blocked records include reason, owner, next action, and publication effect
 - [ ] Duplicate checks pass across website, messaging, trust, automation, and analytics
-- [ ] Finding and package routing preserves evidence-first governance
-- [ ] Publication state is valid
-- [ ] Worked example recalculates correctly
+- [ ] Findings route through approved identifiers
+- [ ] Every recommendation has exactly one primary package and a roadmap phase
+- [ ] Publication state matches evidence, material unknowns, and range
+- [ ] Implementation authorization is recorded separately and defaults to false
+- [ ] Regression fixture recalculates exactly
 - [ ] DecisionLedger record is complete
 - [ ] Reviewer approval is recorded
