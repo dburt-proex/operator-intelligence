@@ -1,183 +1,106 @@
 # Assessment Lifecycle
 
-## Stage 1 — Qualification
+Version: v0.2 governed lifecycle alignment  
+Stage alignment: Stage 2 — `framework/`  
+Status: Controlled foundation for commercial v1.0
 
-Purpose: determine whether the business is a good fit for Operator Intelligence.
+## Purpose
 
-Inputs:
+This file defines the mandatory operating sequence for an Operator Intelligence engagement. It is the concise execution contract for assessors, reviewers, report builders, and implementation owners.
 
-- Industry
-- Location
-- Current website
-- Current Google Business Profile
-- Lead generation concerns
-- Growth goals
-- Budget range
-- Owner involvement
+The detailed state definitions, required fields, roadmap object, acceptance rules, and rollback controls remain authoritative in `framework/lifecycle-roadmap-map.md`.
 
-Pass criteria:
+## Lifecycle authority
 
-- Business has a service-area or local-market revenue model.
-- Business can benefit from search visibility, trust, conversion, or operational improvements.
-- Business owner is willing to implement recommendations.
+When lifecycle documents appear to conflict, apply this order:
 
-Failure modes:
+1. `framework/lifecycle-roadmap-map.md` for state definitions, gates, and handoffs
+2. this file for the required operating sequence and global invariants
+3. domain standards for category-specific evaluation rules
+4. templates for record structure and client-facing presentation
 
-- No clear offer
-- No operational capacity for new leads
-- No willingness to change
-- Wants only cheap web design
-- No access to key accounts when required
+No template, playbook, or delivery preference may bypass a lifecycle gate.
 
-## Stage 2 — Intake
+## Mandatory engagement sequence
 
-Purpose: capture the business context required to score and interpret the company correctly.
+| State | Required outcome | Advancement gate |
+|---|---|---|
+| `OI-LC-01` Qualification | Fit, exclusions, authority, and commercial next step are recorded | Scope and implementation willingness are credible |
+| `OI-LC-02` Intake | Business context, systems, constraints, objectives, and material unknowns are recorded | Each material unknown has a validation state, owner, and next action |
+| `OI-LC-03` Surface Mapping | In-scope buyer and operating surfaces are inventoried | Access, exclusions, and collection targets are explicit |
+| `OI-LC-04` Evidence Collection | Evidence records support evaluation or controlled unknown handling | Evidence thresholds pass or the criterion is routed to unknown |
+| `OI-LC-05` Scoring | Criterion scores, confidence, coverage, normalization, and Operator Score are reproducible | Weights reconcile and unknowns are not treated as failures |
+| `OI-LC-06` Finding Resolution | Governed findings connect observations to evidence, impact, confidence, and dependencies | Duplicate, conflict, and report-admission controls pass |
+| `OI-LC-07` Risk and Opportunity Synthesis | Business significance, effort, readiness, and value eligibility are evaluated | Severity, confidence, and value remain distinct and supportable |
+| `OI-LC-08` Recommendation Routing | Findings are routed to approved actions, packages, prerequisites, and acceptance criteria | Every recommendation has traceable evidence and an implementation path |
+| `OI-LC-09` Report and Roadmap Build | Executive conclusions, score limitations, priorities, sequencing, and next actions are assembled | Client-facing claims pass evidence, confidence, and language gates |
+| `OI-LC-10` Delivery and Decision | Client decisions, objections, conditions, owners, and next actions are recorded | No silence or ambiguity is treated as approval |
+| `OI-LC-11` Proposal and Onboarding | Accepted recommendations become controlled scope, ownership, access, and approvals | Commercial authorization and delivery prerequisites exist |
+| `OI-LC-12` Implementation | Approved package work is executed, tested, reviewed, and accepted | Acceptance evidence and unresolved limitations are recorded |
+| `OI-LC-13` Monitoring and Realized Value | Adoption, performance, risk reduction, and modeled-versus-realized value are reviewed | Attribution and measurement limits are explicit |
+| `OI-LC-14` Renewal or Closure | Ownership, remaining risks, maintenance, access, and next-cycle decisions are resolved | DecisionLedger and closeout records are complete |
 
-Required intake fields:
+## Global invariants
 
-- Business name
-- Website URL
-- Primary phone number
-- Service area
-- Core services
-- Highest-value services
-- Average job value, if known
-- Lead sources
-- Current monthly lead volume, if known
-- Current close rate, if known
-- Existing CRM or spreadsheet
-- Current bottlenecks
-- Main competitors
-- Desired growth outcome
+The following rules apply to every state:
 
-## Stage 3 — Surface Audit
+- Evidence precedes scoring, findings, recommendations, and client-facing claims.
+- Unknown information remains unknown until validated.
+- Missing evidence does not automatically become a negative score.
+- Confidence reflects evidence strength and does not substitute for severity.
+- Category scores remain reproducible from criterion-level records.
+- A finding must reference evidence, criteria, impact, confidence, and validation state.
+- A recommendation must reference governed findings and an approved implementation package.
+- Every recommendation, decision, deferral, rejection, and material change must remain DecisionLedger traceable.
+- Roadmap order must respect dependencies, capacity, readiness, and approval requirements.
+- Financial or ROI language is prohibited unless the applicable value and attribution gates pass.
+- Draft, blocked, superseded, or validation-required findings cannot enter the executive report as confirmed conclusions.
+- Implementation cannot begin from an unapproved recommendation or incomplete scope.
 
-Purpose: map every visible buyer-facing surface.
+## Unknown-data handling
 
-Surfaces:
+A material unknown must include:
 
-- Website
-- Google Business Profile
-- Facebook
-- Instagram
-- YouTube
-- Yelp
-- BBB
-- HomeAdvisor / Angi / Thumbtack if relevant
-- Local directories
-- Review platforms
-- Ads or landing pages
+- the missing fact or evidence
+- affected criterion, finding, score, or decision
+- current validation state
+- responsible owner
+- next validation action
+- decision impact
 
-## Stage 4 — Evidence Collection
+Unknowns may reduce coverage or confidence. They must not be silently imputed, converted to zero, or removed from the audit trail.
 
-Purpose: gather enough proof to support findings.
+## DecisionLedger checkpoints
 
-Evidence types:
+A DecisionLedger record is required when:
 
-- Screenshots
-- URLs
-- SERP observations
-- Review counts and patterns
-- CTA inventory
-- Form behavior
-- Mobile screenshots
-- Page inventory
-- Competitor examples
-- Client statements
-- Analytics exports if available
+- a material criterion is scored with limitations
+- a finding is admitted, merged, superseded, blocked, or excluded
+- a recommendation is routed, deferred, rejected, or conditioned
+- a package or roadmap phase is selected
+- a client approves, rejects, or changes a proposed action
+- implementation scope, acceptance criteria, or ownership changes
+- realized-value claims are accepted, limited, or rejected
+- an engagement is renewed, transferred, or closed
 
-## Stage 5 — Scoring
+## Advancement rule
 
-Purpose: convert evidence into structured evaluation.
+A document being complete does not advance the engagement. Advancement requires the current state's evidence, decisions, owners, approvals, and outputs to satisfy its exit gate.
 
-Scoring categories:
+When a gate fails, use one of the controlled states defined in `framework/lifecycle-roadmap-map.md`, including `validation_required`, `review_required`, `blocked`, `deferred`, or `cancelled`.
 
-- Brand and trust
-- Website structure
-- UX and customer journey
-- Messaging and offer clarity
-- Conversion infrastructure
-- Local SEO
-- Google Business Profile
-- Reputation
-- Social presence
-- Automation maturity
-- AI readiness
-- Analytics and reporting
-- Competitive position
+## Commercial v1.0 acceptance criteria
 
-## Stage 6 — Synthesis
+This lifecycle is ready for commercial use only when a complete sample engagement demonstrates:
 
-Purpose: convert raw scoring into executive insight.
+- intake through closure using the canonical state IDs
+- evidence-to-score reproducibility
+- governed unknown-data treatment
+- finding and recommendation traceability
+- package and roadmap routing
+- executive-safe reporting
+- explicit client decisions
+- implementation acceptance evidence
+- monitoring and closeout records
 
-Outputs:
-
-- Top strengths
-- Top constraints
-- Revenue leakage points
-- Competitive threats
-- Highest-leverage quick wins
-- Structural improvements
-- Recommended implementation path
-
-## Stage 7 — Report Build
-
-Purpose: package the assessment into a client-facing executive report.
-
-Report must include:
-
-- Executive summary
-- Operator Score
-- Category scorecard
-- Highest-impact findings
-- Evidence-backed recommendations
-- Roadmap
-- Investment options
-- Next step
-
-## Stage 8 — Delivery
-
-Purpose: help the client understand and act.
-
-Delivery structure:
-
-1. Frame the assessment.
-2. Show the scorecard.
-3. Explain the biggest revenue constraints.
-4. Show quick wins.
-5. Present roadmap.
-6. Present implementation options.
-7. Align on next action.
-
-## Stage 9 — Implementation
-
-Purpose: convert recommendations into business systems.
-
-Implementation tracks:
-
-- Website optimization
-- Local SEO
-- Google Business Profile optimization
-- Review generation
-- CRM setup
-- Lead response automation
-- Social content system
-- Analytics dashboard
-- AI assistant or chatbot
-
-## Stage 10 — Monitoring
-
-Purpose: measure whether the system improves.
-
-Monitoring metrics:
-
-- Leads
-- Estimate requests
-- Calls
-- Form submissions
-- Review velocity
-- Search visibility
-- Website engagement
-- Response time
-- Follow-up completion
-- Close rate, if available
+Until that end-to-end sample passes, this file governs execution but does not by itself establish commercial v1.0 completion.
