@@ -6,7 +6,7 @@ Folder alignment: `scoring/examples/`
 Category key: `seo`  
 Default Operator Score weight: 15%  
 Fixture key: `OI-EX-SCORE-SEO-001`  
-Status: Candidate regression fixture for commercial v1.0
+Status: Commercial v1.0 validation fixture
 
 ## 1. Purpose
 
@@ -375,6 +375,6 @@ This fixture passes only when:
 - [x] DecisionLedger fixture is complete
 - [x] Executive language is evidence-safe
 - [x] Regression assertions are explicit
-- [ ] Category-sheet reconciliation completed
-- [ ] Fixture registry admission completed
+- [x] Category-sheet reconciliation completed
+- [x] Fixture registry admission completed
 - [ ] Reviewer approval recorded
