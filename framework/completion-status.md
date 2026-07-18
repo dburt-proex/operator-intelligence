@@ -2,10 +2,10 @@
 
 ## Current determination
 
-**Folder status:** `REVIEW`  
-**Queue decision:** Do not advance to `scoring/` until final approval is recorded.
+**Folder status:** `ALLOW`  
+**Queue decision:** Advancement to `scoring/` is authorized.
 
-The framework control layer has passed structural reconciliation, including duplicate-authority review. The remaining gate is administrative but mandatory: an approving owner must record the approval date and DecisionLedger reference before the folder may be treated as commercially approved.
+The framework control layer passed structural reconciliation, including duplicate-authority review, and received the required owner approval. Drew Donald Burt authorized downstream use and advancement to `scoring/`, effective July 15, 2026, under DecisionLedger reference `OI-FRAMEWORK-APPROVAL-001`.
 
 ## Reconciliation record
 
@@ -39,33 +39,39 @@ No second framework file was identified as silently governing the same decision 
 
 ## Final approval record
 
-Framework approval requires all fields below:
-
 ```yaml
 folder: framework/
-status: REVIEW
+status: ALLOW
 reviewed_controls: 11
 pass_count: 11
 review_count: 0
 halt_count: 0
 duplicate_authority_review: complete
 duplicate_authority_review_date: 2026-07-14
-approval_owner: unassigned
-approval_date: null
-ledger_ref: null
+approval_owner: Drew Donald Burt
+approval_date: 2026-07-15
+ledger_ref: OI-FRAMEWORK-APPROVAL-001
 queue_next: scoring/
 ```
 
+## Approval basis
+
+The approval record is governed by `framework/approval-request.md` and confirms:
+
+> I, Drew Donald Burt, approve `framework/` for downstream use and authorize advancement to `scoring/`, effective July 15, 2026.
+
+No approval was inferred from repository activity, downstream work, or elapsed time.
+
 ## Advancement rule
 
-Advance to `scoring/` only when:
+The advancement gate is satisfied because:
 
 1. The approval owner is assigned.
 2. The approval date is recorded.
-3. A DecisionLedger approval reference is recorded.
-4. No new conflict has been introduced after the duplicate-authority review date.
+3. The DecisionLedger approval reference is recorded.
+4. No conflicting framework change was identified after the duplicate-authority review date.
 
-A missing approval record cannot be inferred from file completeness, commit history, or continued downstream work.
+The active folder queue may proceed within `scoring/`. A later conflicting framework change must reopen this completion gate and record the affected authority, interim state, owner, and restart condition.
 
 ## Commercial boundary
 
