@@ -4,7 +4,7 @@ Version: v0.1 regression fixture
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/examples/`  
 Category key: `trust`  
-Status: Draft fixture for commercial v1.0
+Status: Commercial v1.0 validation fixture
 
 ## Purpose
 
@@ -92,7 +92,7 @@ These bounds replace the simpler unknown-only range for this regression fixture 
 
 ```yaml
 category_key: trust
-category_sheet_version: "0.1"
+category_sheet_version: "0.2"
 score_run_id: OI-SCORE-2026-TRUST-001
 applicable_criteria: 12
 scored_criteria: 11
@@ -117,7 +117,8 @@ finding_refs:
   - OI-FIND-TRUST-012
 recommendation_refs:
   - OI-REC-TRUST-001
-primary_package: Trust Proof System
+primary_package: OI-PKG-TRUST-001
+primary_package_name: Trust Proof System
 dependent_packages: []
 roadmap_phase: Phase 2 — Growth Foundation
 implementation_authorized: false
@@ -138,11 +139,11 @@ ledger_ref: OI-DL-2026-TRUST-001
 
 ## Regression acceptance checks
 
-- [ ] Observed score recalculates to `61.36`.
-- [ ] Coverage recalculates to `91.67%`.
-- [ ] Confidence index recalculates to `0.9318`.
-- [ ] Confidence-adjusted lower bound recalculates to `53.13`.
-- [ ] Confidence-adjusted upper bound recalculates to `67.71`.
-- [ ] `OI-TRUST-006` remains unknown and inside applicable weight.
-- [ ] Publication remains `provisional` until credential evidence is validated.
-- [ ] Finding, package, roadmap, and DecisionLedger references are present.
+- [x] Observed score recalculates to `61.36`.
+- [x] Coverage recalculates to `91.67%`.
+- [x] Confidence index recalculates to `0.9318`.
+- [x] Confidence-adjusted lower bound recalculates to `53.13`.
+- [x] Confidence-adjusted upper bound recalculates to `67.71`.
+- [x] `OI-TRUST-006` remains unknown and inside applicable weight.
+- [x] Publication remains `provisional` until credential evidence is validated.
+- [x] Finding, package, roadmap, and DecisionLedger references are present.
