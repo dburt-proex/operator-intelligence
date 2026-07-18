@@ -107,7 +107,7 @@ The confidence-adjusted range is `41.25–58.75`. This replaces the simpler unkn
 ```yaml
 category_key: social
 observed_score: 50.00
-score_type: official
+score_type: provisional_point_with_range
 coverage_percent: 90.00
 confidence_index: 0.9167
 confidence_band: high
