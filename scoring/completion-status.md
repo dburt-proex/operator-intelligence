@@ -3,7 +3,7 @@
 Version: v0.1 Stage 3 completion gate  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/`  
-Status: REVIEW pending governed folder approval
+Status: ALLOW — approved for downstream standards work
 
 ## 1. Purpose
 
@@ -13,12 +13,12 @@ This gate verifies structural and calculation readiness. It does not establish c
 
 ## 2. Current determination
 
-**Folder status:** `REVIEW`  
-**Queue decision:** Do not advance to `standards/` until the final scoring approval record is complete.
+**Folder status:** `ALLOW`  
+**Queue decision:** Advance to `standards/` under `OI-SCORING-APPROVAL-001`.
 
 The scoring folder is structurally reconciled. Core controls, criterion identity, category weights, category sheets, regression fixtures, uncertainty handling, publication states, recommendation routing, and DecisionLedger requirements pass the recorded checks.
 
-The remaining gate is governed approval of the reviewed scoring versions.
+Drew Donald Burt approved the reviewed scoring versions for downstream use effective `2026-07-18`. The approval is recorded under DecisionLedger reference `OI-SCORING-APPROVAL-001`.
 
 ## 3. Evidence snapshot
 
@@ -117,13 +117,13 @@ The deferred root-document count does not change scoring calculations. The canon
 
 ## 7. Final approval record
 
-The approving owner must complete every nullable field before this folder can move from `REVIEW` to `ALLOW`.
+The scoring folder approval is complete and authorizes advancement to `standards/`.
 
 ```yaml
 decision_id: OI-SCORING-APPROVAL-001
 decision_type: folder_gate
 folder: scoring/
-status: REVIEW
+status: ALLOW
 review_date: 2026-07-18
 core_scoring_control_files: 14
 unique_criterion_ids: 140
@@ -131,26 +131,26 @@ duplicate_criterion_ids: 0
 category_sheet_count: 11
 registered_fixture_count: 11
 default_weight_total_percent: 100
-approval_owner: null
-approval_date: null
-decision: null
-ledger_ref: null
+approval_owner: Drew Donald Burt
+approval_date: 2026-07-18
+decision: ALLOW
+ledger_ref: OI-SCORING-APPROVAL-001
 queue_next: standards/
-notes: null
+notes: Approved for downstream use and advancement to standards/.
 ```
 
-## 8. Advancement rule
+## 8. Approval determination and advancement rule
 
-Advance to `standards/` only when:
+The governed advancement conditions are satisfied:
 
-1. The approval owner accepts the evidence snapshot and all 11 reconciled category-sheet versions.
-2. The approval owner accepts all 11 registered regression fixtures as the scoring baselines.
-3. The approval date and `OI-SCORING-APPROVAL-001` DecisionLedger reference are recorded.
-4. The decision is explicitly recorded as `ALLOW`.
-5. No scoring authority, calculation, category mapping, fixture result, or weight profile has changed after the review date without reopening this gate.
+1. Drew Donald Burt accepted the evidence snapshot and all 11 reconciled category-sheet versions.
+2. Drew Donald Burt accepted all 11 registered regression fixtures as the scoring baselines.
+3. The effective approval date is `2026-07-18`.
+4. The decision is explicitly recorded as `ALLOW` under `OI-SCORING-APPROVAL-001`.
+5. No scoring authority, calculation, category mapping, fixture result, or weight profile changed after the review snapshot and before approval.
 6. The deferred root-document count correction remains queued for the root/docs stage.
 
-A missing approval cannot be inferred from continued downstream work, elapsed time, commit history, or fixture completeness.
+`standards/` is now the active build folder. Reopen this gate if any condition in Section 9 occurs.
 
 ## 9. Reopen conditions
 
@@ -188,4 +188,4 @@ Commercial v1.0 still requires the later standards, templates, playbooks, exampl
 
 ## 12. Commercial boundary
 
-Scoring completion authorizes downstream standards work only after an explicit `ALLOW` decision. It does not authorize a client score, report, proposal, implementation package, or commercial v1.0 release.
+Scoring completion authorizes downstream standards work under the explicit `ALLOW` decision recorded above. It does not authorize a client score, report, proposal, implementation package, or commercial v1.0 release.
