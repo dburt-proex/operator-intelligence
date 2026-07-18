@@ -1,10 +1,11 @@
 # Messaging and Offer Category Scoring Sheet
 
-Version: v0.1 scoring execution foundation  
+Version: v0.2 scoring execution foundation  
 Stage alignment: Stage 3 — `scoring/`  
+Folder alignment: `scoring/category-sheets/`  
 Category key: `messaging_offer`  
-Operator Score weight: 10%  
-Status: Draft foundation for commercial v1.0
+Default Operator Score weight: 10%  
+Status: Reconciled commercial v1.0 scoring contract
 
 ## 1. Purpose and category boundary
 
@@ -415,72 +416,33 @@ ledger_ref: OI-DL-YYYY-NNN
 - `CAT-MSGO-CONSIST-001`: public messaging and internal offer process conflict
 - `CAT-MSGO-COVER-001`: category coverage limits point-score interpretation
 
-## 15. Worked scoring example
+## 15. Canonical worked scoring example
 
-Assume all 18 criteria are applicable and equally weighted.
-
-Evidence summary:
-
-- homepage and three service pages reviewed
-- hero clearly identifies service but uses a generic outcome
-- entry offer is a free estimate and is consistently stated
-- process and pricing factors are partially explained
-- differentiators are generic and not verified
-- CRM access confirms estimate follow-up and lost-reason tracking
-- referral process is documented
-- reactivation records were not provided
-
-Illustrative criterion results:
-
-| Criterion group | Count | Score pattern | Confidence |
-|---|---:|---|---|
-| Clear baseline messaging | 6 | `50` | High |
-| Strong entry offer and follow-up controls | 4 | `75` | High |
-| Weak differentiation and local relevance | 3 | `25` | Medium |
-| Functional service packaging and process | 4 | `50` | Medium |
-| Reactivation path | 1 | `unknown` | Unknown |
-
-Calculation:
+The controlled regression fixture is:
 
 ```text
-Known Criterion Weight = 17 ÷ 18 = 0.944444
-Applicable Criterion Weight = 1.000000
-
-Weighted known points =
-(6 × 50) +
-(4 × 75) +
-(3 × 25) +
-(4 × 50)
-= 875
-
-Observed Category Score = 875 ÷ 17 = 51.4706
-Category Coverage = 17 ÷ 18 = 94.4444%
+scoring/examples/messaging-offer-worked-example.md
 ```
 
-The unknown reactivation criterion uses bounds of `0–100` and confidence factor `0` under the common calculator rules.
+The fixture evaluates all 18 applicable criteria and produces:
 
-Illustrative output:
-
-```yaml
-observed_score: 51.4706
-published_score: 51
-coverage: 0.9444
-lower_bound: 48.6111
-upper_bound: 54.1667
-confidence_index: 0.8235
-publication_state: official
-material_unknowns:
-  - criterion_id: OI-OFFER-008
-    condition: reactivation evidence unavailable
-finding_routing:
-  - domain: messaging
-    condition: differentiation relies on generic unsupported claims
-  - domain: offer
-    condition: reactivation path requires validation
-decision_ledger_ref: OI-DL-2026-001
+```text
+Observed indicator = 51.47
+Coverage = 94.44%
+Confidence index = 0.8971
+Defensible range = 43.75–59.03
+Publication state = range_only
+Review state = REVIEW
+Implementation authorized = false
 ```
 
-The category result does not automatically select a package. The messaging condition may route to a governed messaging finding. The reactivation condition remains validation-required until evidence confirms absence or maturity.
+`OI-OFFER-008` remains unknown because retention or reactivation records were not provided. The unresolved applicable weight contributes `0–100` to the category range and cannot be removed or scored as zero. The high confidence index applies only to the 17 scored criteria and does not resolve the material offer-system unknown.
+
+The verified generic-differentiation condition routes through `OI-FIND-MSG-003` to exactly one primary package, `OI-PKG-TRUST-001`, in `Phase 2 — Growth Foundation`. The unresolved reactivation criterion routes to validation and does not independently create a CRM, Automation, Dashboard, or AI package commitment.
+
+Example executive-safe statement:
+
+> The reviewed messaging clearly identifies the core services and free-estimate next step, while estimate follow-up and lost-reason controls are directly supported by records. Differentiation and local relevance remain only partially supported, and reactivation evidence was not provided. The current evidence therefore supports a range of 43.75–59.03 rather than a single official Messaging and Offer Clarity score. Validation and reviewed scope approval are required before implementation is authorized.
 
 ## 16. Completion checklist
 
