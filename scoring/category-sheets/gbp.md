@@ -1,11 +1,11 @@
 # Google Business Profile Category Scoring Sheet
 
-Version: v0.1 scoring execution foundation  
+Version: v0.2 scoring execution foundation  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/category-sheets/`  
 Category key: `gbp`  
 Default Operator Score weight: 10%  
-Status: Draft foundation for commercial v1.0
+Status: Reconciled commercial v1.0 scoring contract
 
 ## 1. Purpose and category boundary
 
@@ -387,59 +387,33 @@ Evidence
 | `CAT-GBP-GATE-001` | Ownership, duplication, suspension, or misrepresentation issue blocks publication | Resolve or escalate through the governance gate |
 | `CAT-GBP-LEDGER-001` | Required traceability is missing | Complete the DecisionLedger record before publication |
 
-## 15. Worked scoring example
+## 15. Canonical worked scoring example
 
-Assume twelve criteria are applicable and equally weighted.
-
-| Criterion | State | Score | Confidence |
-|---|---|---:|---|
-| `OI-GBP-001` | Scored | 75 | High |
-| `OI-GBP-002` | Scored | 75 | High |
-| `OI-GBP-003` | Scored | 50 | Medium |
-| `OI-GBP-004` | Scored | 50 | High |
-| `OI-GBP-005` | Scored | 50 | High |
-| `OI-GBP-006` | Scored | 25 | Medium |
-| `OI-GBP-007` | Unknown | — | Unknown |
-| `OI-GBP-008` | Scored | 50 | High |
-| `OI-GBP-009` | Scored | 75 | High |
-| `OI-GBP-010` | Scored | 25 | Medium |
-| `OI-GBP-011` | Scored | 25 | High |
-| `OI-GBP-012` | Scored | 50 | High |
-
-Observed score across eleven scored criteria:
+The controlled regression fixture is:
 
 ```text
-(75 + 75 + 50 + 50 + 50 + 25 + 50 + 75 + 25 + 25 + 50) ÷ 11 = 50.0
+scoring/examples/gbp-worked-example.md
 ```
 
-Coverage:
+The fixture evaluates all 12 applicable criteria and produces:
 
 ```text
-11 ÷ 12 = 91.7%
+Observed provisional score = 50.00
+Coverage = 91.67%
+Confidence index = 0.9318
+Defensible range = 42.71–57.29
+Publication state = provisional
+Review state = REVIEW
+Implementation authorized = false
 ```
 
-Bounds with one unknown criterion:
+`OI-GBP-007` remains unknown because three candidate local profiles have not been approved as a comparable peer set. The unresolved weight contributes `0–100` to the category range and cannot be removed or scored as zero. No review-count weakness or Review Generation System route is authorized from that unknown.
 
-```text
-Lower bound = (550 + 0) ÷ 12 = 45.8
-Upper bound = (550 + 100) ÷ 12 = 54.2
-```
+The verified six-month profile-activity condition routes through `OI-FIND-GBP-018` to exactly one primary package, `OI-PKG-GBP-001`, in `Phase 2 — Growth Foundation`.
 
-Publication state:
+Example executive-safe statement:
 
-```text
-provisional
-```
-
-Reason: numeric coverage is high, but `OI-GBP-007` remains unknown because no governed local peer set was established. The evaluator may publish `50.0`, range `45.8–54.2`, with the competitor-sample limitation disclosed.
-
-Finding routing may proceed only for directly evidenced criteria. No finding may claim the review count is uncompetitive until `OI-GBP-007` is validated.
-
-DecisionLedger reference:
-
-```text
-OI-DL-2026-GBP-001
-```
+> The reviewed Google Business Profile provides a functional local-discovery baseline with verified identity, suitable core categorization, current services, recent review activity, consistent owner responses, and an aligned website destination. Photo recency, Q&A ownership, and profile updates remain uneven. Review-count competitiveness could not be determined because a governed comparable peer set has not yet been approved. The current evidence supports a provisional GBP score of 50.00 with a defensible range of 42.71–57.29. Peer-set validation and reviewed scope approval are required before official publication or implementation.
 
 ## 16. Completion checklist
 
