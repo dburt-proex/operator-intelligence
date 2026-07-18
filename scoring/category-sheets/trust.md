@@ -1,11 +1,11 @@
 # Trust Category Scoring Sheet
 
-Version: v0.1 scoring execution foundation  
+Version: v0.2 scoring execution foundation  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/category-sheets/`  
 Category key: `trust`  
 Default Operator Score weight: 10%  
-Status: Draft foundation for commercial v1.0
+Status: Reconciled commercial v1.0 scoring contract
 
 ## 1. Purpose and category boundary
 
@@ -368,70 +368,32 @@ Evidence → Interpretation → Buyer impact → Confidence → Priority → Rec
 | `CAT-TRUST-GATE-001` | Materially misleading or unsafe claim prevents publication | Correct or remove claim and revalidate. |
 | `CAT-TRUST-LEDGER-001` | Required evidence-to-recommendation trace is incomplete | Complete DecisionLedger record. |
 
-## 15. Worked scoring example
+## 15. Canonical worked scoring example
 
-Assume all twelve criteria are applicable.
-
-| Criterion | State | Score | Confidence | Evidence note |
-|---|---|---:|---|---|
-| OI-TRUST-001 | scored | 50 | High | Reviews visible on homepage but absent near service CTAs |
-| OI-TRUST-002 | scored | 75 | High | Attributable, service-specific review sample |
-| OI-TRUST-003 | scored | 50 | High | Real project photos exist but coverage is uneven |
-| OI-TRUST-004 | scored | 25 | Medium | Limited before/after proof for relevant services |
-| OI-TRUST-005 | scored | 75 | High | Owner identity and local story visible |
-| OI-TRUST-006 | unknown | — | Unknown | Insurance and credential claims require validation |
-| OI-TRUST-007 | scored | 50 | Medium | Workmanship language exists but scope is incomplete |
-| OI-TRUST-008 | scored | 75 | High | Clear four-step process across priority pages |
-| OI-TRUST-009 | scored | 50 | Medium | Cleanup and preparation discussed; safety evidence partial |
-| OI-TRUST-010 | scored | 75 | High | Local projects and review locations visible |
-| OI-TRUST-011 | scored | 100 | High | Contact details reconcile across tested surfaces |
-| OI-TRUST-012 | scored | 50 | High | Some proof precedes CTAs; major gaps remain |
-
-Equal criterion weight:
+The controlled regression fixture is:
 
 ```text
-1 ÷ 12 = 0.083333
+scoring/examples/trust-worked-example.md
 ```
 
-Observed score across eleven scored criteria:
+The fixture evaluates all 12 applicable criteria and produces:
 
 ```text
-(50 + 75 + 50 + 25 + 75 + 50 + 75 + 50 + 75 + 100 + 50) ÷ 11
-= 61.36
+Observed provisional score = 61.36
+Coverage = 91.67%
+Confidence index = 0.9318
+Defensible range = 53.13–67.71
+Publication state = provisional
+Implementation authorized = false
 ```
 
-Coverage:
+`OI-TRUST-006` remains unknown because authoritative credential and insurance evidence is pending validation. The unresolved applicable weight contributes `0–100` to the category range and cannot be removed or scored as zero. Three medium-confidence criteria also widen the governed bounds; the legacy unknown-only range is not valid when criterion confidence data is available.
 
-```text
-11 ÷ 12 = 91.67%
-```
+The directly evidenced trust conditions route through governed finding records to exactly one primary package, `OI-PKG-TRUST-001`, in `Phase 2 — Growth Foundation`. Publication remains separate from implementation authorization.
 
-Bounds with one unknown criterion:
+Example executive-safe statement:
 
-```text
-Lower bound = (675 + 0) ÷ 12 = 56.25
-Upper bound = (675 + 100) ÷ 12 = 64.58
-```
-
-Publication outcome:
-
-```yaml
-observed_score: 61.36
-lower_bound: 56.25
-upper_bound: 64.58
-coverage: 0.9167
-publication_state: provisional
-material_unknowns:
-  - criterion_id: OI-TRUST-006
-    reason: credential and insurance evidence pending validation
-finding_refs:
-  - OI-FIND-TRUST-002
-  - OI-FIND-TRUST-007
-  - OI-FIND-TRUST-012
-ledger_ref: OI-DL-2026-TRUST-001
-```
-
-No finding is created solely because the category score is `61.36`. Each finding requires its own evidence and routing record.
+> The reviewed evidence supports a functional trust baseline through attributable reviews, visible ownership, a clear service process, local proof, and consistent contact details. Credential and insurance evidence remains pending validation, while before-and-after proof and risk-reduction language remain uneven. The current evidence supports a provisional Trust score of 61.36 with a defensible range of 53.13–67.71. Validation and reviewed scope approval are required before official publication or implementation.
 
 ## 16. Completion checklist
 
