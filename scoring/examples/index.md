@@ -1,6 +1,6 @@
 # Scoring Regression Fixture Index
 
-Version: v0.6 scoring validation registry  
+Version: v0.7 scoring validation registry  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/examples/`  
 Status: Commercial v1.0 control artifact
@@ -24,6 +24,7 @@ A fixture is a deterministic regression test, not a substitute for the governing
 | Messaging and Offer Clarity | `scoring/examples/messaging-offer-worked-example.md` | canonical 10% weight, 18-criterion calculation, numeric confidence, confidence-adjusted range, material reactivation unknown handling, one-primary-package routing, implementation authorization separation |
 | Conversion Infrastructure | `scoring/examples/conversion-worked-example.md` | canonical 15% weight, 14-criterion calculation, numeric confidence, confidence-adjusted range, material attribution unknown handling, one-primary-package routing, implementation authorization separation |
 | Local SEO | `scoring/examples/seo-worked-example.md` | canonical 15% weight, 16-criterion calculation, numeric confidence, provisional publication, citation unknown handling, one-primary-package routing, implementation authorization separation |
+| Google Business Profile | `scoring/examples/gbp-worked-example.md` | canonical 10% weight, 12-criterion calculation, numeric confidence, provisional publication, governed peer-set unknown handling, one-primary-package routing, implementation authorization separation |
 
 Unlisted category examples remain illustrative until they satisfy this contract and are added through a versioned repository change.
 
