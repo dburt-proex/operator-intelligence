@@ -1,11 +1,11 @@
 # Local SEO Category Scoring Sheet
 
-Version: v0.1 scoring execution foundation  
+Version: v0.2 scoring execution foundation  
 Stage alignment: Stage 3 — `scoring/`  
 Folder alignment: `scoring/category-sheets/`  
 Category key: `seo`  
 Default Operator Score weight: 15%  
-Status: Draft foundation for commercial v1.0
+Status: Reconciled commercial v1.0 scoring contract
 
 ## 1. Purpose and category boundary
 
@@ -400,60 +400,33 @@ Evidence → Observation → Interpretation → Business impact → Confidence �
 | `CAT-SEO-GATE-001` | Ranking, traffic, lead or revenue claim lacks validated evidence | Remove or qualify the claim before publication |
 | `CAT-SEO-LEDGER-001` | Evidence, finding or recommendation traceability is incomplete | Complete the DecisionLedger record |
 
-## 15. Worked scoring example
+## 15. Canonical worked scoring example
 
-Assume all 16 criteria are applicable and equally weighted.
-
-| Criterion | State | Score | Confidence | Evidence summary |
-|---|---|---:|---|---|
-| `OI-SEO-001` | scored | 75 | High | Dedicated pages exist for all four core services |
-| `OI-SEO-002` | scored | 50 | Medium | One identified high-value service remains inside a broad page |
-| `OI-SEO-003` | scored | 50 | High | Titles are unique but two omit location context |
-| `OI-SEO-004` | scored | 25 | High | Several descriptions are missing or duplicated |
-| `OI-SEO-005` | scored | 75 | High | Sampled H1s consistently match page intent |
-| `OI-SEO-006` | scored | 50 | Medium | Priority pages are linked, but project content does not support them |
-| `OI-SEO-007` | scored | 50 | High | Service area is stated but nearby-market coverage is thin |
-| `OI-SEO-008` | scored | 50 | High | Baseline FAQs exist on two of four service pages |
-| `OI-SEO-009` | scored | 25 | Medium | Most project images use generic filenames or empty alt text |
-| `OI-SEO-010` | scored | 75 | High | URLs are clean and descriptive |
-| `OI-SEO-011` | scored | 75 | High | Sampled priority pages are indexable with correct canonicals |
-| `OI-SEO-012` | scored | 75 | High | Current sitemap matches intended page inventory |
-| `OI-SEO-013` | scored | 50 | Medium | Service-led content exists, but blog topics are weakly mapped |
-| `OI-SEO-014` | scored | 25 | High | Gallery exists without descriptive indexable project pages |
-| `OI-SEO-015` | unknown | — | Unknown | Approved business identity record was not supplied |
-| `OI-SEO-016` | scored | 50 | Medium | LocalBusiness and breadcrumb markup validate; service coverage is incomplete |
-
-Calculation:
+The controlled regression fixture is:
 
 ```text
-Applicable criteria = 16
-Scored criteria = 15
-Observed score = (75+50+50+25+75+50+50+50+25+75+75+75+50+25+50) ÷ 15
-Observed score = 53.33
-Coverage = 15 ÷ 16 = 93.75%
-Lower bound = (799.95 + 0) ÷ 16 = 50.00
-Upper bound = (799.95 + 100) ÷ 16 = 56.25
+scoring/examples/seo-worked-example.md
 ```
 
-Rounded governed result:
+The fixture evaluates all 16 applicable criteria and produces:
 
-```yaml
-observed_score: 53.3
-lower_bound: 50.0
-upper_bound: 56.3
-coverage: 93.8
-publication_state: provisional
-material_unknowns:
-  - criterion_id: OI-SEO-015
-    reason: approved citation identity record unavailable
-finding_refs:
-  - OI-FIND-SEO-002
-  - OI-FIND-SEO-009
-  - OI-FIND-SEO-011
-ledger_ref: OI-DL-2026-SEO-001
+```text
+Observed provisional score = 53.33
+Coverage = 93.75%
+Confidence index = 0.9167
+Defensible range = 46.09–60.16
+Publication state = provisional
+Review state = REVIEW
+Implementation authorized = false
 ```
 
-The score remains provisional because citation consistency cannot be validated. The unknown criterion is not scored as zero and confidence is not multiplied into maturity.
+`OI-SEO-015` remains unknown because the five-source citation sample cannot be reconciled without an approved business identity record. The unresolved applicable weight contributes `0–100` to the category range and cannot be removed or scored as zero. Because the unknown is confined to a material citation subset rather than core indexability, the governed output is a qualified provisional score with a disclosed range.
+
+The verified priority-service architecture condition routes through `OI-FIND-SEO-002` to exactly one primary package, `OI-PKG-SEO-001`, in `Phase 2 — Growth Foundation`. Citation remediation remains validation-only and does not independently create a GBP, Trust, Dashboard, or additional SEO package commitment.
+
+Example executive-safe statement:
+
+> The reviewed site provides a functional local-search baseline, including dedicated core-service pages, clean URLs, indexable priority pages, and a sitemap aligned to the public inventory. One confirmed priority service remains consolidated inside a broad page, while metadata, internal linking, image context, project-page depth, and structured-data coverage remain uneven. Citation consistency could not be validated without an approved business identity record. The current evidence supports a provisional Local SEO score of 53.33 with a defensible range of 46.09–60.16. Validation and reviewed scope approval are required before official publication or implementation.
 
 ## 16. Completion checklist
 
