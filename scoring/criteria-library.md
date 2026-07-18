@@ -264,7 +264,7 @@ For every assessed client:
 
 # Summary Counts
 
-Total criteria: **130 observable scoring signals**
+Total criteria: **140 observable scoring signals**
 
 | Category | Count |
 |---|---:|
