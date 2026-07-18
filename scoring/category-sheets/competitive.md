@@ -5,7 +5,7 @@ Stage alignment: Stage 3 — `scoring/`
 Folder alignment: `scoring/category-sheets/`  
 Category key: `competitive`  
 Default Operator Score weight: 5%  
-Status: Draft candidate for methodology approval
+Status: Reconciled commercial v1.0 scoring contract
 
 ## 1. Purpose and category boundary
 
@@ -266,51 +266,33 @@ ledger_ref: OI-DL-YYYY-NNN
 - `CAT-COMP-CONTENT-001`: content volume is being treated as strategic value without evidence
 - `CAT-COMP-POLISH-001`: presentation judgment may rely on taste rather than buyer-confidence evidence
 
-## 15. Worked scoring example
+## 15. Canonical worked scoring example
 
-Assume ten applicable criteria with equal 10% internal weight.
-
-| Criterion | State | Evidence ref | Score | Confidence | Factor | Lower | Upper |
-|---|---|---|---:|---|---:|---:|---:|
-| `OI-COMP-001` | scored | `OI-EV-2026-4101` | 75 | High | 1.00 | 75 | 75 |
-| `OI-COMP-002` | scored | `OI-EV-2026-4102` | 50 | High | 1.00 | 50 | 50 |
-| `OI-COMP-003` | scored | `OI-EV-2026-4103` | 50 | High | 1.00 | 50 | 50 |
-| `OI-COMP-004` | scored | `OI-EV-2026-4104` | 25 | Medium | 0.75 | 12.5 | 37.5 |
-| `OI-COMP-005` | scored | `OI-EV-2026-4105` | 50 | Medium | 0.75 | 37.5 | 62.5 |
-| `OI-COMP-006` | unknown | `OI-EV-2026-4106` | — | Unknown | 0.00 | 0 | 100 |
-| `OI-COMP-007` | scored | `OI-EV-2026-4107` | 75 | High | 1.00 | 75 | 75 |
-| `OI-COMP-008` | unknown | `OI-EV-2026-4108` | — | Unknown | 0.00 | 0 | 100 |
-| `OI-COMP-009` | scored | `OI-EV-2026-4109` | 50 | Medium | 0.75 | 37.5 | 62.5 |
-| `OI-COMP-010` | scored | `OI-EV-2026-4110` | 75 | High | 1.00 | 75 | 75 |
-
-Calculations:
+The controlled regression fixture is:
 
 ```text
-Known Criterion Weight = 80%
-Applicable Criterion Weight = 100%
-Observed Category Score = (75 + 50 + 50 + 25 + 50 + 75 + 50 + 75) ÷ 8 = 56.25
-Category Coverage = 80 ÷ 100 = 80%
-Category Lower Bound = (75 + 50 + 50 + 12.5 + 37.5 + 0 + 75 + 0 + 37.5 + 75) ÷ 10 = 41.25
-Category Upper Bound = (75 + 50 + 50 + 37.5 + 62.5 + 100 + 75 + 100 + 62.5 + 75) ÷ 10 = 68.75
-Category Confidence Index = ((1 + 1 + 1 + 0.75 + 0.75 + 1 + 0.75 + 1) ÷ 8) = 0.90625
-Display Score = 56
-Display Range = 41–69
+scoring/examples/competitive-worked-example.md
 ```
 
-Publication state: `range_only` because the unknown local-search and content-usefulness criteria could materially change the relative interpretation despite 80% coverage.
+The fixture evaluates all 10 applicable criteria and produces:
 
-Routing outcome:
+```text
+Observed indicator = 56.25
+Coverage = 80.00%
+Confidence index = 0.9063
+Defensible range = 41.25–68.75
+Publication state = range_only
+Review state = REVIEW
+Implementation authorized = false
+```
 
-- `OI-COMP-004` supports an approved competitive finding concerning weaker visible project proof.
-- Primary implementation owner: Trust.
-- Primary package: `OI-PKG-TRUST-001` Trust Proof System.
-- Roadmap phase: Phase 2 — Growth Foundation.
-- `OI-COMP-006` and `OI-COMP-008` create validation actions only; they do not create recommendations.
-- DecisionLedger reference: `OI-DL-2026-410`.
+`OI-COMP-006` and `OI-COMP-008` remain unknown because governed local-search context and content usefulness could not be established. Their combined 20% applicable weight contributes `0–200` to the category range and cannot be removed or scored as zero.
 
-Executive-safe statement:
+The verified project-proof comparison routes through `OI-FIND-COMP-009` to exactly one primary package, `OI-PKG-TRUST-001`, in `Phase 2 — Growth Foundation`. Search and content unknowns route to validation and do not independently create SEO, GBP, Dashboard, or content-production commitments.
 
-> The reviewed evidence supports a functional competitive baseline, with a verified weakness in visible project proof. Local-search and content-usefulness comparisons remain unresolved, so the current evidence supports a range rather than a single official category result.
+Example executive-safe statement:
+
+> The reviewed evidence supports a functional competitive baseline across the approved peer set, including comparable review context, service-page coverage, mobile inquiry paths, and professional presentation. The assessed business provides less service-specific project proof than the compared providers. Governed local-search context and the strategic usefulness of visible content remain unresolved, so the current evidence supports a Competitive Position range of 41.25–68.75 rather than a single official score. Validation and reviewed scope approval are required before implementation.
 
 ## 16. Completion checklist
 
