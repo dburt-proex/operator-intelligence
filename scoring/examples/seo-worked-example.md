@@ -38,7 +38,7 @@ Cedar Ridge Exterior Services is a synthetic local contractor with four core ser
 
 The controlled review includes:
 
-- the approved core-service and priority-service inventory
+- the approved core-service and priority-service inventory, including current delivery-fit confirmation
 - the complete public URL inventory
 - homepage, four core service pages, contact page, and service-area page
 - title, meta-description, H1, URL, and internal-link inventories
@@ -227,7 +227,7 @@ prerequisites:
 implementation_authorized: false
 ```
 
-Exactly one primary package is assigned to the verified root condition. Implementation remains unauthorized until page scope, content ownership, service-area accuracy, delivery capacity, acceptance criteria, and client approval are recorded.
+Exactly one primary package is assigned to the verified root condition. Routing eligibility passes. Implementation remains unauthorized until package scope, content ownership, acceptance criteria, and client authorization are recorded.
 
 ## 12. DecisionLedger record
 
@@ -307,7 +307,7 @@ finding_ids:
 primary_package: OI-PKG-SEO-001
 dependent_packages: []
 roadmap_phase: "Phase 2 — Growth Foundation"
-prerequisites_complete: true
+routing_prerequisites_complete: true
 duplicate_check_passed: true
 unsupported_claim_check_passed: true
 implementation_authorized: false
