@@ -6,7 +6,7 @@ Folder alignment: `scoring/examples/`
 Category key: `gbp`  
 Default Operator Score weight: 10%  
 Fixture key: `OI-EX-SCORE-GBP-001`  
-Status: Candidate regression fixture for commercial v1.0
+Status: Commercial v1.0 validation fixture
 
 ## 1. Purpose
 
@@ -343,6 +343,6 @@ This fixture passes only when:
 - [x] Implementation authorization is separate and false
 - [x] DecisionLedger traceability is complete
 - [x] Executive language is evidence-safe
-- [ ] Category-sheet reconciliation completed
-- [ ] Fixture registry admission completed
+- [x] Category-sheet reconciliation completed
+- [x] Fixture registry admission completed
 - [ ] Reviewer approval recorded
