@@ -5,7 +5,7 @@ Stage alignment: Stage 3 — `scoring/`
 Folder alignment: `scoring/category-sheets/`  
 Category key: `social`  
 Default Operator Score weight: 5%  
-Status: Draft foundation for commercial v1.0
+Status: Reconciled commercial v1.0 scoring contract
 
 ## 1. Purpose and category boundary
 
