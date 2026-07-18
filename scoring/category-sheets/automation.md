@@ -5,7 +5,7 @@ Stage alignment: Stage 3 — `scoring/`
 Folder alignment: `scoring/category-sheets/`  
 Category key: `automation`  
 Default Operator Score weight: 10%  
-Status: Commercial v1.0 candidate
+Status: Reconciled commercial v1.0 scoring contract
 
 ## 1. Purpose and category boundary
 
