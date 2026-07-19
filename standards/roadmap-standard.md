@@ -1,13 +1,13 @@
 # Roadmap Standard
 
-Version: v0.1 governance foundation  
+Version: v0.2 standards reconciliation  
 Stage alignment: Stage 4 — `standards/`  
 Folder alignment: `standards/`  
-Status: Draft foundation for commercial v1.0
+Status: Reconciled commercial v1.0 control standard; pending folder approval
 
 ## 1. Purpose
 
-This standard governs how Operator Intelligence converts approved recommendations into a sequenced, client-safe implementation roadmap.
+This standard governs how Operator Intelligence converts governed recommendations and validation requirements into a sequenced, client-safe roadmap.
 
 It defines phase assignment, dependency handling, entry and exit gates, ownership, acceptance evidence, change control, blocked work, and DecisionLedger traceability.
 
@@ -15,7 +15,7 @@ This standard does not create findings, redefine scores, or replace package elig
 
 ## 2. Governing principle
 
-A roadmap is a controlled sequence of authorized work, not a prioritized wish list.
+A roadmap is a governed sequence of validation, proposed, approved, blocked, deferred, active, and completed work. Roadmap inclusion or approval does not authorize implementation.
 
 No item advances because it appears valuable, urgent, or commercially attractive. It advances only when its evidence, prerequisites, owner, authority, scope, and acceptance conditions satisfy the applicable gate.
 
@@ -27,10 +27,11 @@ Every roadmap item must preserve this trace:
 Evidence Record
   → Governed Finding
   → Risk and Impact Classification
-  → Approved Recommendation
-  → Canonical Package Route
-  → Roadmap Phase
+  → Governed Recommendation or Validation Requirement
+  → Canonical Package Eligibility and Route
+  → Phase 0 Validation State or Canonical Roadmap Phase
   → Entry Gate
+  → Separate Implementation Authorization before in_progress
   → Acceptance Criteria
   → Completion Evidence
   → DecisionLedger Record
@@ -38,29 +39,39 @@ Evidence Record
 
 A broken source chain blocks client-facing roadmap use.
 
-## 4. Canonical roadmap phases
+## 4. Validation state and canonical roadmap phases
+
+Phase 0 — Validation and Access is a controlled pre-admission state used when material evidence, access, authority, privacy, scope, or control conditions remain unresolved. It is not an implementation phase, carries no package requirement, and cannot authorize work.
 
 | Phase | Name | Primary purpose |
 |---|---|---|
-| `1` | Quick Wins | Correct verified critical friction, accuracy, access, or buyer-path failures with bounded scope. |
-| `2` | Growth Foundation | Establish service, proof, local presence, content, and conversion foundations required for durable growth work. |
-| `3` | Automation and Reporting | Standardize workflows, ownership, system-of-record use, follow-up, measurement, and reporting. |
-| `4` | Governed AI Enablement | Introduce bounded AI assistance only after workflow, data, privacy, review, escalation, logging, and QA controls pass. |
+| 1 | Quick Wins | Correct verified critical friction, accuracy, access, or buyer-path failures with bounded scope. |
+| 2 | Growth Foundation | Establish service, proof, local presence, content, and conversion foundations required for durable growth work. |
+| 3 | Automation and Reporting | Standardize workflows, ownership, system-of-record use, follow-up, measurement, and reporting. |
+| 4 | Governed AI Enablement | Introduce bounded AI assistance only after workflow, data, privacy, review, escalation, logging, and QA controls pass. |
+| 5 | Optimization and Renewal | Improve validated systems using measured evidence and govern renewal, expansion, maintenance, or closure. |
 
-These phases are dependency defaults, not promises of duration or financial outcome.
+Phases 1–5 are dependency defaults, not promises of duration or financial outcome. Phase 5 is an engagement-management phase and does not create a new default implementation package.
 
 ## 5. Minimum roadmap item
 
-```yaml
+~~~yaml
 roadmap_item_id: OI-RM-YYYY-NNN
+roadmap_version: ""
+supersedes: null
 recommendation_id: OI-REC-YYYY-NNN
+routing_id: null
 finding_refs: []
 evidence_refs: []
 ledger_refs: []
-primary_package_id: ""
-roadmap_phase: 1|2|3|4
+effort_ref: null
+primary_package_id: null
+package_eligibility: eligible|validation_required|blocked|not_applicable
+roadmap_phase: 0|1|2|3|4|5
+phase_eligibility: validation_required|eligible|blocked|complete
+lifecycle_entry_state: OI-LC-08|OI-LC-09|OI-LC-10|OI-LC-11|OI-LC-12|OI-LC-13|OI-LC-14
 sequence_rank: 0
-status: proposed|validation_required|approved|blocked|in_progress|complete|deferred|rejected
+status: proposed|validation_required|approved|blocked|in_progress|complete|deferred|rejected|monitoring|cancelled
 review_state: ALLOW|REVIEW|HALT
 owner: ""
 decision_authority: ""
@@ -75,11 +86,14 @@ completion_evidence_refs: []
 measurement_plan: []
 unknowns: []
 confidence: high|medium|low|unknown
+publication_state: internal_only|official|provisional|range_only|blocked
+implementation_authorized: false
+implementation_authorization_ref: null
 target_window: ""
 decision_reason: ""
-```
+~~~
 
-Required fields may not be replaced by narrative implication.
+Required fields may not be replaced by narrative implication. Status approved means the roadmap decision is approved; it does not mean implementation is authorized.
 
 ## 6. Admission rules
 
@@ -88,20 +102,34 @@ A recommendation may enter a roadmap only when:
 - its source finding and evidence are traceable
 - confidence is assigned separately from maturity
 - unknowns and blocked conditions are explicit
-- one primary package is assigned
+- package eligibility is explicit
+- exactly one primary package is assigned only for package-eligible work
 - included and excluded scope are defined
 - prerequisites and dependencies are identified
 - phase assignment follows the root condition and dependency state
 - ownership and decision authority are identified
 - entry and acceptance criteria are observable
-- implementation authorization is recorded separately from publication approval
+- Phase 0 is used when material validation or access remains unresolved
+- implementation authorization is recorded separately from publication and roadmap approval and defaults to false
 - a DecisionLedger reference exists
 
-Unknown or low-confidence conditions normally enter as `validation_required`, not implementation work.
+Unknown or low-confidence conditions normally enter Phase 0 as validation_required, not implementation work.
 
 ## 7. Phase assignment rules
 
 Assign the earliest phase that is both appropriate and eligible.
+
+### Phase 0 — Validation and Access
+
+Use when a recommendation cannot enter implementation sequencing because material evidence, access, authority, privacy, package eligibility, scope, or control state is unresolved.
+
+Phase 0 rules:
+
+- primary_package_id may remain null
+- status is validation_required or blocked
+- acceptance criteria describe the evidence or decision needed to enter a canonical phase
+- implementation_authorized remains false
+- resolving Phase 0 requires a new or superseding roadmap decision
 
 ### Phase 1 — Quick Wins
 
@@ -155,7 +183,19 @@ Use only when all material AI-readiness prerequisites pass:
 - QA owner and cadence
 - explicit `ALLOW`, `REVIEW`, or `HALT` state
 
-Any unresolved `HALT` condition blocks dependent AI implementation.
+Any unresolved HALT condition blocks dependent AI implementation.
+
+### Phase 5 — Optimization and Renewal
+
+Use only after implementation and adoption evidence exists and the next decision concerns measured optimization, maintenance, expansion, renewal, or closure.
+
+Phase 5 rules:
+
+- use measured evidence rather than repeating initial assumptions
+- reuse an existing package only through approved new or renewed scope
+- preserve completion and realized-value records
+- do not treat optimization as proof of guaranteed outcome
+- record renewal or closure authority
 
 ## 8. Dependency rules
 
@@ -188,22 +228,32 @@ Priority score alone cannot determine sequence.
 
 Do not place a high-opportunity item ahead of a control, access, data, or workflow prerequisite solely because its commercial upside appears larger.
 
-## 10. Entry gates
+## 10. Entry and start gates
 
-Before an item moves to `approved` or `in_progress`, confirm:
+Before an item moves to approved, confirm:
 
 - source evidence remains current enough for the decision
-- scope is approved
-- owner accepts responsibility
-- decision authority is documented
+- recommendation and package eligibility are governed
+- scope is approved for roadmap representation
+- owner and decision authority are documented
+- prerequisites and blocked conditions are visible
+- entry and acceptance criteria are observable
+- target window is conditional on capacity, access, and dependencies
+- the roadmap decision is recorded in the DecisionLedger
+
+Before an item moves to in_progress, additionally confirm:
+
+- implementation_authorized is true
+- a separate implementation authorization reference resolves
+- approved package scope or approved validation scope is recorded
 - required access is available
+- the implementation owner accepts responsibility
 - prerequisites are complete or formally waived by authorized review
 - blocked conditions are resolved
-- acceptance criteria are testable
-- rollback or escalation needs are defined where material
-- implementation does not exceed the approved package boundary
+- rollback, recovery, or escalation needs are defined where material
+- implementation does not exceed the authorized package boundary
 
-Failure of a material gate routes the item to `validation_required`, `blocked`, `deferred`, or `HALT`.
+Failure of a material gate routes the item to validation_required, blocked, deferred, or HALT. Roadmap approval cannot substitute for implementation authorization.
 
 ## 11. Completion rules
 
@@ -284,7 +334,7 @@ Reopen roadmap review when any of the following changes materially:
 - acceptance criteria
 - measurement plan
 
-Material changes require a new or amended DecisionLedger record. Silent resequencing is prohibited.
+Material changes require a new or amended DecisionLedger record, version, and supersession trace. Silent resequencing is prohibited.
 
 ## 16. Executive-safe language
 
@@ -298,20 +348,37 @@ Prohibited language includes unsupported certainty about revenue, lead volume, r
 
 ## 17. DecisionLedger requirements
 
-Each roadmap decision must record:
+~~~yaml
+ledger_ref: OI-DL-YYYY-NNN
+decision_type: roadmap
+roadmap_item_id: OI-RM-YYYY-NNN
+roadmap_version: ""
+supersedes: null
+recommendation_id: OI-REC-YYYY-NNN
+routing_id: null
+finding_refs: []
+evidence_refs: []
+primary_package_id: null
+package_eligibility: eligible|validation_required|blocked|not_applicable
+roadmap_phase: 0|1|2|3|4|5
+phase_eligibility: validation_required|eligible|blocked|complete
+sequence_rank: 0
+prerequisites: []
+blocked_conditions: []
+owner: ""
+decision_authority: ""
+status: proposed|validation_required|approved|blocked|in_progress|complete|deferred|rejected|monitoring|cancelled
+review_state: ALLOW|REVIEW|HALT
+publication_state: internal_only|official|provisional|range_only|blocked
+implementation_authorized: false
+implementation_authorization_ref: null
+acceptance_criteria: []
+completion_evidence_refs: []
+decision_reason: ""
+decision_date: YYYY-MM-DD
+~~~
 
-- roadmap item ID
-- recommendation and finding references
-- evidence references
-- assigned phase and sequence rank
-- primary package
-- prerequisites and blocked conditions
-- owner and decision authority
-- decision state and reason
-- approval or escalation record
-- acceptance criteria
-- change history
-- completion evidence where applicable
+Create a new ledger event for admission, approval, authorization, resequencing, blocking, start, completion, monitoring, renewal, and closure when material.
 
 ## 18. Validation codes
 
@@ -319,8 +386,11 @@ Each roadmap decision must record:
 |---|---|
 | `ROAD-SOURCE-001` | Required evidence, finding, recommendation, or ledger trace is missing. |
 | `ROAD-PHASE-001` | Phase assignment conflicts with prerequisites or root condition. |
+| `ROAD-PHASE0-001` | Phase 0 validation is represented as implementation work or carries authorization. |
+| `ROAD-VERSION-001` | Material roadmap change lacks version or supersession trace. |
 | `ROAD-DEP-001` | A dependency is missing, circular, or bypassed. |
 | `ROAD-AUTH-001` | Ownership, access, or decision authority is missing. |
+| `ROAD-IMPL-001` | Work moves to in_progress without separate implementation authorization. |
 | `ROAD-SCOPE-001` | Scope exceeds the approved recommendation or package boundary. |
 | `ROAD-ACCEPT-001` | Acceptance criteria or completion evidence are insufficient. |
 | `ROAD-UNKNOWN-001` | A material unknown is hidden or treated as failure. |
@@ -335,13 +405,16 @@ Any unresolved validation code blocks official roadmap release or the affected i
 Before release, confirm:
 
 - every item has a valid source chain
-- exactly one primary package is assigned per recommendation
+- package eligibility is explicit
+- exactly one primary package is assigned only for package-eligible work
+- Phase 0 validation may remain unrouted and unauthorized
 - phase and sequence respect prerequisites
 - unknowns and blocked conditions remain visible
 - ownership and authority are named
 - entry and acceptance criteria are observable
 - Phase 4 controls are complete
-- implementation and outcome validation are separate
+- roadmap approval, publication, implementation authorization, completion, and outcome validation are separate
+- no item enters in_progress without an implementation authorization reference
 - client language is evidence-bound
 - all decisions and changes are ledgered
 
@@ -349,10 +422,16 @@ Before release, confirm:
 
 - `framework/lifecycle-roadmap-map.md`
 - `framework/recommendation-index.md`
+- `framework/governance-gate-index.md`
 - `standards/evidence-standard.md`
 - `standards/confidence-standard.md`
 - `standards/publication-standard.md`
 - `standards/recommendation-standard.md`
+- `standards/package-routing-standard.md`
+- `standards/ai-readiness-standard.md`
+- `standards/decision-ledger-standard.md`
+- `standards/quality-control-standard.md`
 - `scoring/recommendation-map.md`
+- `scoring/examples/ai-readiness-worked-example.md`
 - `templates/roadmap.md`
 - `templates/decision-ledger.md`
