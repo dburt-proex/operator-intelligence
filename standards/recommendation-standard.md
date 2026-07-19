@@ -1,9 +1,9 @@
 # Recommendation Standard
 
-Version: v0.1 governance foundation  
+Version: v0.2 standards reconciliation  
 Stage alignment: Stage 4 — `standards/`  
 Folder alignment: `standards/`  
-Status: Draft foundation for commercial v1.0
+Status: Reconciled commercial v1.0 control standard; pending folder approval
 
 ## 1. Purpose
 
@@ -15,7 +15,7 @@ This standard does not create findings, redefine category scores, or replace the
 
 ## 2. Governing principle
 
-A recommendation is a controlled implementation decision, not a generic suggestion or sales device.
+A recommendation is a governed action proposal and routing record, not a generic suggestion or sales device. It does not authorize implementation.
 
 Every recommendation must answer:
 
@@ -38,10 +38,12 @@ A recommendation is admissible only when the following trace exists:
 Evidence Record
   → Scored Criterion or Governed Observation
   → Approved Finding
-  → Impact and Risk Classification
+  → Risk-Impact Classification
+  → Opportunity or Validation Decision
+  → Effort Record when implementation scope is considered
   → Recommendation Object
-  → Canonical Package Route
-  → Roadmap Phase
+  → Canonical Package Eligibility and Route
+  → Roadmap Phase or Phase 0 Validation State
   → Acceptance Criteria
   → DecisionLedger Record
 ```
@@ -62,36 +64,55 @@ Unknown evidence routes to `validation`, not automatically to `implementation`.
 
 ## 5. Minimum recommendation object
 
-```yaml
+~~~yaml
 recommendation_id: OI-REC-YYYY-NNN
+recommendation_version: ""
+supersedes: null
 recommendation_class: implementation|validation|monitoring|defer|halt
 finding_refs: []
 evidence_refs: []
 ledger_refs: []
+risk_impact_refs: []
+opportunity_ref: null
+effort_ref: null
 observation_summary: ""
 root_condition: ""
+validation_state: verified|validation_required|blocked
 confidence: high|medium|low|unknown
 unknowns: []
 impact_class: ""
+impact_score: 1-5|null
+evidence_strength_score: 1-5|null
+effort_inverse: 1-5|null
+strategic_fit_score: 1-5|null
+priority_score: 4-20|null
+priority: critical|high|medium|low|null
 risk_level: ""
-priority: critical|high|medium|low
-primary_package_id: ""
-primary_package_name: ""
+package_registry_version: ""
+package_eligibility: eligible|validation_required|blocked|not_applicable
+primary_package_id: null
+primary_package_name: null
 dependent_package_ids: []
 prerequisites: []
 blocked_conditions: []
 included_scope: []
 excluded_scope: []
-roadmap_phase: ""
+roadmap_phase: "Phase 0|Phase 1|Phase 2|Phase 3|Phase 4|Phase 5"
+lifecycle_entry_state: OI-LC-08
 implementation_owner: ""
+implementation_authorized: false
+implementation_authorization_ref: null
 acceptance_criteria: []
 measurement_plan: []
+publication_state: internal_only|official|provisional|range_only|blocked
 status: proposed|accepted|deferred|blocked|in_progress|complete|rejected
+decision_owner: ""
+decision_date: YYYY-MM-DD|null
 decision_reason: ""
 review_state: ALLOW|REVIEW|HALT
-```
+~~~
 
-Required fields may not be replaced by narrative implication.
+Required fields may not be replaced by narrative implication. Null package and priority fields are permitted only for validation, monitoring, halt, or blocked work when the reason and next gate are explicit.
 
 ## 6. Admission rules
 
@@ -103,25 +124,62 @@ A recommendation may enter a client report, roadmap, proposal, or implementation
 - unknowns and blocked conditions are explicit
 - root condition is identified
 - impact and risk are classified without unsupported claims
-- one primary package is assigned
+- implementation-class priority inputs and score can be reproduced
+- package eligibility is explicit
+- exactly one primary package is assigned when package eligibility is eligible
 - dependencies and prerequisites are separated
 - included and excluded scope are stated
 - roadmap sequencing respects dependencies
 - acceptance criteria are observable
 - measurement limits are disclosed
-- implementation ownership is assigned
+- implementation ownership is identified without implying authorization
+- implementation authorization is recorded separately and defaults to false
 - DecisionLedger references exist
 - language is executive-safe
 
-## 7. One-primary-package rule
+## 7. Priority calculation and decision state
 
-Each recommendation has exactly one primary package.
+Implementation-class recommendation priority uses the approved four-input formula:
 
-The primary package is the package that directly resolves the root condition. Additional packages may be recorded only as prerequisites or dependencies.
+~~~text
+Priority Score =
+Impact
++ Evidence Strength
++ Effort Inverse
++ Strategic Fit
+~~~
+
+| Priority score | Priority |
+|---:|---|
+| 17–20 | critical |
+| 13–16 | high |
+| 9–12 | medium |
+| 4–8 | low |
+
+Rules:
+
+1. Import impact from framework/risk-impact-model.md.
+2. Assign evidence strength from admissible evidence under standards/evidence-standard.md.
+3. Import effort inverse from framework/effort-model.md.
+4. Assign strategic fit against current goals, capacity, dependencies, and roadmap eligibility.
+5. Store every input and the calculated result.
+6. Confidence remains a separate gate and does not change the priority score.
+7. High impact with low or unknown confidence routes to validation, REVIEW, or HALT.
+8. Priority cannot override privacy, safety, legal, policy, authorization, package, dependency, or control-boundary gates.
+9. Validation, monitoring, and halt recommendations may leave priority null when scoring would imply unsupported implementation certainty.
+
+## 8. Package eligibility and one-primary-package rule
+
+Each package-eligible implementation or deferred recommendation must have exactly one canonical primary package.
+
+The primary package is the smallest registered package that directly resolves the verified root condition. Additional packages may be recorded only as prerequisites or dependencies.
+
+Validation, monitoring, halt, and blocked recommendations may have primary_package_id: null until eligibility is established. A null route must retain the validation action, blocked condition, next gate, and DecisionLedger trace.
 
 Do not:
 
 - assign several primary packages to one recommendation
+- force validation work into a sellable package
 - inflate scope by attaching unrelated packages
 - select a package because it is commercially attractive
 - force a finding into a package without defensible fit
@@ -129,7 +187,13 @@ Do not:
 
 When no canonical package fits, create a methodology or validation gap record. Do not improvise a client package.
 
-## 8. Scope proportionality
+Canonical regression controls:
+
+- OI-FIND-SEO-002 routes to OI-PKG-SEO-001 in Phase 2 with implementation_authorized: false.
+- The AI readiness fixture remains in Phase 0 with primary_package_id: null while OI-AI-008 and OI-AI-010 are unknown.
+- Package routing, roadmap placement, report publication, and client acceptance do not authorize implementation.
+
+## 9. Scope proportionality
 
 Recommendation scope must be proportional to the supported condition.
 
@@ -143,7 +207,7 @@ A recommendation must not expand from:
 - limited AI interest into customer-facing AI deployment
 - weak reporting into a dashboard without defined decision use
 
-## 9. Prerequisite and phase controls
+## 10. Prerequisite and phase controls
 
 Default roadmap sequence:
 
@@ -163,7 +227,7 @@ Rules:
 5. Workflow, data, privacy, review, escalation, logging, and QA prerequisites must pass before Phase 4 AI work.
 6. Any unresolved `HALT` condition blocks dependent implementation.
 
-## 10. Confidence handling
+## 11. Confidence handling
 
 Confidence does not alter the maturity score or severity of the observed condition.
 
@@ -176,7 +240,7 @@ Confidence does not alter the maturity score or severity of the observed conditi
 
 A recommendation cannot carry stronger confidence than its weakest material evidence dependency.
 
-## 11. Unknown and blocked handling
+## 12. Unknown and blocked handling
 
 Unknown is not negative evidence.
 
@@ -190,7 +254,7 @@ When a material condition is unknown:
 
 Use `blocked` when authorization, privacy, safety, legal, policy, access, or control restrictions prevent defensible validation or implementation.
 
-## 12. Acceptance criteria
+## 13. Acceptance criteria
 
 Acceptance criteria must be observable, binary where practical, and tied to the source finding.
 
@@ -213,7 +277,7 @@ Invalid criteria include:
 
 Completion requires acceptance evidence, not deliverable existence alone.
 
-## 13. Measurement boundaries
+## 14. Measurement boundaries
 
 Separate implementation completion from outcome validation.
 
@@ -231,7 +295,7 @@ Every measurement plan must identify:
 
 Use leading indicators when outcome data is immature.
 
-## 14. Executive-safe language
+## 15. Executive-safe language
 
 Client-facing recommendations must distinguish:
 
@@ -248,7 +312,7 @@ Preferred language:
 
 Prohibited language includes unsupported claims that the business is losing a specific number of leads, revenue, rankings, customers, or market share.
 
-## 15. Change control
+## 16. Change control
 
 Reopen governance review when any of the following changes:
 
@@ -266,14 +330,17 @@ Reopen governance review when any of the following changes:
 
 Every material change requires an updated DecisionLedger entry and reason.
 
-## 16. Validation messages
+## 17. Validation messages
 
 ### Blocking errors
 
 - `REC-TRACE-001`: recommendation lacks a complete source chain
 - `REC-EVID-001`: recommendation exceeds supporting evidence
 - `REC-CONF-001`: implementation is routed from unknown confidence
-- `REC-PKG-001`: no valid primary package is assigned
+- `REC-PKG-001`: a package-eligible recommendation lacks exactly one canonical primary package
+- `REC-PRIORITY-001`: required priority inputs or calculation cannot be reproduced
+- `REC-AUTH-001`: recommendation, publication, or package routing is treated as implementation authorization
+- `REC-VERSION-001`: material recommendation change lacks version or supersession trace
 - `REC-DUP-001`: duplicate primary scope exists across packages
 - `REC-PHASE-001`: roadmap sequencing violates prerequisites
 - `REC-SCOPE-001`: scope is disproportionate or undefined
@@ -289,56 +356,78 @@ Every material change requires an updated DecisionLedger entry and reason.
 - `REC-LANGUAGE-001`: client language implies unsupported outcomes
 - `REC-CHANGE-001`: material scope change lacks recorded review
 
-## 17. DecisionLedger minimum record
+## 18. DecisionLedger minimum record
 
-```yaml
+~~~yaml
 ledger_ref: OI-DL-YYYY-NNN
 decision_type: recommendation
 recommendation_id: OI-REC-YYYY-NNN
+recommendation_version: ""
+supersedes: null
 finding_refs: []
 evidence_refs: []
+risk_impact_refs: []
+opportunity_ref: null
+effort_ref: null
 decision: ALLOW|REVIEW|HALT
 confidence: high|medium|low|unknown
-primary_package_id: ""
+priority_inputs: {}
+priority_score: null
+package_eligibility: eligible|validation_required|blocked|not_applicable
+primary_package_id: null
 dependent_package_ids: []
 roadmap_phase: ""
 unknowns: []
 blocked_conditions: []
+publication_state: internal_only|official|provisional|range_only|blocked
+implementation_authorized: false
+implementation_authorization_ref: null
 decision_reason: ""
+decision_owner: ""
 reviewed_by: ""
-reviewed_at: ""
-```
+reviewed_at: YYYY-MM-DD
+~~~
 
-## 18. Completion checklist
+## 19. Completion checklist
 
 Before release, confirm:
 
 - the evidence-to-recommendation chain is complete
 - the root condition is explicit
 - confidence and unknowns are visible
-- one primary package is assigned
+- package eligibility is explicit
+- exactly one primary package is assigned only when package eligible
+- validation work may remain unrouted without implying implementation
+- priority inputs and score reproduce when required
 - prerequisites and dependencies are separated
 - scope is proportional and bounded
 - phase order is valid
 - acceptance criteria are testable
 - measurement claims are bounded
 - blocked conditions are resolved or disclosed
-- implementation authorization is separate from report publication
+- publication, client acceptance, roadmap approval, and implementation authorization remain separate
+- implementation_authorized defaults to false
 - DecisionLedger traceability is complete
 
-## 19. Canonical references
+## 20. Canonical references
 
 Use this standard with:
 
 - `framework/finding-index.md`
 - `framework/recommendation-index.md`
 - `framework/risk-impact-model.md`
+- `framework/opportunity-model.md`
+- `framework/effort-model.md`
 - `framework/lifecycle-roadmap-map.md`
 - `scoring/recommendation-map.md`
 - `standards/evidence-standard.md`
 - `standards/confidence-standard.md`
 - `standards/publication-standard.md`
+- `standards/package-routing-standard.md`
+- `standards/roadmap-standard.md`
+- `standards/decision-ledger-standard.md`
+- `standards/quality-control-standard.md`
 
-## 20. v1.0 connection
+## 21. v1.0 connection
 
 This standard makes recommendations repeatable, evidence-bound, package-controlled, phase-aware, measurable, and safe for commercial reporting and implementation handoff.
