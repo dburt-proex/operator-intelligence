@@ -1,9 +1,9 @@
 # Confidence Standard
 
-Version: v0.1 governance foundation  
+Version: v0.2 standards reconciliation  
 Stage alignment: Stage 4 — `standards/`  
 Folder alignment: `standards/`  
-Status: Draft foundation for commercial v1.0
+Status: Reconciled commercial v1.0 control standard; pending folder approval
 
 ## 1. Purpose
 
@@ -26,14 +26,16 @@ Confidence describes how strongly admissible evidence supports an interpretation
 
 ## 3. Approved confidence levels
 
-| Level | Use when | Prohibited use |
-|---|---|---|
-| `high` | Direct, current, attributable evidence covers required scope with no material conflict | Assigning high confidence from one narrow screenshot, unsupported client claim, or tool presence |
-| `medium` | Multiple consistent records or observations support the pattern, but one material gap remains | Treating medium confidence as complete verification |
-| `low` | Evidence is indirect, narrow, stale, interview-led, partially accessible, or materially incomplete | Converting uncertainty into a negative score |
-| `unknown` | Evidence cannot support a defensible score or interpretation | Assigning a numeric score and calling it unknown |
+| Level | Factor | Use when | Prohibited use |
+|---|---:|---|---|
+| `high` | 1.00 | Direct, current, attributable evidence covers required scope with no material conflict | Assigning high confidence from one narrow screenshot, unsupported client claim, or tool presence |
+| `medium` | 0.75 | Multiple consistent records or observations support the pattern, but one material gap remains | Treating medium confidence as complete verification |
+| `low` | 0.50 | Evidence is indirect, narrow, stale, interview-led, partially accessible, or materially incomplete | Converting uncertainty into a negative score |
+| `unknown` | 0.00 | Evidence cannot support a defensible score or interpretation | Assigning a numeric score and calling it unknown |
 
 `blocked` is a criterion state, not a confidence level. A blocked criterion normally carries `confidence: unknown` plus a documented blocking condition.
+
+Factors calculate confidence indexes and uncertainty outputs only. They are never multiplied by maturity. Unknown criteria are unscored and therefore contribute no scored weight to the confidence-index denominator; factor 0.00 is retained only as the controlled representation of unknown confidence.
 
 ## 4. Confidence dimensions
 
@@ -125,20 +127,61 @@ When evidence differs:
 
 Do not average contradictory evidence into false certainty.
 
-## 8. Confidence and scoring
+## 8. Confidence calculations and uncertainty bounds
 
-A criterion score uses only approved maturity anchors. Confidence is stored separately.
+A criterion score uses only approved maturity anchors. Confidence is stored and calculated separately.
 
 ```yaml
 criterion_id: OI-EXAMPLE-001
 criterion_state: scored
 score: 50
 confidence: medium
+confidence_factor: 0.75
+lower_bound: 37.5
+upper_bound: 62.5
 evidence_refs:
   - OI-EV-2026-001
 limitations:
   - "One internal validation source remains unavailable."
 ```
+
+Criterion bounds follow the approved method:
+
+| Confidence | Lower bound | Upper bound |
+|---|---|---|
+| High | score | score |
+| Medium | score - 12.5 | score + 12.5 |
+| Low | score - 25 | score + 25 |
+| Unknown | Not scoreable | Not scoreable |
+
+Clamp numeric bounds to 0–100. These are governance uncertainty bounds, not statistical confidence intervals.
+
+Category confidence uses scored criterion weight only:
+
+```text
+Category Confidence Index =
+sum(criterion confidence factor × scored criterion weight)
+÷ sum(scored criterion weight)
+```
+
+Operator confidence weights category confidence by category weight and category coverage:
+
+```text
+Operator Confidence Index =
+sum(category confidence index × category weight × category coverage)
+÷ sum(category weight × category coverage)
+```
+
+If the applicable denominator is zero, confidence is unknown.
+
+| Index | Confidence band |
+|---:|---|
+| 0.85–1.00 | High |
+| 0.65–0.8499 | Medium |
+| 0.01–0.6499 | Low |
+| 0 | Unknown |
+
+Coverage must always be reported beside a confidence index. High confidence in a narrow known sample does not establish category completeness.
 
 Prohibited:
 
@@ -146,7 +189,7 @@ Prohibited:
 Adjusted maturity score = maturity score × confidence factor
 ```
 
-Confidence factors may be used only for confidence indexes and uncertainty calculations defined in `scoring/confidence-adjusted-scoring.md`.
+The full category and Operator Score range remains governed by scoring/confidence-adjusted-scoring.md and scoring/calculator-spec.md.
 
 ## 9. Findings and recommendations
 
@@ -172,7 +215,11 @@ Confidence affects publication, not maturity.
 | Material low-confidence or unknown conditions widen interpretation | `range_only` |
 | Evidence conflict, authorization failure, or control boundary prevents defensible output | `blocked` |
 
-Threshold calculations remain governed by `scoring/confidence-adjusted-scoring.md` and the calculator specification.
+Category-level coverage normally permits official consideration at 80% or more, provisional treatment at 60–79.99%, and range-only treatment below 60%, subject to stronger material-unknown and control gates.
+
+Operator-level publication uses separate thresholds: official requires weighted coverage of at least 80% and Operator confidence of at least 0.65; provisional normally requires weighted coverage of at least 65% or confidence of at least 0.50 but below the official threshold; range-only applies below those thresholds or when major categories remain unresolved.
+
+Threshold calculations and precedence remain governed by scoring/confidence-adjusted-scoring.md, scoring/calculator-spec.md, and standards/publication-standard.md.
 
 ## 11. Executive-safe language
 
@@ -200,7 +247,13 @@ Every material score, finding, recommendation, or publication decision must reta
 
 ```yaml
 confidence: high|medium|low|unknown
+confidence_factor: 1.00|0.75|0.50|0.00
 confidence_basis: ""
+criterion_lower_bound: null
+criterion_upper_bound: null
+category_confidence_index: null
+category_coverage_percent: null
+operator_confidence_index: null
 evidence_refs: []
 limitations: []
 validation_required: []
@@ -217,6 +270,8 @@ Confidence changes after evidence review must create or update an auditable ledg
 ### Blocking errors
 
 - `CONF-EVID-001`: confidence lacks admissible evidence references
+- `CONF-FACTOR-001`: confidence factor conflicts with the controlled confidence level
+- `CONF-BOUND-001`: required uncertainty bounds are missing or cannot be reproduced
 - `CONF-SCORE-001`: confidence was used to alter maturity score
 - `CONF-UNKNOWN-001`: unknown or blocked criterion received a numeric score
 - `CONF-PUB-001`: publication state conflicts with material confidence limitations
@@ -263,6 +318,8 @@ The owner reports that estimate follow-up depends on memory, but records were no
 ```yaml
 score: 25
 confidence: low
+confidence_factor: 0.50
+score_range: [0, 50]
 publication_effect: provisional
 validation_required:
   - "Review recent estimate records and follow-up task history."
@@ -274,6 +331,9 @@ Before finalizing confidence, confirm:
 
 - evidence is admissible and referenced
 - confidence is separate from maturity
+- controlled factor and uncertainty bounds reproduce
+- category and Operator confidence use the approved weighted formulas
+- confidence index is disclosed beside coverage
 - required scope and sample are documented
 - unknown and blocked states remain unscored
 - public absence is not used to infer internal absence
@@ -283,6 +343,19 @@ Before finalizing confidence, confirm:
 - publication state reflects material uncertainty
 - DecisionLedger traceability is complete
 
-## 16. v1.0 connection
+## 16. Cross references
+
+- scoring/evidence-thresholds.md
+- scoring/confidence-model.md
+- scoring/confidence-adjusted-scoring.md
+- scoring/unknown-data-handling.md
+- scoring/calculator-spec.md
+- scoring/score-objects.md
+- standards/evidence-standard.md
+- standards/publication-standard.md
+- standards/decision-ledger-standard.md
+- standards/quality-control-standard.md
+
+## 17. v1.0 connection
 
 This standard creates one repository-wide confidence grammar for scoring, findings, recommendation routing, publication controls, and executive reporting. It reduces evaluator drift while preserving honest uncertainty and auditable decisions required for commercial v1.0.
