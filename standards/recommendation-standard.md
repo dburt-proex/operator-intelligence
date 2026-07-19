@@ -158,10 +158,10 @@ Impact
 
 Rules:
 
-1. Import impact from framework/risk-impact-model.md.
-2. Assign evidence strength from admissible evidence under standards/evidence-standard.md.
-3. Import effort inverse from framework/effort-model.md.
-4. Assign strategic fit against current goals, capacity, dependencies, and roadmap eligibility.
+1. Import impact_score from framework/risk-impact-model.md.
+2. Import the 1–5 evidence_strength_score from framework/risk-impact-model.md after evidence admissibility passes under standards/evidence-standard.md. Evidence class alone never sets this value.
+3. Import effort_inverse from framework/effort-model.md.
+4. Import or reproduce strategic_fit_score against current goals, capacity, dependencies, and roadmap eligibility under framework/opportunity-model.md.
 5. Store every input and the calculated result.
 6. Confidence remains a separate gate and does not change the priority score.
 7. High impact with low or unknown confidence routes to validation, REVIEW, or HALT.
