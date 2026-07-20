@@ -1,107 +1,245 @@
 # Operator Intelligence Roadmap
 
-## v0.1 — Foundation
+Version: commercial v1.0 reconciliation  
+Status: v1.0 content complete; post-v1 expansion separated
 
-Goal: establish the consulting framework as a coherent product architecture.
+## 1. Commercial v1.0 objective
 
-Deliverables:
+Launch Operator Intelligence as a governed, repeatable Business Growth Systems Assessment for contractor and local-service businesses.
 
-- Repository structure
-- Core methodology
-- Terminology
-- Scoring model
-- Standards library
-- Report templates
-- Initial contractor playbooks
+Commercial v1.0 is complete when the repository includes methodology, scoring, findings, standards, recommendation routing, implementation packages, reports, proposals, roadmaps, evidence records, playbooks, delivery controls, a complete sample engagement, research support, production asset specifications, quality control, and root documentation.
+
+## 2. Completed release path
+
+### v0.1 — Foundation
+
+**State:** Complete
+
+Delivered:
+
+- repository architecture
+- product mission and terminology
+- assessment lifecycle
+- initial standards and scoring model
+- report and playbook foundations
+
+### v0.2 — Criteria and Scoring Architecture
+
+**State:** Complete and approved
+
+Delivered:
+
+- 140 unique observable criteria
+- 11 weighted categories totaling 100%
+- category-specific scoring sheets
+- 0/25/50/75/100 anchors
+- evidence thresholds
+- unknown, blocked, and not-applicable handling
+- confidence-adjusted uncertainty and publication states
+- score objects, calculator specification, fixtures, and reconciliation
+
+Gate: `OI-SCORING-APPROVAL-001`
+
+### v0.3 — Finding and Recommendation Engine
+
+**State:** Complete and approved
+
+Delivered:
+
+- 11 finding libraries with 217 registered patterns
+- finding and recommendation indexes
+- risk-impact, effort, opportunity, and ROI frameworks
+- canonical priority formula
+- package eligibility and routing
+- lifecycle-roadmap and governance-gate indexes
+- 8 canonical implementation packages
+
+Gate: `OI-FRAMEWORK-APPROVAL-001`
+
+### v0.4 — Standards and Control Layer
+
+**State:** Complete and approved
+
+Delivered:
+
+- evidence standard
+- confidence standard
+- recommendation standard
+- package-routing standard
+- roadmap standard
+- publication standard
+- DecisionLedger standard
+- AI-readiness standard
+- quality-control standard
+
+Gate: `OI-STANDARDS-APPROVAL-001`
+
+### v0.5 — Commercial Artifact System
+
+**State:** Complete and approved
+
+Delivered 15 canonical templates:
+
+- sales notes
+- discovery form
+- client intake
+- evidence register
+- finding register
+- recommendation register
+- DecisionLedger
+- executive report
+- contractor report
+- roadmap
+- package catalog
+- proposal
+- onboarding checklist
+- delivery checklist
+- quality-control checklist
+
+Gate: `OI-TEMPLATES-APPROVAL-001`
+
+### v0.6 — Delivery and Industry Playbooks
+
+**State:** Complete and approved
+
+Delivered:
+
+- engagement-delivery workflow
+- evidence-validation workflow
+- finding-to-recommendation review
+- publication-quality review
+- contractor base playbook
+- painting playbook
+- tree-service playbook
+
+Gate: `OI-PLAYBOOKS-APPROVAL-001`
+
+### v0.7 — Examples, Research, and Production Assets
+
+**State:** Complete and approved
+
+Delivered:
+
+- one complete 10-artifact fictional painting-contractor engagement
+- reproducible provisional score fixture
+- market, competitor, conversion, and SEO research protocols
+- design system
+- Operator Score gauge specification
+- report layout
+- roadmap visual specification
+- diagram registry
+- brand rules
+
+Gates:
+
+- `OI-EXAMPLES-APPROVAL-001`
+- `OI-RESEARCH-APPROVAL-001`
+- `OI-ASSETS-APPROVAL-001`
+
+## 3. v1.0 — Commercial Release
+
+**State:** Content complete; ready for tag/release
 
 Acceptance criteria:
 
-- A consultant can explain the product in under 2 minutes.
-- A client report can be drafted from the templates.
-- Each finding can be routed through evidence, confidence, impact, and recommendation logic.
+- [x] Complete methodology
+- [x] 140-criterion scoring architecture
+- [x] 11 finding libraries
+- [x] Recommendation and package-routing system
+- [x] 8 canonical implementation packages
+- [x] 9 reconciled standards
+- [x] 15 commercial templates
+- [x] Initial contractor, painting, and tree-service playbooks
+- [x] Paid engagement and QC workflows
+- [x] Complete end-to-end fictional sample
+- [x] Research support protocols
+- [x] Production visual and brand specifications
+- [x] Root operating documentation
+- [x] Folder completion gates and DecisionLedger approvals
 
-## v0.2 — Scoring Engine
+Release evidence: `docs/commercial-v1-release-readiness.md`
 
-Goal: convert the methodology into a measurable assessment system.
+Final gate: `COMMERCIAL_V1_COMPLETION.md`
 
-Deliverables:
+## 4. Post-v1 roadmap
 
-- 100+ scoring criteria
-- Weighted category model
-- Evidence thresholds
-- Confidence levels
-- Operator Score calculator specification
-- Revenue Leakage Index specification
-- Automation Quotient specification
-- AI Readiness Index specification
+Post-v1 work is not required to call the methodology commercially complete.
 
-Acceptance criteria:
+### v1.1 — Field Reliability Program
 
-- Two evaluators should produce materially similar scores when using the same evidence.
-- Each category has clear 0, 25, 50, 75, and 100-point anchors.
+- run blinded multi-evaluator assessments
+- measure criterion and category agreement
+- identify ambiguous anchors
+- track scoring overrides and reviewer disagreement
+- publish reliability and calibration notes
 
-## v0.3 — Recommendation Engine
+### v1.2 — Additional Industry Playbooks
 
-Goal: map findings to implementation offers.
+Candidate sequence, subject to demand and evidence:
 
-Deliverables:
+- roofing
+- HVAC
+- plumbing
+- electrical
+- concrete
+- landscaping
+- excavation
+- remodeling
 
-- Finding library
-- Risk-to-impact model
-- Effort model
-- Prioritization matrix
-- Proposal generator template
-- Roadmap generator template
+Each playbook must pass the Stage 6 extension rules.
 
-Acceptance criteria:
+### v1.3 — Operating Data Layer
 
-- Every common finding maps to at least one recommended intervention.
-- Recommendations distinguish quick wins, structural fixes, and growth investments.
+- implementation-neutral database schema
+- assessment record storage
+- evidence and DecisionLedger objects
+- permissions and retention controls
+- report-generation interfaces
 
-## v0.4 — Report System
+No database or SaaS implementation is assumed by commercial v1.0.
 
-Goal: produce premium client-facing reports consistently.
+### v1.4 — Calculator and Report Automation
 
-Deliverables:
+- validated calculator implementation
+- schema validation
+- automated consistency checks
+- report assembly
+- score/roadmap rendering
+- regression fixtures
 
-- 25-page executive report template
-- Design system notes
-- Chart and scorecard components
-- Client-ready examples
-- Industry-specific variants
+Automation must fail closed and preserve review/authorization gates.
 
-Acceptance criteria:
+### v1.5 — Commercial Channel Assets
 
-- A report can be assembled in one working session after evidence collection.
-- Report quality supports $3,000–$10,000+ implementation proposals.
+- public offer page
+- sales deck
+- service agreement and licensing decisions
+- product demo using the fictional sample
+- sales/onboarding operating environment
 
-## v0.5 — Operating System
+Channel assets may not create unsupported claims or alter canonical scope.
 
-Goal: manage assessments as repeatable engagements.
+### v2.0 — Governed Platform
 
-Deliverables:
+Only after field reliability, commercial demand, permissions, and maintenance ownership are demonstrated:
 
-- Notion operating system specification
-- Airtable schema
-- Engagement workflow
-- Evidence database
-- CRM fields
-- Follow-up cadence
+- multi-engagement workspace
+- role-based access
+- evidence ingestion
+- scoring and report workflows
+- governed integrations
+- monitoring and renewal records
 
-Acceptance criteria:
+## 5. Backlog governance
 
-- Every client assessment is trackable from lead intake through implementation and renewal.
+A post-v1 item enters the roadmap only when it has:
 
-## v1.0 — Commercial Release
+- purpose and commercial connection
+- evidence or user demand
+- owner and acceptance criteria
+- scope and exclusions
+- dependency and risk analysis
+- maintenance implications
+- ALLOW/REVIEW/HALT decision
 
-Goal: launch Operator Intelligence as a sellable consulting product.
-
-Deliverables:
-
-- Public offer page
-- Intake form
-- Sales deck
-- Paid audit process
-- Implementation packages
-- Client onboarding SOP
-- Quality control checklist
+Do not reopen completed v1 architecture without new evidence.
