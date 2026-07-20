@@ -1,137 +1,164 @@
-# Evidence Register Template
+# Operator Intelligence Evidence Register Template
 
-Use this register as the source-of-truth index for all evidence admitted, rejected, pending validation, or blocked during an Operator Intelligence assessment.
+Version: v0.2 template reconciliation  
+Stage alignment: Stage 5 — `templates/`  
+Folder alignment: `templates/`  
+Status: Governed evidence source-of-truth template
 
----
+## 1. Purpose
 
-## 1. Register Control
+Use this register as the source-of-truth index for evidence accepted, limited, rejected, superseded, pending validation, or blocked during an Operator Intelligence engagement.
 
-| Field | Value |
-|---|---|
-| Assessment ID |  |
-| Client / system |  |
-| Report version |  |
-| Evidence snapshot date |  |
-| Register owner |  |
-| Reviewer |  |
-| DecisionLedger reference |  |
-| Status | draft / review / approved / superseded |
+Evidence records support decisions; they do not replace interpretation, scoring, approval, or authorization.
 
-## 2. Evidence Record
+## 2. Register control
 
-Create one record per distinct source or observation.
+```yaml
+assessment_id: ""
+register_version: ""
+methodology_version: ""
+evidence_snapshot_date: YYYY-MM-DD
+register_owner: ""
+reviewer: ""
+publication_state: internal_only|official|provisional|range_only|blocked
+qc_ref: null
+ledger_ref: OI-DL-YYYY-NNN
+supersedes: null
+```
 
-| Field | Required entry |
-|---|---|
-| Evidence ID | Stable unique identifier |
-| Title | Plain-language source label |
-| Source type | document / system record / interview / observation / test result / public source / client statement |
-| Source location | Resolvable path, URL, repository reference, or controlled storage location |
-| Source owner | Person or system responsible for the source |
-| Collection date | Date obtained or observed |
-| Evidence date range | Period represented by the evidence |
-| Collector | Person or process that obtained it |
-| Verification state | verified / corroborated / reported / pending / rejected / blocked |
-| Admissibility | admitted / limited / excluded |
-| Confidence | high / medium / low / unknown |
-| Scope relevance | Criterion, category, finding, or decision supported |
-| Material limitation | Known constraint, ambiguity, age, access gap, or sampling limitation |
-| Unknowns introduced | Questions the evidence does not resolve |
-| Sensitivity | public / internal / confidential / restricted |
-| Retention requirement | Required retention period or controlling policy |
-| Integrity check | Hash, version, screenshot date, export ID, or other integrity reference |
-| DecisionLedger ID | Ledger record governing admission, rejection, exception, or supersession |
-| Supersedes / superseded by | Related Evidence ID, when applicable |
-| Notes | Factual handling notes only |
+## 3. Canonical evidence record
 
-## 3. Verification Rules
+Create one record per distinct source, export, test, interview, or observation.
 
-- `verified`: directly inspected and attributable to a controlled source.
-- `corroborated`: supported by at least one independent admissible source.
-- `reported`: supplied through interview, intake, or stakeholder statement without independent verification.
-- `pending`: potentially relevant but not yet validated.
-- `rejected`: unusable because integrity, relevance, provenance, or reliability requirements failed.
-- `blocked`: validation could not be completed because required access, authorization, or source material was unavailable.
+```yaml
+evidence_id: OI-EV-YYYY-NNN
+assessment_id: ""
+captured_at: "YYYY-MM-DDThh:mm:ssZ"
+captured_by: ""
+source_type: screenshot|url|document|export|system_record|safe_test|interview|observation|third_party
+source_location: ""
+source_owner: public|client|evaluator|third_party
+evidence_class: A|B|C|D|E
+source_date: null
+scope: ""
+sample_scope: ""
+capture_method: ""
+observation: ""
+claim_scope: ""
+criterion_ids: []
+finding_ids: []
+evidence_strength: high|medium|low|insufficient
+confidence_support: high|medium|low|unknown
+limitations: []
+authorization_ref: null
+storage_ref: ""
+integrity_ref: null
+review_state: accepted|limited|rejected|superseded
+reviewed_by: ""
+reviewed_at: "YYYY-MM-DD"
+sensitivity: public|internal|confidential|restricted
+retention_requirement: ""
+ledger_refs: []
+```
 
-A client statement remains `reported` until corroborated. Missing access is not negative evidence. Public absence does not establish internal absence.
+## 4. Evidence class and use
 
-## 4. Admissibility Decision
-
-Record the basis for the evidence decision.
-
-| Check | Result | Notes |
+| Class | Meaning | Normal decision use |
 |---|---|---|
-| Source is attributable | pass / fail / unknown |  |
-| Collection method is documented | pass / fail / unknown |  |
-| Date range is known | pass / fail / unknown |  |
-| Scope relevance is explicit | pass / fail / unknown |  |
-| Integrity is sufficient | pass / fail / unknown |  |
-| Material limitations are disclosed | pass / fail / unknown |  |
-| Handling authorization is valid | pass / fail / unknown |  |
-| Duplicate ownership has been checked | pass / fail / unknown |  |
+| A | Directly observable or testable | May support scoring/findings when scope and admission pass |
+| B | Comparative evidence against a defined set | May support scoring when comparability is documented |
+| C | Approved pattern applied to visible evidence | Requires explicit rationale and criterion permission |
+| D | Inferred or plausible, not directly verified | Validation only; cannot independently create a negative score or package route |
+| E | Client-provided records, exports, screenshots, or statements | Use according to completeness, reliability, corroboration, and scope |
 
-### Decision
+Evidence class does not automatically set confidence.
 
-- Admissibility: admitted / limited / excluded
-- Decision gate: ALLOW / REVIEW / HALT
-- Decision reason:
-- Reviewer:
-- Approval date:
-- DecisionLedger ID:
+## 5. Admissibility review
 
-## 5. Criterion and Finding Traceability
+| Gate | Result | Evidence / notes | Failure treatment |
+|---|---|---|---|
+| Identity | pass / review / fail | | assign ID |
+| Attribution | pass / review / fail | | limit or reject |
+| Recency | pass / review / fail | | stale / limited |
+| Relevance | pass / review / fail | | reject unrelated use |
+| Scope | pass / review / fail | | limit assertion |
+| Integrity | pass / review / fail | | reject / recapture |
+| Authorization | pass / review / fail | | blocked; do not test |
+| Traceability | pass / review / fail | | block publication use |
+| Limitation | pass / review / fail | | change confidence/publication |
 
-| Evidence ID | Criterion ID | Category | Finding ID | Use | Weight ownership | Confidence effect |
+### Admission decision
+
+```yaml
+review_state: accepted|limited|rejected|superseded
+control_gate: ALLOW|REVIEW|HALT
+decision_reason: ""
+reviewer: ""
+decision_date: YYYY-MM-DD
+ledger_ref: OI-DL-YYYY-NNN
+```
+
+## 6. Traceability and duplicate control
+
+| Evidence ID | Criterion ID | Category | Finding ID | Use | Weighted owner | Confidence / publication effect |
 |---|---|---|---|---|---|---|
-|  |  |  |  | primary / corroborating / contextual / contradiction | primary / reference-only |  |
+| | | | | primary / corroborating / contextual / contradiction | primary / reference-only | |
 
 Rules:
 
-- A source may support multiple decisions, but duplicate weighted ownership is prohibited.
-- Contradictory evidence must remain visible and route to review.
+- One record may support several decisions only when every use is explicit.
+- One operational condition has one weighted owner.
+- Contradictory evidence remains visible and routes to REVIEW.
+- Rejected or superseded evidence stays auditable but cannot support new outputs.
 - Confidence cannot exceed the supporting evidence chain.
-- Unknown or blocked evidence cannot be converted into a numeric failure.
-- Findings must cite the exact Evidence IDs used.
 
-## 6. Unknown and Blocked Register
+## 7. Unknown and blocked register
 
-| Item ID | Related Evidence ID | Unknown or blocker | Material effect | Resolution requirement | Owner | Gate | Status |
-|---|---|---|---|---|---|---|---|
-|  |  |  | scoring / finding / routing / publication / implementation |  |  | REVIEW / HALT | open / resolved / accepted limitation |
+| Item ID | Evidence ref | Condition | State | Decision effect | Resolution requirement | Owner | Gate | Status |
+|---|---|---|---|---|---|---|---|---|
+| | | | unknown / blocked | scoring / finding / routing / publication / authorization | | | REVIEW / HALT | open / resolved / accepted limitation |
 
-Accepted limitations require an explicit DecisionLedger record and must remain visible in client-facing reporting when material.
+Missing access is not negative evidence. Public absence does not prove internal absence.
 
-## 7. Evidence Coverage Summary
+## 8. Coverage summary
 
-| Category | Applicable weight | Admitted evidence weight | Blocked weight | Unknown weight | Coverage % | Confidence |
-|---|---:|---:|---:|---:|---:|---|
-|  |  |  |  |  |  |  |
+| Category | Applicable weight | Known weight | Unknown weight | Blocked weight | Coverage | Confidence | Publication effect |
+|---|---:|---:|---:|---:|---:|---|---|
+| | | | | | | | |
 
-Do not publish an official Operator Score from this table alone. Publication state must be determined under the publication standard and recorded in the DecisionLedger.
+This summary does not independently authorize an Operator Score or report publication.
 
-## 8. Supersession and Change Control
+## 9. Supersession and change control
 
 When evidence changes materially:
 
-1. Preserve the prior record.
-2. Create a new Evidence ID or versioned source reference.
-3. Link the superseded and superseding records.
-4. Reassess affected criteria, findings, confidence, recommendations, package routes, roadmap items, and publication state.
-5. Record the change in the DecisionLedger.
+1. preserve the prior record
+2. create a new ID or versioned source reference
+3. link prior and superseding records
+4. reassess affected scores, findings, recommendations, routes, roadmaps, and publication decisions
+5. create a DecisionLedger event
 
-Approved evidence records must not be silently overwritten.
+## 10. Pre-release validation
 
-## 9. Pre-Release Validation
-
-- [ ] Every cited Evidence ID resolves to an accessible controlled source.
-- [ ] Verification state and admissibility are recorded separately.
+- [ ] Every cited evidence ID resolves.
+- [ ] Required canonical fields are complete.
+- [ ] Class, strength, confidence support, and review state remain separate.
 - [ ] Reported statements are not presented as verified facts.
-- [ ] Unknown and blocked conditions remain visible.
-- [ ] Contradictory evidence has been routed to review.
-- [ ] Duplicate weighted ownership has been checked.
-- [ ] Confidence does not exceed source quality.
-- [ ] Sensitive evidence has authorized handling and retention controls.
-- [ ] Material admission, rejection, exception, and supersession decisions have DecisionLedger records.
-- [ ] Published findings and scores cite the exact supporting Evidence IDs.
+- [ ] Unknowns, blockers, contradictions, and limitations remain visible.
+- [ ] Duplicate weighted ownership is absent.
+- [ ] Sensitive evidence has approved handling and retention controls.
+- [ ] Admission, rejection, exception, and supersession decisions are ledgered.
+- [ ] Publication uses the exact evidence snapshot reviewed.
 
-Any failed integrity, authorization, provenance, duplicate-ownership, or material traceability check requires `HALT` until resolved or formally superseded.
+Any failed authorization, integrity, provenance, traceability, or duplicate-ownership control requires HALT.
+
+## 11. Commercial v1.0 connection
+
+This register makes evidence capture and admission repeatable across assessors and provides the audit foundation for scoring, findings, reports, and implementation decisions.
+
+## 12. References
+
+- `standards/evidence-standard.md`
+- `standards/confidence-standard.md`
+- `standards/decision-ledger-standard.md`
+- `templates/decision-ledger.md`
