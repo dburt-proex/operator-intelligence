@@ -1,199 +1,171 @@
 # Finding-to-Recommendation Review Playbook
 
-## Purpose
+Version: v1.0 commercial operating playbook  
+Stage alignment: Stage 6 — `playbooks/`  
+Folder alignment: `playbooks/`  
+Status: Governed evidence-to-action workflow
 
-Use this playbook to convert an approved finding into a bounded, traceable recommendation without overstating evidence, duplicating ownership, bypassing dependencies, or implying unsupported outcomes.
+## 1. Purpose
 
-It operationalizes the finding, recommendation, package-routing, roadmap, quality-control, and DecisionLedger standards. It does not replace those standards or their templates.
+Use this playbook to convert a governed finding into a bounded recommendation, priority decision, package-eligibility state, package route, roadmap placement, and acceptance plan without overstating evidence or selling work before it is justified.
 
-## Required inputs
+## 2. Inputs
 
-- Approved Finding Register entry
-- Supporting and contradictory Evidence IDs
-- Applicable criterion and score treatment
-- Recommendation Register
-- Canonical package registry
-- Roadmap Standard
+- validated or blocked Finding Register entry
+- supporting and contradictory evidence
+- criterion/category and score treatment
+- canonical impact, effort, and opportunity authorities
+- recommendation and package standards
+- package catalog and roadmap standard
 - DecisionLedger
-- Current publication state
 
-## Required outputs
+## 3. Outputs
 
-- Recommendation decision: `ALLOW`, `REVIEW`, or `HALT`
-- Bounded recommendation statement
-- One primary package route
-- Prerequisites and dependency chain
-- Roadmap phase
-- Acceptance evidence
-- DecisionLedger references for material decisions
+- recommendation class and status
+- observation, interpretation, impact, confidence, and limitations
+- canonical priority inputs and score
+- package eligibility
+- one primary package only when eligible
+- Phase 0 or phases 1–5 placement
+- acceptance criteria/evidence
+- ALLOW/REVIEW/HALT and ledger refs
 
-## Review sequence
+## 4. Review sequence
 
-### 1. Confirm finding eligibility
+### 4.1 Confirm finding state
 
-Proceed only when the finding:
+Proceed only when finding identity, evidence, confidence, ownership, limitations, review state, and downstream-use status resolve.
 
-- has a stable Finding ID;
-- is supported by admissible evidence;
-- preserves contradictory evidence and material limitations;
-- has an evidence-bounded confidence state;
-- treats unknown and blocked conditions as unscored;
-- has passed required review or approval gates.
+A candidate, unsupported, contradictory, or unauthorized finding cannot support implementation.
 
-Use `HALT` when the finding is unsupported, materially contradictory, improperly scored, or not authorized for downstream use.
+### 4.2 Define the verified root condition
 
-### 2. Define the verified condition
+State:
 
-State the condition narrowly enough that another reviewer can identify:
+- what is observed
+- where and when it occurs
+- evidence and limits
+- affected criterion/control
+- business relevance
+- remaining unknowns
 
-- what is happening;
-- where it occurs;
-- which evidence proves or limits it;
-- which criterion or control is affected;
-- what remains unknown.
+Do not convert public absence, reported claims, or missing access into verified failure.
 
-Do not convert assumptions, public absence, reported claims, or missing access into verified failure language.
+### 4.3 Select recommendation class
 
-### 3. Test recommendation necessity
+- `implementation`: controlled action can resolve a verified condition.
+- `validation`: evidence, access, authority, or control gap must be resolved first.
+- `monitoring`: condition is accepted but requires measured review.
+- `defer`: valid action is intentionally delayed.
+- `halt`: proceeding violates a material boundary.
 
-A recommendation is warranted only when a controlled action can address the verified condition or validate a material unknown.
+Reject generic best practice, duplicate, commercially preferred, out-of-scope, or unsupported actions.
 
-Reject or revise recommendations that are:
+### 4.4 Bound the action
 
-- generic best practice without finding-specific evidence;
-- commercially preferred but not evidence-supported;
-- duplicative of an existing recommendation;
-- broader than the approved scope;
-- dependent on an unresolved `HALT` condition.
+Define action, system/workflow, owner, included/excluded scope, prerequisites, dependencies, risks, acceptance criteria, evidence, and authorization boundary.
 
-Unknown or blocked findings route to validation work before implementation work.
+### 4.5 Calculate priority
 
-### 4. Bound the action
+Use:
 
-Define:
+```text
+Priority Score = ((Impact × 0.40) + (Evidence Strength × 0.20) + (Effort Inverse × 0.15) + (Strategic Fit × 0.25)) × 20
+```
 
-- action to perform;
-- affected system, workflow, or owner;
-- included scope;
-- excluded scope;
-- prerequisites;
-- dependencies;
-- material risks;
-- completion evidence.
+Import inputs from canonical framework authorities. Confidence is a separate gate and does not modify priority. Priority cannot bypass prerequisites.
 
-Recommendation scope must not exceed the supporting finding, evidence, authorization, or confidence state.
+### 4.6 Determine package eligibility
 
-### 5. Assign one primary package
+| State | Meaning |
+|---|---|
+| `eligible` | Verified implementation/deferred action can be owned by a canonical package |
+| `validation_required` | Missing evidence/access/control prevents package assignment |
+| `blocked` | Material boundary prevents routing or implementation |
+| `not_applicable` | Recommendation does not require package implementation |
 
-Select the canonical package that owns the root implementation condition.
+Validation, monitoring, halt, and blocked recommendations may have no primary package.
 
-Rules:
+### 4.7 Route eligible work
 
-1. assign exactly one primary package;
-2. list secondary packages only as prerequisite, dependency, downstream, or reference-only relationships;
-3. do not duplicate deliverables or ownership across packages;
-4. do not invent a package when an approved package already covers the work;
-5. route disputed ownership to `REVIEW` and record the decision when material.
+When eligible:
 
-Missing, conflicting, or duplicate primary ownership requires `HALT`.
+1. select exactly one canonical primary package owning the root condition
+2. list prerequisite/dependent/reference-only packages separately
+3. prevent duplicate deliverables and billing
+4. select only evidence-justified catalog scope
+5. record exclusions and routing reason
 
-### 6. Place the recommendation on the roadmap
+No package fit means methodology/validation gap, not an invented package.
 
-Assign the earliest phase whose entry gates and dependencies are satisfied.
+### 4.8 Place on roadmap
 
-- Phase 1: foundational controls, access, measurement, ownership, or material risk containment
-- Phase 2: defined workflow and operational reliability improvements
-- Phase 3: optimization after foundations and workflows are stable
-- Phase 4: governed AI enablement after workflow, data, privacy, human-review, escalation, logging, and QA gates pass
+- Phase 0: validation/access only; no implementation authorization
+- Phase 1: verified quick-win correction
+- Phase 2: growth foundation
+- Phase 3: automation/reporting
+- Phase 4: governed AI after all controls pass
+- Phase 5: evidence-backed optimization/renewal/closure
 
-Priority, commercial preference, or implementation ease cannot bypass prerequisites.
+### 4.9 Define acceptance and measurement
 
-### 7. Define acceptance evidence
+Completion evidence proves authorized scope. Realized-value evidence requires separate baselines, sources, windows, and decision review.
 
-Completion must be demonstrated by observable evidence, such as:
+### 4.10 Control language and authority
 
-- approved configuration or policy record;
-- tested workflow result;
-- access or ownership confirmation;
-- reproducible measurement output;
-- documented control operation;
-- reviewer-approved validation artifact.
+Recommendation language must distinguish fact, interpretation, action, purpose, and unverified outcome. Publication, roadmap approval, proposal acceptance, and implementation authorization remain separate.
 
-Deliverable existence alone does not prove completion. Implementation completion does not prove business outcome.
+## 5. Decision gates
 
-### 8. Control claims and language
+- `ALLOW`: finding-specific, evidence-bounded, priority-valid, eligibility-valid, dependency-compliant, measurable, and traceable.
+- `REVIEW`: bounded judgment is required for scope, priority, eligibility, package ownership, phase, or acceptance evidence.
+- `HALT`: unsupported finding/action, unknown-as-failure, scope excess, invalid route, bypassed dependency, uncontrolled AI, unsupported claim, or broken traceability.
 
-Use executive-safe language that distinguishes:
+## 6. Decision record
 
-- verified condition;
-- interpretation;
-- recommended action;
-- expected operational purpose;
-- unverified outcome.
+```yaml
+recommendation_id: OI-REC-YYYY-NNN
+recommendation_class: implementation|validation|monitoring|defer|halt
+finding_refs: []
+evidence_refs: []
+confidence: high|medium|low|unknown
+impact_score: 1-5
+evidence_strength_score: 1-5
+effort_inverse: 1-5
+strategic_fit_score: 1-5
+priority_score: 0-100
+package_eligibility: eligible|validation_required|blocked|not_applicable
+primary_package_id: null
+dependent_package_ids: []
+roadmap_phase: 0|1|2|3|4|5
+implementation_authorized: false
+acceptance_criteria: []
+acceptance_evidence: []
+review_state: ALLOW|REVIEW|HALT
+ledger_refs: []
+```
 
-Do not claim guaranteed ROI, revenue, conversion, ranking, lead recovery, market share, competitor performance, savings, or delivery timelines without separately admissible evidence and approved methodology.
+## 7. Completion checklist
 
-### 9. Record the decision
+- [ ] Finding is governed and resolvable.
+- [ ] Root condition is narrow and supported.
+- [ ] Recommendation class is correct.
+- [ ] Priority inputs reproduce.
+- [ ] Confidence remains separate.
+- [ ] Package eligibility is explicit.
+- [ ] Exactly one primary package exists only when eligible.
+- [ ] Phase 0 and phases 1–5 are valid.
+- [ ] Acceptance and realized value remain separate.
+- [ ] Authority boundaries and ledger refs are complete.
 
-Create or reference DecisionLedger records for material:
+## 8. Commercial v1.0 connection
 
-- recommendation approval or rejection;
-- scope exception;
-- confidence override;
-- package route;
-- roadmap phase or resequencing;
-- dependency waiver;
-- `HALT` resolution;
-- publication restriction;
-- supersession.
+This playbook makes recommendation development repeatable while protecting the system from package-first selling, duplicate ownership, and unsupported scope.
 
-Approved recommendations are changed through controlled revision or supersession, never silent replacement.
+## 9. References
 
-## Decision gates
-
-### ALLOW
-
-Use when the recommendation is finding-specific, evidence-bounded, uniquely routed, dependency-compliant, measurable, and authorized for its stated downstream use.
-
-### REVIEW
-
-Use when the finding is valid but package ownership, scope, sequencing, acceptance evidence, or a bounded contradiction requires a documented reviewer decision.
-
-### HALT
-
-Use when any of the following exists:
-
-- unsupported or unauthorized finding;
-- unknown treated as verified failure;
-- recommendation scope exceeds evidence;
-- duplicate or missing primary package ownership;
-- unresolved dependency or prerequisite;
-- Phase 4 work bypassing governance gates;
-- unsupported outcome claim;
-- missing required DecisionLedger traceability.
-
-## Completion checklist
-
-- [ ] Finding is approved for downstream use
-- [ ] Evidence and limitations are resolvable
-- [ ] Unknown and blocked conditions remain explicit
-- [ ] Recommendation directly addresses the verified condition
-- [ ] Scope is bounded and exclusions are stated
-- [ ] Exactly one primary package is assigned
-- [ ] Dependencies and roadmap phase are valid
-- [ ] Acceptance evidence is observable
-- [ ] Publication and implementation authorization remain separate
-- [ ] Executive language avoids unsupported outcomes
-- [ ] Material decisions are traceable in the DecisionLedger
-
-## Cross-references
-
-- `playbooks/evidence-validation-playbook.md`
 - `templates/finding-register.md`
 - `templates/recommendation-register.md`
-- `templates/decision-ledger.md`
+- `templates/package-catalog.md`
 - `standards/recommendation-standard.md`
 - `standards/package-routing-standard.md`
-- `standards/roadmap-standard.md`
-- `standards/quality-control-standard.md`
-- `standards/decision-ledger-standard.md`
