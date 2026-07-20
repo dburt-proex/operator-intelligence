@@ -1,175 +1,177 @@
-# Finding Register Template
+# Operator Intelligence Finding Register Template
 
-## Purpose
+Version: v0.2 template reconciliation  
+Stage alignment: Stage 5 — `templates/`  
+Folder alignment: `templates/`  
+Status: Governed commercial v1.0 finding template
 
-Use this register to control every material assessment finding from evidence review through recommendation, package routing, roadmap sequencing, publication, and DecisionLedger traceability.
+## 1. Purpose
 
-A finding is not publishable merely because an issue appears plausible. It must be supported by admissible evidence, assigned confidence, checked for duplicate ownership, and written in executive-safe language.
+Use this register to control material assessment findings from evidence review through validation, suppression, publication, recommendation development, package eligibility, roadmap placement, and DecisionLedger traceability.
 
-## Register metadata
+A plausible condition is not automatically a finding. A publishable finding requires admissible evidence, bounded interpretation, supported business impact, confidence, duplicate control, and executive-safe language.
 
-| Field | Required value |
-|---|---|
-| Assessment ID | Stable assessment identifier |
-| Client | Legal or approved client name |
-| Assessment version | Current governed version |
-| Evidence snapshot date | Date of the evidence set used |
-| Publication state | `internal_only`, `provisional`, `range_only`, `official`, or `blocked` |
-| Register owner | Accountable analyst |
-| Reviewer | Required reviewer for material findings |
-| DecisionLedger reference | Ledger record governing this register version |
+## 2. Register control
 
-## Controlled finding states
+```yaml
+assessment_id: ""
+register_version: ""
+methodology_version: ""
+evidence_snapshot_date: YYYY-MM-DD
+publication_state: internal_only|official|provisional|range_only|blocked
+register_owner: ""
+reviewer: ""
+qc_ref: null
+ledger_ref: OI-DL-YYYY-NNN
+```
 
-- `candidate`: observed condition awaiting evidence validation
-- `validated`: evidence supports the finding and confidence is assigned
-- `suppressed`: duplicate, immaterial, out of scope, or unsupported
-- `blocked`: evidence or access is insufficient to determine the condition
-- `published`: approved for client-facing release
-- `superseded`: replaced by a later governed finding
+## 3. Finding states
 
-## Finding record
+- `candidate`
+- `validation_required`
+- `validated`
+- `suppressed`
+- `blocked`
+- `published`
+- `closed`
+- `superseded`
 
-Create one record per distinct root condition.
+## 4. Finding record
 
-| Field | Requirement |
-|---|---|
-| Finding ID | Stable unique identifier |
-| Title | Clear condition statement, not a recommendation |
-| Category | Canonical assessment category |
-| Criterion IDs | Criteria directly affected |
-| Evidence IDs | Admissible supporting evidence |
-| Contradictory evidence IDs | Any evidence that materially challenges the finding |
-| Evidence state | `verified`, `reported`, `inferred`, `unknown`, or `blocked` |
-| Finding state | Controlled finding state |
-| Condition | What is demonstrably present, absent, inconsistent, or unresolved |
-| Operational effect | Evidence-bounded effect on the operating system |
-| Confidence | `high`, `medium`, `low`, or `unknown` |
-| Confidence basis | Why the evidence supports that confidence level |
-| Material unknowns | Missing facts that could change interpretation |
-| Duplicate-owner check | Primary criterion or finding that owns the signal |
-| Severity | Governed severity from the scoring framework |
-| Score effect | Score relationship or `unscored` |
-| Recommendation IDs | Approved recommendations derived from this finding |
-| Primary package | Exactly one package when implementation is authorized |
-| Roadmap phase | Governed phase or `validation_required` |
-| Publication effect | `allow`, `review`, or `halt` |
-| DecisionLedger IDs | Records supporting validation, suppression, publication, or supersession |
-| Reviewer decision | `ALLOW`, `REVIEW`, or `HALT` |
-| Approval date | Date approved or left blank |
+```yaml
+finding_id: OI-FIND-DOMAIN-NNN
+finding_version: "1.0"
+supersedes: null
+title: ""
+domain: website|conversion|messaging|offer|seo|gbp|trust|competitive|automation|analytics|ai_readiness
+category_key: ""
+criterion_refs: []
+evidence_refs: []
+contradictory_evidence_refs: []
+state: candidate|validation_required|validated|suppressed|blocked|published|closed|superseded
+observation: ""
+interpretation: ""
+business_impact: ""
+confidence: high|medium|low|unknown
+confidence_basis: ""
+assumptions: []
+limitations: []
+unknowns: []
+validation_required: []
+weighted_owner: ""
+reference_only_uses: []
+severity: G1|G2|G3|G4
+score_effect: ""
+report_use: include|internal_only|validation_note|suppress
+recommendation_refs: []
+package_eligibility: eligible|validation_required|blocked|not_applicable|null
+primary_package_id: null
+roadmap_phase: 0|1|2|3|4|5|null
+review_state: ALLOW|REVIEW|HALT
+qc_ref: null
+ledger_refs: []
+approved_by: null
+approved_at: null
+```
 
-## Finding statement structure
+## 5. Finding statement contract
 
 Use this sequence:
 
 ```text
-Condition
+Observation
 → Evidence
-→ Operational effect
+→ Interpretation
+→ Business impact
 → Confidence and limitations
 → Required decision
 ```
 
-### Condition
+- **Observation:** what was directly observed or supplied.
+- **Evidence:** exact evidence IDs, dates, methods, and scope.
+- **Interpretation:** what the evidence supports, not assumed cause.
+- **Business impact:** bounded operational, buyer-path, trust, visibility, measurement, or governance relevance.
+- **Confidence/limitations:** what is known, unknown, conflicting, or blocked.
+- **Required decision:** validate, develop a recommendation, monitor, defer, suppress, close, or halt.
 
-State only the evidenced condition. Do not embed a solution, sales claim, or assumed cause.
+## 6. Evidence and unknown-data rules
 
-### Evidence
-
-Reference the specific Evidence IDs and represented date range. Client statements remain `reported` until corroborated.
-
-### Operational effect
-
-Describe the bounded operational consequence supported by the evidence. Do not claim revenue loss, conversion impact, market-share effect, ranking impact, or ROI unless independently supported by admissible evidence.
-
-### Confidence and limitations
-
-Explain what is known, what remains unknown, and what would materially change the finding.
-
-### Required decision
-
-State whether the finding permits recommendation development, requires validation, or blocks dependent work.
-
-## Evidence and unknown-data rules
-
-- Missing access is not negative evidence.
+- Missing access is unknown or blocked, not negative evidence.
 - Public absence does not prove internal absence.
-- Unknown or blocked conditions remain unscored unless the scoring standard explicitly permits another treatment.
-- Confidence cannot exceed the supporting evidence chain.
-- Contradictory evidence must remain visible and routes the finding to `REVIEW` unless resolved.
-- A finding with no resolvable Evidence ID cannot advance beyond `candidate`.
+- Class D or inferred evidence normally supports validation, not a negative finding.
+- A finding with no resolvable admitted evidence cannot advance beyond candidate/validation required.
+- Contradictory evidence remains visible and routes to REVIEW.
+- Confidence cannot exceed the evidence chain.
+- Unknown conditions do not create package-eligible implementation routes.
 
-## Duplicate ownership
+## 7. Duplicate ownership
 
-Each material signal must have one primary finding owner.
+Each material signal has one primary weighted owner. Other findings or categories may reference it only when they represent distinct root conditions or reference-only effects.
 
-A second record may reference the signal only when it represents a distinct root condition. It must not duplicate weighted score impact, recommendation ownership, or implementation scope.
+Unresolved duplication affecting score, priority, package route, scope, or publication requires HALT.
 
-Duplicate ownership that changes score, priority, package routing, or publication state requires `HALT` until resolved.
+## 8. Recommendation and package transition
 
-## Recommendation and package routing
+- A validated finding may support one or more distinct recommendations.
+- Package eligibility is determined at the recommendation/routing layer.
+- Exactly one primary package is required only for package-eligible work.
+- Validation and blocked findings normally use Phase 0 and no primary package.
+- Priority cannot bypass prerequisites.
+- G4 and unresolved HALT conditions block dependent work.
+- AI work cannot advance before all readiness gates pass.
 
-- A finding may support multiple recommendations only when each recommendation addresses a distinct controlled action.
-- Every implementation recommendation must route to exactly one primary package.
-- Unknown or blocked findings route to validation, not implementation.
-- `HALT` findings block dependent roadmap items.
-- Priority cannot bypass roadmap prerequisites.
-- Phase 4 AI work cannot proceed without required workflow, data, privacy, review, escalation, logging, and QA controls.
+## 9. Suppression and closure
 
-## Suppression rules
-
-A finding may be suppressed only when the DecisionLedger records one of these reasons:
+A finding may be suppressed or closed only with a ledgered reason:
 
 - duplicate ownership
-- immaterial to the approved scope
+- immaterial or out of scope
 - unsupported by admissible evidence
 - superseded by a more precise finding
-- resolved before publication with verification evidence
+- verified resolved before publication
+- accepted monitoring condition
 
-Suppression must not conceal an unknown, blocked condition, material contradiction, or release blocker.
+Suppression cannot conceal a material unknown, contradiction, blocker, or release risk.
 
-## Executive-safe language
+## 10. Executive-safe language
 
-Use precise, bounded language:
+Approved patterns:
 
-- “Evidence indicates…”
-- “The assessed sample shows…”
-- “This condition may constrain…”
-- “Validation is required before implementation…”
+- “The reviewed evidence shows…”
+- “The condition was not visible on the tested public surfaces…”
+- “This may constrain…”
+- “Internal validation is required before implementation…”
 
-Do not use guaranteed, universal, or unsupported financial claims.
+Prohibit blame, universal claims, and unsupported financial or performance certainty.
 
-## Pre-publication validation
+## 11. Pre-publication validation
 
-A finding can move to `published` only when all applicable checks pass:
-
-- [ ] Finding ID is unique and stable.
-- [ ] Scope and criterion references are valid.
-- [ ] Evidence IDs are admissible and traceable.
-- [ ] Contradictory evidence is disclosed.
-- [ ] Confidence matches the evidence chain.
-- [ ] Unknown and blocked states are preserved.
-- [ ] Duplicate weighted ownership is absent.
+- [ ] ID, domain, criteria, and finding-library mapping are valid.
+- [ ] Evidence refs are admitted and traceable.
+- [ ] Observation and interpretation are separated.
+- [ ] Impact is supported and bounded.
+- [ ] Confidence, unknowns, limitations, and contradictions are visible.
+- [ ] Duplicate ownership is resolved.
 - [ ] Score effect is reproducible or explicitly unscored.
-- [ ] Recommendation routing is proportional and traceable.
-- [ ] Exactly one primary package is assigned when required.
-- [ ] Roadmap prerequisites are preserved.
-- [ ] Executive language contains no unsupported outcome claim.
-- [ ] DecisionLedger approval is complete.
+- [ ] Package eligibility and phase treatment are valid where referenced.
+- [ ] QC and DecisionLedger refs resolve.
 - [ ] Publication state permits release.
+- [ ] Executive-safe language passes.
 
-Any failed evidence-integrity, duplicate-ownership, unknown-state, score-reproducibility, package-routing, or authorization check requires `HALT`.
+Any failed evidence, duplication, unknown-state, traceability, or publication check requires HALT.
 
-## Cross-references
+## 12. Commercial v1.0 connection
 
+This register makes finding construction repeatable and protects the transition from evidence to recommendation and package routing.
+
+## 13. References
+
+- `framework/finding-index.md`
+- `framework/findings/`
 - `standards/evidence-standard.md`
 - `standards/confidence-standard.md`
 - `standards/recommendation-standard.md`
 - `standards/package-routing-standard.md`
-- `standards/roadmap-standard.md`
-- `standards/publication-standard.md`
-- `standards/decision-ledger-standard.md`
 - `standards/quality-control-standard.md`
 - `templates/evidence-register.md`
-- `templates/decision-ledger.md`
-- `framework/findings/`
+- `templates/recommendation-register.md`
