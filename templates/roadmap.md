@@ -1,162 +1,186 @@
 # Governed Implementation Roadmap Template
 
-Use this template only after recommendations have passed evidence, confidence, package-routing, and publication review. Target windows are planning fields, not guarantees.
+Version: v0.2 template reconciliation  
+Stage alignment: Stage 5 — `templates/`  
+Folder alignment: `templates/`  
+Status: Governed commercial v1.0 working template
 
-## 1. Roadmap metadata
+## 1. Purpose
+
+Use this template to sequence validation, implementation, optimization, and closure decisions after recommendation and package-routing review.
+
+A roadmap is a governed decision artifact. It is not implementation authorization and does not guarantee dates or outcomes.
+
+## 2. Roadmap metadata
 
 | Field | Value |
 |---|---|
-| Client | [Client name] |
-| Assessment ID | [Assessment ID] |
-| Roadmap version | [v0.1] |
-| Prepared date | [YYYY-MM-DD] |
-| Publication state | [official / provisional / range_only / blocked / internal_only] |
-| Implementation authorization | [not_requested / pending / approved / limited / denied] |
-| DecisionLedger record | [Ledger reference] |
-| Roadmap owner | [Named owner] |
-| Decision authority | [Named authority] |
+| Roadmap ID | `OI-ROAD-YYYY-NNN` |
+| Client / assessment | |
+| Roadmap version | |
+| Supersedes | |
+| Methodology version | |
+| Prepared date | |
+| Evidence snapshot date | |
+| Publication state | `internal_only` / `official` / `provisional` / `range_only` / `blocked` |
+| QC reference | |
+| Roadmap owner | |
+| Decision authority | |
+| DecisionLedger reference | |
+| Implementation authorization | `false` unless separately granted |
 
-## 2. Scope and operating boundaries
+## 3. Scope and boundaries
 
 **Primary objective**  
-[Evidence-bound objective]
+[Evidence-bound operating-state objective.]
 
 **Included scope**
 
-- [Approved package or workstream]
+- 
 
 **Excluded scope**
 
-- [Explicit exclusion]
+- 
 
 **Material unknowns**
 
-- [Unknown condition, missing evidence, and validation action]
+- 
 
 **Blocked conditions**
 
-- [Access, authority, privacy, safety, policy, data, technical, or control blocker]
+- 
 
-## 3. Sequencing rules
+## 4. Sequencing rules
 
-- Every roadmap item must trace to evidence, a governed finding, an approved recommendation, one primary package, and a DecisionLedger record.
-- Unknown or low-confidence conditions normally enter as `validation_required`, not implementation work.
-- Higher phases cannot bypass unresolved lower-phase dependencies.
-- Priority or commercial attractiveness alone cannot determine sequence.
-- Implementation approval is separate from report publication approval.
-- Deliverable existence alone does not prove completion.
-- Business outcome validation remains separate from implementation completion.
+- Every item traces to evidence, a governed finding, a recommendation or validation requirement, and a DecisionLedger record.
+- Package eligibility is explicit before package assignment.
+- Exactly one primary package is required only for package-eligible work.
+- Phase 0 contains validation/access work and cannot authorize implementation.
+- Phases 1–5 follow root condition and dependency state.
+- Priority or commercial attractiveness cannot bypass prerequisites.
+- Roadmap approval and publication do not authorize implementation.
+- Deliverable existence does not prove completion.
+- Completion and realized-value validation remain separate.
 
-## 4. Roadmap register
+## 5. Roadmap register
 
-| Item ID | Recommendation | Primary package | Phase | Rank | Status | Review state | Owner | Target window | Dependencies | Acceptance evidence | Ledger ref |
-|---|---|---|---:|---:|---|---|---|---|---|---|---|
-| OI-RM-[YYYY]-[NNN] | [Recommendation ID] | [Package ID] | [1–4] | [1] | [proposed / validation_required / approved / blocked / in_progress / complete / deferred / rejected] | [ALLOW / REVIEW / HALT] | [Owner] | [Planning window] | [IDs] | [Evidence required] | [Ledger ID] |
+| Item ID | Recommendation / validation ref | Package eligibility | Primary package | Phase | Rank | Status | Review state | Owner | Authority | Dependencies | Acceptance evidence | Implementation authorized | Ledger ref |
+|---|---|---|---|---:|---:|---|---|---|---|---|---|---|---|
+| OI-RM-YYYY-NNN | | | | 0–5 | | | | | | | | false | |
 
-## 5. Phase 1 — Quick Wins
+Allowed status values: `proposed`, `validation_required`, `approved`, `blocked`, `authorized`, `in_progress`, `complete`, `monitoring`, `deferred`, `rejected`, `cancelled`.
+
+## 6. Phase 0 — Validation and Access
+
+**Purpose:** Resolve material evidence, access, authority, privacy, scope, eligibility, or control gaps before implementation sequencing.
+
+| Item ID | Condition | Required evidence / decision | Access or authority needed | Owner | Exit condition | State | Ledger ref |
+|---|---|---|---|---|---|---|---|
+| | | | | | | `validation_required` / `blocked` | |
+
+Rules:
+
+- `primary_package_id` may be null.
+- `implementation_authorized` remains false.
+- Exit requires a new or superseding recommendation/roadmap decision.
+
+## 7. Phase 1 — Quick Wins
 
 **Purpose:** Correct verified critical friction, accuracy, access, or buyer-path failures with bounded scope.
 
-**Entry gate**
+| Item ID | Action | Root finding | Package | Prerequisites | Owner | Acceptance criteria | Completion evidence | State |
+|---|---|---|---|---|---|---|---|---|
+| | | | | | | | | |
 
-- verified condition and current evidence
-- bounded implementation scope
-- owner, authority, and access confirmed
-- no unresolved material dependency
-- observable acceptance criteria
+## 8. Phase 2 — Growth Foundation
 
-| Item ID | Action | Root condition | Prerequisites | Owner | Acceptance criteria | Completion evidence | State |
-|---|---|---|---|---|---|---|---|
-| [ID] | [Action] | [Finding ID] | [Prerequisites] | [Owner] | [Observable pass condition] | [Evidence ref] | [State] |
+**Purpose:** Establish service, proof, local presence, content, offer, and conversion foundations.
 
-## 6. Phase 2 — Growth Foundation
+| Item ID | Action | Root finding | Package | Dependencies | Owner | Acceptance criteria | Completion evidence | State |
+|---|---|---|---|---|---|---|---|---|
+| | | | | | | | | |
 
-**Purpose:** Establish service, proof, local presence, content, and conversion foundations required for durable growth work.
-
-**Entry gate**
-
-- service, location, and offer claims are supportable
-- required content, access, and ownership are available
-- dependent Phase 1 conditions are resolved
-- scope does not exceed verified capacity or package boundaries
-
-| Item ID | Action | Root condition | Prerequisites | Owner | Acceptance criteria | Completion evidence | State |
-|---|---|---|---|---|---|---|---|
-| [ID] | [Action] | [Finding ID] | [Prerequisites] | [Owner] | [Observable pass condition] | [Evidence ref] | [State] |
-
-## 7. Phase 3 — Automation and Reporting
+## 9. Phase 3 — Automation and Reporting
 
 **Purpose:** Standardize workflows, ownership, system-of-record use, follow-up, measurement, and reporting.
 
-**Entry gate**
+| Item ID | Action | Workflow / metric | Package | Control prerequisites | Owner | Acceptance criteria | Completion evidence | State |
+|---|---|---|---|---|---|---|---|---|
+| | | | | | | | | |
 
-- workflow stages, triggers, exceptions, and handoffs are documented
-- owners and system of record are defined
-- metric definitions and decision use are named
-- access and implementation authority are confirmed
-- unresolved `HALT` conditions are absent
+## 10. Phase 4 — Governed AI Enablement
 
-| Item ID | Action | Workflow or metric | Prerequisites | Owner | Acceptance criteria | Completion evidence | State |
-|---|---|---|---|---|---|---|---|
-| [ID] | [Action] | [Workflow or metric] | [Prerequisites] | [Owner] | [Observable pass condition] | [Evidence ref] | [State] |
+**Purpose:** Introduce bounded AI assistance only after workflow, data, privacy, human review, escalation, logging, QA, and failure controls pass.
 
-## 8. Phase 4 — Governed AI Enablement
-
-**Purpose:** Introduce bounded AI assistance only after workflow, data, privacy, review, escalation, logging, and QA controls pass.
-
-**Mandatory entry gate**
-
-- bounded use case
-- documented workflow and structured inputs
-- approved knowledge sources
-- privacy and permission controls
-- allowed and blocked topics
-- human review and escalation rules
-- audit logging
-- QA owner and cadence
-- explicit `ALLOW`, `REVIEW`, or `HALT` decision
+| Item ID | Bounded use case | Package | Control refs | Review state | Owner | Acceptance criteria | Completion evidence | State |
+|---|---|---|---|---|---|---|---|---|
+| | | | | `ALLOW` / `REVIEW` / `HALT` | | | | |
 
 Any unresolved `HALT` blocks dependent AI implementation.
 
-| Item ID | AI use case | Control prerequisites | Review state | Owner | Acceptance criteria | Completion evidence | State |
+## 11. Phase 5 — Optimization and Renewal
+
+**Purpose:** Use measured implementation and adoption evidence to govern optimization, maintenance, expansion, renewal, or closure.
+
+| Item ID | Decision | Evidence window | Existing package / renewed scope | Owner | Acceptance or closure criteria | Realized-value evidence | State |
 |---|---|---|---|---|---|---|---|
-| [ID] | [Bounded use case] | [Control refs] | [ALLOW / REVIEW / HALT] | [Owner] | [Observable pass condition] | [Evidence ref] | [State] |
+| | | | | | | | |
 
-## 9. Validation and blocked-work register
+Phase 5 does not create a new default package or imply that outcomes were achieved.
 
-| Item ID | Missing evidence or blocker | Why it matters | Minimum validation action | Owner | Effect on sequence | Review state |
-|---|---|---|---|---|---|---|
-| [ID] | [Condition] | [Decision relevance] | [Validation step] | [Owner] | [Blocked/deferred dependency] | [REVIEW/HALT] |
+## 12. Start authorization gate
 
-## 10. Measurement plan
+Before any item moves to `in_progress`, verify:
+
+- separate implementation authorization reference resolves
+- authorized scope and exclusions are recorded
+- owner accepts responsibility
+- access and prerequisites pass
+- no unresolved `HALT` applies
+- rollback, recovery, or escalation requirements are defined where material
+- work remains inside the authorized package or validation boundary
+
+## 13. Measurement plan
 
 | Item ID | Measure type | Metric definition | Source | Baseline state | Review window | Owner | Decision triggered | Limitation |
 |---|---|---|---|---|---|---|---|---|
-| [ID] | [implementation / adoption / leading indicator / business outcome] | [Definition] | [Source] | [Known / unknown] | [Window] | [Owner] | [Decision] | [Limitation] |
+| | implementation / adoption / leading indicator / business outcome | | | known / unknown | | | | |
 
-Do not promise or infer traffic, rankings, leads, close rate, savings, revenue, market share, or ROI without validated baseline and post-implementation evidence.
+No traffic, ranking, lead, conversion, savings, revenue, market-share, or ROI claim may exceed validated baseline and post-implementation evidence.
 
-## 11. Review and change control
+## 14. Change control
 
-| Review point | Required decision | Evidence reviewed | Owner | Ledger record |
-|---|---|---|---|---|
-| [Gate or date] | [Advance / hold / validate / halt / complete] | [Evidence refs] | [Owner] | [Ledger ID] |
+| Review point | Decision | Evidence reviewed | Version / supersession effect | Owner | Ledger ref |
+|---|---|---|---|---|---|
+| | advance / hold / validate / halt / complete / monitor / renew / close | | | | |
 
-Reopen roadmap review when evidence, confidence, package route, scope, dependencies, phase, ownership, authority, acceptance criteria, or measurement plans materially change. Silent resequencing is prohibited.
+Material changes require versioning and a superseding DecisionLedger event. Silent resequencing is prohibited.
 
-## 12. Release checklist
+## 15. Release checklist
 
-- [ ] Every item has a complete evidence-to-ledger source chain.
-- [ ] Exactly one primary package is assigned per recommendation.
-- [ ] Phase and sequence respect prerequisites and dependencies.
-- [ ] Unknowns and blocked conditions remain visible.
-- [ ] Ownership, authority, access, and target windows are explicit.
-- [ ] Entry and acceptance criteria are observable.
-- [ ] Phase 4 controls are complete where applicable.
-- [ ] Implementation completion and outcome validation are separated.
+- [ ] Source chains resolve.
+- [ ] Package eligibility is explicit.
+- [ ] Exactly one primary package exists only for eligible work.
+- [ ] Phase 0 and phases 1–5 are correctly used.
+- [ ] Sequence respects dependencies.
+- [ ] Unknowns and blockers remain visible.
+- [ ] Owners, authorities, acceptance criteria, and target windows are explicit.
+- [ ] Phase 4 controls pass where applicable.
+- [ ] Roadmap approval and implementation authorization remain separate.
+- [ ] Completion and realized-value evidence remain separate.
 - [ ] Client language contains no unsupported outcome or timeline certainty.
-- [ ] Material decisions and changes are recorded in the DecisionLedger.
+- [ ] QC and DecisionLedger references resolve.
 
-## 13. Executive-safe summary
+## 16. Commercial v1.0 connection
 
-> This roadmap sequences approved work according to verified conditions, prerequisites, capacity, and governance gates. Target windows are planning assumptions rather than guarantees. Items with missing evidence, blocked access, or unresolved controls remain in validation, deferred, or halted states until the required decision evidence is available.
+This template turns governed recommendations into a repeatable, client-safe implementation sequence with explicit validation, ownership, authorization, acceptance, monitoring, and closure controls.
+
+## 17. References
+
+- `standards/roadmap-standard.md`
+- `standards/package-routing-standard.md`
+- `standards/ai-readiness-standard.md`
+- `standards/quality-control-standard.md`
+- `standards/decision-ledger-standard.md`
+- `templates/recommendation-register.md`
+- `templates/proposal.md`
