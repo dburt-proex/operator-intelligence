@@ -1,0 +1,96 @@
+name: Publish Operator Intelligence v1.0.0
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/publish-v1-release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: operator-intelligence-v1.0.0-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Verify gate and publish release
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG_NAME: v1.0.0
+      RELEASE_TITLE: Operator Intelligence v1.0.0 — Commercial Governed Assessment System
+
+    steps:
+      - name: Verify governed release authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          gate_content="$(
+            gh api "repos/${GITHUB_REPOSITORY}/contents/COMMERCIAL_V1_COMPLETION.md?ref=${GITHUB_SHA}" \
+              --jq '.content' | tr -d '\n' | base64 --decode
+          )"
+
+          notes_content="$(
+            gh api "repos/${GITHUB_REPOSITORY}/contents/RELEASE_NOTES_v1.0.0.md?ref=${GITHUB_SHA}" \
+              --jq '.content' | tr -d '\n' | base64 --decode
+          )"
+
+          grep -Fq 'Status: ALLOW — commercial v1.0 repository content complete and approved for release' <<< "${gate_content}"
+          grep -Fq 'governance_state: approved_for_release' <<< "${gate_content}"
+          grep -Fq 'release_candidate: v1.0.0' <<< "${gate_content}"
+          grep -Fq '# Operator Intelligence v1.0.0 — Commercial Governed Assessment System' <<< "${notes_content}"
+
+      - name: Create immutable v1.0.0 tag
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${TAG_NAME}" >/tmp/tag.json 2>/dev/null; then
+            tagged_sha="$(jq -r '.object.sha' /tmp/tag.json)"
+            if [[ "${tagged_sha}" != "${GITHUB_SHA}" ]]; then
+              echo "Existing ${TAG_NAME} tag points to ${tagged_sha}, not ${GITHUB_SHA}. Refusing to move an immutable release tag."
+              exit 1
+            fi
+            echo "${TAG_NAME} already exists at the authorized commit."
+          else
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+              -f ref="refs/tags/${TAG_NAME}" \
+              -f sha="${GITHUB_SHA}"
+          fi
+
+      - name: Publish GitHub release
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${TAG_NAME}" >/dev/null 2>&1; then
+            echo "Release ${TAG_NAME} already exists; no duplicate publication required."
+            exit 0
+          fi
+
+          release_notes="$(
+            gh api "repos/${GITHUB_REPOSITORY}/contents/RELEASE_NOTES_v1.0.0.md?ref=${GITHUB_SHA}" \
+              --jq '.content' | tr -d '\n' | base64 --decode
+          )"
+
+          jq -n \
+            --arg tag_name "${TAG_NAME}" \
+            --arg target_commitish "${GITHUB_SHA}" \
+            --arg name "${RELEASE_TITLE}" \
+            --arg body "${release_notes}" \
+            '{
+              tag_name: $tag_name,
+              target_commitish: $target_commitish,
+              name: $name,
+              body: $body,
+              draft: false,
+              prerelease: false,
+              generate_release_notes: false
+            }' >/tmp/release.json
+
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/releases" --input /tmp/release.json
