@@ -1,132 +1,185 @@
 # Quality Control Standard
 
-Version: v0.1 governance foundation  
+Version: v0.2 standards reconciliation  
 Stage alignment: Stage 4 — `standards/`  
 Folder alignment: `standards/`  
-Status: Draft foundation for commercial v1.0
+Status: Reconciled commercial v1.0 control standard; pending folder approval
 
 ## 1. Purpose
 
-This standard defines the minimum quality-control process required before an Operator Intelligence assessment, score, finding set, roadmap, recommendation, or client report may advance to publication.
+This standard defines the minimum quality-control process required before an Operator Intelligence score, finding set, recommendation set, roadmap, report, proposal, implementation package, or completion record may advance to its next governed state.
 
-Quality control verifies that the assessment is reproducible, evidence-grounded, internally consistent, traceable through the DecisionLedger, and safe for executive use. It does not replace evidence collection, scoring, confidence assignment, package routing, roadmap approval, publication approval, or implementation authorization.
+Quality control verifies that outputs are reproducible, evidence-grounded, internally consistent, traceable through the DecisionLedger, and safe for executive use. It does not replace evidence collection, scoring, package eligibility, roadmap approval, publication approval, implementation authorization, client acceptance, or realized-value validation.
 
-## 2. Core rules
+## 2. Governance principles
 
-1. Every client-facing assessment requires a documented quality-control review.
-2. The reviewer must verify evidence admissibility, scoring consistency, confidence assignment, unknown handling, duplicate-signal ownership, finding construction, package routing, roadmap sequencing, publication state, and executive-safe language.
-3. Unknown and blocked conditions must remain visible and may not be converted to zero.
-4. Confidence must remain separate from maturity.
-5. Every material output must trace to evidence and a DecisionLedger record.
-6. Every recommendation must have exactly one primary package and an approved roadmap phase.
-7. Publication approval and implementation authorization remain separate decisions.
-8. Unsupported ROI, revenue, conversion, ranking, lead-loss, market-share, competitor-performance, or timeline certainty is prohibited.
-9. A failed blocking check requires `HALT` until corrected or formally superseded.
-10. Quality-control records must be retained with the released report version.
+1. Every client-facing assessment release requires a documented quality-control record.
+2. Quality control follows the source chain in order; downstream polish cannot cure an upstream evidence or scoring failure.
+3. Unknown, blocked, and not-applicable states remain distinct. Unknown is never zero.
+4. Confidence remains separate from maturity and priority.
+5. Every material output must trace to admissible evidence and a DecisionLedger event.
+6. Exactly one primary package is required only for package-eligible recommendations.
+7. Phase 0 validation may remain unrouted and cannot authorize implementation.
+8. QC `ALLOW`, publication approval, roadmap approval, implementation authorization, completion, and realized-value validation are separate decisions.
+9. Unsupported ROI, revenue, conversion, ranking, savings, lead-loss, market-share, competitor-performance, or timeline certainty is prohibited.
+10. A blocking failure routes the affected output to `HALT` until corrected or superseded.
+11. QC records are retained with the exact artifact and evidence snapshot reviewed.
 
 ## 3. Review scope
 
-The quality-control review must cover:
-
 | Review area | Required verification |
 |---|---|
-| Scope | Required categories, criteria, systems, and evidence windows are identified |
-| Evidence | Evidence is admissible, dated, attributable, and sufficient for the claimed condition |
-| Scoring | Approved anchors, weights, applicability, rounding, and coverage calculations are followed |
-| Confidence | Confidence reflects evidence strength and does not alter maturity |
-| Unknowns | Unknown, blocked, and not-applicable states are correctly distinguished |
-| Findings | Each finding has observation, evidence, interpretation, impact, confidence, and limitations |
-| Duplicate control | Each signal has one weighted owner and no duplicated implementation ownership |
-| Recommendations | Each recommendation traces to a finding and uses proportional scope |
-| Package routing | Exactly one primary package is assigned and prerequisites are explicit |
-| Roadmap | Dependencies, phase gates, owners, and acceptance evidence are defined |
-| Publication | Publication state matches coverage, confidence, and unresolved limitations |
-| Language | Client-facing claims are bounded, accurate, and executive-safe |
-| DecisionLedger | Material decisions, approvals, exceptions, and supersessions are recorded |
+| Scope | Assessment boundary, applicable categories, systems, criteria, exclusions, access, and evidence windows are defined. |
+| Evidence | Evidence is admissible, attributable, current enough, scoped, reviewable, and conflicts are resolved or disclosed. |
+| Scoring | Approved anchors, applicability, weights, coverage, bounds, confidence handling, rounding, and publication gates reproduce. |
+| Unknowns | Unknown, blocked, and not-applicable states are correctly distinguished and preserved. |
+| Findings | Observation, evidence, interpretation, impact, confidence, limitation, and report-use state are complete. |
+| Duplicate control | Each weighted signal and implementation responsibility has one owner. |
+| Recommendations | Each recommendation traces to a finding, uses canonical priority inputs, and has proportional scope. |
+| Package routing | Eligibility is explicit; one primary package exists only when eligible; dependencies and exclusions are visible. |
+| Roadmap | Validation state, phase, sequence, prerequisites, owner, authority, and acceptance evidence are valid. |
+| AI controls | Workflow, data, privacy, human review, escalation, logging, QA, and failure controls pass before AI implementation. |
+| Publication | Publication state matches coverage, confidence, limitations, QC state, and artifact version. |
+| Authorization | Roadmap and publication decisions are not treated as implementation authorization. |
+| Completion | Acceptance criteria and completion evidence prove delivery; realized value remains separately measured. |
+| Language | Client claims are bounded, accurate, executive-safe, and free of unsupported outcomes. |
+| DecisionLedger | Material decisions, reviews, approvals, exceptions, authorizations, blocks, and supersessions resolve. |
 
 ## 4. Review sequence
 
-Quality control must follow this order:
+Quality control runs in this order:
 
-1. **Scope review** — confirm the assessment boundary and applicable criteria.
-2. **Evidence review** — verify admissibility, attribution, recency, and conflicts.
-3. **Scoring review** — recalculate category scores, weights, coverage, and Operator Score.
-4. **Confidence review** — confirm evidence-to-confidence mapping.
-5. **Unknown-state review** — confirm missing access is not treated as failure.
-6. **Finding review** — verify every finding is supported and proportionate.
-7. **Routing review** — verify one primary package, dependencies, and roadmap phase.
-8. **Publication review** — verify state, limitations, versioning, and release fields.
-9. **Language review** — remove unsupported certainty and outcome claims.
-10. **Ledger review** — confirm DecisionLedger completeness and reviewer decision.
+1. **Scope control** — confirm boundary, applicability, exclusions, access, and version.
+2. **Evidence control** — verify admissibility, attribution, recency, scope, integrity, authorization, and conflicts.
+3. **Scoring control** — independently recalculate criterion, category, coverage, bounds, confidence index, and Operator Score outputs.
+4. **Unknown-state control** — verify missing evidence is not converted to failure or silently removed.
+5. **Finding control** — verify complete evidence-to-interpretation chains and bounded business impact.
+6. **Recommendation control** — verify priority inputs, confidence gate, scope, status, and acceptance logic.
+7. **Routing control** — verify package eligibility, primary ownership, dependencies, exclusions, and Phase 0 handling.
+8. **Roadmap control** — verify phases, sequence, owners, authority, start gates, acceptance criteria, and authorization separation.
+9. **Publication control** — verify publication state, score display, limitations, artifact version, and evidence snapshot.
+10. **Language control** — remove unsupported certainty, blame, and outcome claims.
+11. **Ledger control** — verify every material state and exception has a resolvable event.
+12. **Release decision** — issue `ALLOW`, `REVIEW`, or `HALT` for the bounded artifact and version.
 
-A later review step cannot cure a failure in an earlier step without correcting and re-running the affected checks.
+A later step cannot cure an earlier failure without correction and re-running every affected downstream check.
 
 ## 5. Review outcomes
 
 | State | Meaning | Required action |
 |---|---|---|
-| `ALLOW` | All blocking checks pass; warnings are resolved or accepted with rationale | May proceed to the separate publication decision |
-| `REVIEW` | No blocking error exists, but a bounded issue requires documented reviewer judgment | Correct, disclose, or formally accept the limitation before publication |
-| `HALT` | A blocking error, unsupported claim, traceability break, or material control failure exists | Do not publish or authorize dependent work |
+| `ALLOW` | Blocking checks pass and warnings are resolved or accepted with rationale. | May advance to the next separate governed decision. |
+| `REVIEW` | No uncontrolled blocking error remains, but qualified judgment or a bounded exception is required. | Correct, disclose, limit, or formally accept before advancement. |
+| `HALT` | A blocking error, unsupported claim, authority gap, traceability break, or material control failure exists. | Do not publish, authorize, start, or complete dependent work. |
 
-`ALLOW` from quality control does not itself authorize publication or implementation.
+`ALLOW` applies only to the reviewed artifact, scope, version, and evidence snapshot.
 
-## 6. Independence and reviewer controls
+## 6. Reviewer independence and authority
 
-- The primary author may perform an initial self-check.
-- A second-person review is required for `official` client publication when available.
-- If a second reviewer is unavailable, the report must remain `provisional` unless an approved exception is recorded.
-- Reviewers must not silently edit material decisions without creating a superseding DecisionLedger event.
-- Reviewer conflicts of interest, unresolved disagreements, or scope exceptions must be documented.
+- The primary author performs a documented self-check.
+- Official client publication requires a qualified independent reviewer when available.
+- Without an independent reviewer, publication remains `provisional` unless an authorized exception is ledgered.
+- The reviewer must be independent from unresolved commercial pressure to sell a package or overstate impact.
+- Reviewer edits that change material meaning require a superseding source or ledger event.
+- Conflicts of interest, disagreements, and exceptions must be recorded.
+- The reviewer may issue QC state but cannot assume publication or implementation authority unless that role is separately assigned.
 
-## 7. Recalculation requirements
+## 7. Recalculation contract
 
-The reviewer must independently verify:
+The reviewer independently verifies:
 
 ```yaml
-applicable_weight_total: 0-100
-scored_applicable_weight: 0-100
-coverage_percent: 0-100
+score_run_id: OI-SCORE-YYYY-NNN
+methodology_version: ""
+applicable_weight_total: 100
+known_weight_total: 0-100
+weighted_evidence_coverage: 0-1
+operator_confidence_index: 0-1
 category_scores: {}
-weighted_operator_score: 0-100|null
+category_bounds: {}
+observed_operator_score: 0-100|null
+operator_lower_bound: 0-100
+operator_upper_bound: 0-100
 published_score_type: official|observed_indicator|range|null
 publication_state: official|provisional|range_only|blocked|internal_only
+validation_messages: []
 ```
 
 Rules:
 
-- Applicable weight must reconcile to the approved weight profile.
-- Approved `not_applicable` criteria may be removed only before weight normalization.
-- Unknown and blocked criteria remain inside applicable weight.
+- Active category weights reconcile to 100%.
+- Approved not-applicable criteria are removed before normalization only under the approved category rule.
+- Unknown and blocked criteria remain inside applicable coverage.
 - Unknown is never scored as zero.
-- Rounding must occur only at the approved display stage.
+- Confidence does not multiply maturity.
+- Bounds and confidence factors follow the canonical scoring specifications.
+- Rounding occurs only at the approved display stage.
 - Recalculation differences must be resolved before `ALLOW`.
 
-## 8. Finding and routing checks
+## 8. Finding and recommendation checks
 
-Each reported finding must pass all of the following:
+Each published finding must pass:
 
-- evidence references exist and are admissible
+- admissible evidence refs resolve
 - observation is separated from interpretation
-- business impact is bounded and not overstated
-- confidence is supported by the evidence chain
-- limitations and unknowns are visible
-- one criterion or category owns the weighted signal
+- criterion and category ownership are valid
+- business impact is bounded and material
+- confidence matches the evidence chain
+- limitations, unknowns, and validation needs are visible
+- report wording follows the finding library
 - DecisionLedger reference exists
 
 Each recommendation must additionally pass:
 
 - valid finding linkage
-- exactly one primary package
+- canonical impact, evidence-strength, effort-inverse, and strategic-fit inputs
+- confidence remains a separate gate
+- priority calculation reproduces
+- package eligibility is explicit
+- exactly one primary package only when eligible
 - no duplicate implementation ownership
-- prerequisite and dependency checks
-- roadmap phase assignment
-- acceptance evidence definition
-- implementation authorization state recorded separately
+- prerequisites, dependencies, exclusions, and acceptance criteria are explicit
+- Phase 0 or roadmap phase is valid
+- implementation authorization remains separate
 
-## 9. Executive-safe language review
+## 9. Package, roadmap, and authorization checks
 
-Approved language includes:
+Before roadmap publication:
+
+- package eligibility and routing resolve
+- validation requirements are not disguised as implementation
+- Phase 0 items carry no implementation authorization
+- phase and sequence respect root condition and dependencies
+- owner and decision authority are named
+- roadmap approval is distinct from start authorization
+- AI work remains blocked until required controls pass
+
+Before work enters `in_progress`:
+
+- `implementation_authorized: true`
+- authorization reference resolves
+- authorized scope and exclusions are recorded
+- prerequisites and access pass
+- implementation owner accepts responsibility
+- rollback, recovery, or escalation requirements are defined
+- no unresolved `HALT` affects the work
+
+## 10. Publication checks
+
+A client-facing artifact may advance only when:
+
+- QC scope exactly matches the artifact version
+- evidence snapshot and methodology version are recorded
+- publication state matches score and evidence conditions
+- official publication gates pass or an allowed lower state is used
+- provisional and range-only outputs remain explicit
+- limitations and material unknowns are visible
+- report, proposal, and roadmap do not imply unauthorized implementation
+- every material claim traces to evidence or is labeled as assumption/interpretation
+
+## 11. Executive-safe language review
+
+Approved patterns include:
 
 - `verified across the reviewed scope`
 - `supported by the available evidence`
@@ -134,88 +187,123 @@ Approved language includes:
 - `partially confirmed`
 - `requires internal validation`
 - `the evidence supports a provisional interpretation`
+- `this creates a revenue leakage risk` when the mechanism is stated and no unsupported amount is claimed
 
 Prohibited without validated support:
 
 - guaranteed lead, revenue, conversion, ranking, savings, or ROI outcomes
-- claims that public absence proves internal nonexistence
-- competitor-performance or market-share conclusions derived from appearance alone
+- public absence presented as proof of internal nonexistence
+- competitor-performance or market-share claims inferred from appearance alone
 - definitive failure language when evidence is incomplete
-- timeline certainty where dependencies or capacity are unverified
+- timeline certainty where access, capacity, approvals, or dependencies are unverified
+- blame-oriented language
 
-## 10. Quality-control record
-
-Every completed review must retain:
+## 12. Quality-control record
 
 ```yaml
 qc_id: OI-QC-YYYY-NNN
-report_id: OI-REPORT-YYYY-NNN|null
-report_version: ""
+assessment_id: ""
+artifact_type: score_run|finding_set|recommendation_set|roadmap|report|proposal|package|implementation_completion|renewal_record
+artifact_id: ""
+artifact_version: ""
 methodology_version: ""
 evidence_snapshot_date: YYYY-MM-DD
 reviewed_scope: []
+checks_run: []
 blocking_errors: []
 warnings: []
 accepted_exceptions: []
 recalculation_passed: false
 duplicate_check_passed: false
+routing_check_passed: false
+authorization_separation_passed: false
 language_review_passed: false
 ledger_check_passed: false
 review_state: ALLOW|REVIEW|HALT
+publication_effect: none|official|provisional|range_only|blocked|internal_only
 reviewed_by: ""
-reviewed_at: YYYY-MM-DD
+reviewed_at: "YYYY-MM-DDThh:mm:ssZ"
+decision_authority: ""
 ledger_ref: OI-DL-YYYY-NNN
+supersedes_qc_id: null
 ```
 
-Material corrections after review require a new quality-control record or a superseding review event.
+Material corrections require a new QC record or a superseding review event. Reusing a QC decision against a changed artifact or evidence snapshot is prohibited.
 
-## 11. Validation rules
+## 13. Validation codes
 
 ### Blocking errors
 
-- `QC-SCOPE-001`: required assessment scope or applicability decision is unresolved
-- `QC-EVID-001`: material output lacks admissible evidence
-- `QC-SCORE-001`: score, weight, coverage, or rounding cannot be reproduced
-- `QC-CONF-001`: confidence is unsupported or used to alter maturity
-- `QC-UNKNOWN-001`: unknown or blocked data is hidden, dropped, or scored as zero
-- `QC-DUP-001`: a signal or implementation responsibility has duplicate primary ownership
-- `QC-FIND-001`: a published finding lacks a complete evidence-to-interpretation chain
-- `QC-ROUTE-001`: recommendation lacks valid package, prerequisite, or roadmap routing
-- `QC-LEDGER-001`: material decision lacks DecisionLedger traceability
-- `QC-PUB-001`: publication state conflicts with evidence coverage or unresolved limitations
-- `QC-LANGUAGE-001`: client language contains unsupported certainty or outcome claims
-- `QC-AUTH-001`: quality-control or publication approval is treated as implementation authorization
+| Code | Condition |
+|---|---|
+| `QC-SCOPE-001` | Required scope, applicability, exclusion, access, or artifact version is unresolved. |
+| `QC-EVID-001` | Material output lacks admissible, attributable, or scoped evidence. |
+| `QC-SCORE-001` | Score, weight, coverage, bounds, confidence, or rounding cannot be reproduced. |
+| `QC-UNKNOWN-001` | Unknown or blocked data is hidden, dropped, or scored as zero. |
+| `QC-DUP-001` | Weighted signal or implementation responsibility has duplicate primary ownership. |
+| `QC-FIND-001` | Finding lacks a complete evidence-to-interpretation chain. |
+| `QC-PRIORITY-001` | Recommendation priority uses missing or noncanonical inputs. |
+| `QC-ROUTE-001` | Package eligibility, primary ownership, dependency, or phase routing is invalid. |
+| `QC-PHASE0-001` | Validation work is represented as authorized implementation. |
+| `QC-AI-001` | AI implementation advances without required workflow, data, privacy, review, escalation, logging, QA, or failure controls. |
+| `QC-LEDGER-001` | Material decision lacks DecisionLedger traceability. |
+| `QC-PUB-001` | Publication state conflicts with coverage, confidence, limitations, QC, or version state. |
+| `QC-LANGUAGE-001` | Client language contains unsupported certainty, blame, or outcome claims. |
+| `QC-AUTH-001` | QC, roadmap, or publication approval is treated as implementation authorization. |
+| `QC-COMPLETE-001` | Work is marked complete without acceptance evidence. |
 
 ### Warnings
 
-- `QC-REVIEW-001`: no independent reviewer is available for an intended official release
-- `QC-RECENCY-001`: evidence remains admissible but is near its freshness limit
-- `QC-SAMPLE-001`: evidence sample is narrow but disclosed and non-blocking
-- `QC-OWNER-001`: accountable owner is identified but acceptance authority remains pending
-- `QC-MEASURE-001`: implementation acceptance is defined but outcome measurement is not yet available
+| Code | Condition |
+|---|---|
+| `QC-REVIEW-001` | No independent reviewer is available for intended official publication. |
+| `QC-RECENCY-001` | Evidence remains admissible but is near its freshness limit. |
+| `QC-SAMPLE-001` | Evidence sample is narrow but disclosed and non-blocking. |
+| `QC-OWNER-001` | Accountable owner exists but acceptance authority is pending. |
+| `QC-MEASURE-001` | Delivery acceptance exists but realized-value evidence is not yet available. |
+| `QC-INTEGRITY-001` | Integrity reference is recommended but not required for the bounded artifact. |
 
-Warnings require disposition but do not automatically permit publication.
+Unresolved blocking errors require `HALT`. Warnings require disposition and may require `REVIEW`.
 
-## 12. Release checklist
+## 14. Release checklist
 
-A report may advance from quality control only when:
-
-- [ ] required scope and applicability decisions are complete
-- [ ] evidence references are valid and conflicts are resolved or disclosed
-- [ ] scoring and coverage calculations reproduce exactly
-- [ ] confidence assignments match evidence strength
-- [ ] unknown, blocked, and not-applicable states are correctly handled
+- [ ] reviewed scope, artifact ID, version, and methodology version are fixed
+- [ ] applicability, access, exclusions, and evidence windows are complete
+- [ ] evidence refs resolve and conflicts are resolved or disclosed
+- [ ] scores, coverage, bounds, confidence, and publication gates reproduce
+- [ ] unknown, blocked, and not-applicable states are correct
 - [ ] findings are complete, bounded, and traceable
-- [ ] duplicate-signal and duplicate-package checks pass
-- [ ] recommendations use one primary package and valid roadmap phases
+- [ ] duplicate ownership checks pass
+- [ ] recommendation priority and status reproduce
+- [ ] package eligibility and routing pass
+- [ ] Phase 0, roadmap phases, dependencies, and owner controls pass
+- [ ] AI prerequisites pass where applicable
+- [ ] publication and implementation authorization remain separate
 - [ ] executive-safe language review passes
-- [ ] publication state is defensible
-- [ ] report version and evidence snapshot are recorded
-- [ ] DecisionLedger records are complete
-- [ ] reviewer state is recorded as `ALLOW`, `REVIEW`, or `HALT`
+- [ ] DecisionLedger records resolve
+- [ ] reviewer state and warning/error dispositions are recorded
+- [ ] QC record is stored with the released artifact version
 
-## 13. Cross references
+## 15. Usage instructions
 
+1. Freeze the artifact version and evidence snapshot.
+2. Run the review sequence in order.
+3. Record validation codes and dispositions.
+4. Recalculate quantitative outputs independently.
+5. Issue a bounded `ALLOW`, `REVIEW`, or `HALT` decision.
+6. Store the QC record and ledger event with the artifact.
+7. Re-run affected checks after any material correction.
+
+## 16. Commercial v1.0 connection
+
+This standard creates the reproducibility and release discipline required to sell Operator Intelligence as a dependable assessment product. It supports evaluator consistency, defensible reporting, controlled implementation, client trust, and repeatable delivery quality.
+
+## 17. Cross references
+
+- `framework/governance-gate-index.md`
+- `framework/risk-impact-model.md`
+- `framework/effort-model.md`
+- `framework/opportunity-model.md`
 - `standards/evidence-standard.md`
 - `standards/confidence-standard.md`
 - `standards/recommendation-standard.md`
@@ -223,5 +311,7 @@ A report may advance from quality control only when:
 - `standards/roadmap-standard.md`
 - `standards/publication-standard.md`
 - `standards/decision-ledger-standard.md`
-- `scoring/category-sheets/`
-- `framework/findings/`
+- `standards/ai-readiness-standard.md`
+- `scoring/calculator-spec.md`
+- `scoring/completion-status.md`
+- `templates/quality-control-checklist.md`
