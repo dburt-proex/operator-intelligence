@@ -1,183 +1,174 @@
 # Operator Intelligence DecisionLedger Record Template
 
-Use this template for every material decision affecting scoring, confidence, unknown handling, findings, recommendations, package routing, roadmap sequencing, publication, approval, exception, halt, or supersession.
+Version: v0.2 template reconciliation  
+Stage alignment: Stage 5 — `templates/`  
+Folder alignment: `templates/`  
+Status: Governed commercial v1.0 working template
 
-The ledger records the decision and its traceability. It does not replace evidence, scoring logic, quality control, publication approval, or implementation authorization.
+## 1. Purpose
 
-## Record metadata
+Use this template for every material decision affecting evidence, scoring, confidence, unknown handling, findings, recommendations, package routing, roadmap state, quality control, publication, implementation authorization, completion, monitoring, renewal, closure, exception, halt, or supersession.
+
+The record captures decision state and traceability. It does not replace source evidence, calculations, review, client authority, or implementation authorization.
+
+## 2. Canonical record
 
 ```yaml
 ledger_id: OI-DL-YYYY-NNN
 assessment_id: ""
-score_run_id: ""
+engagement_id: ""
+score_run_id: null
 methodology_version: ""
-status: draft
-created_at: ""
-updated_at: ""
-```
+record_version: "1.0"
+prior_ledger_ref: null
+supersedes: null
 
-**Allowed status values:** `draft`, `review_required`, `approved`, `rejected`, `superseded`, `closed`
-
-## Governed decision
-
-```yaml
-decision_type: ""
+decision_type: evidence|scoring|confidence|unknown_handling|finding|risk_impact|opportunity|recommendation|package_routing|roadmap|quality_control|publication|implementation_authorization|completion|monitoring|renewal|closure|exception|approval|halt|supersession
 subject_type: ""
 subject_id: ""
 decision: ""
 rationale: ""
-control_gate: REVIEW
-```
 
-**Allowed decision types:** `scoring`, `confidence`, `unknown_handling`, `finding`, `recommendation`, `package_routing`, `roadmap`, `publication`, `exception`, `approval`, `halt`, `supersession`
+fact_summary: ""
+interpretation: ""
+assumptions: []
+limitations: []
+unknowns: []
+blocked_conditions: []
 
-**Allowed control gates:** `ALLOW`, `REVIEW`, `HALT`
-
-Use `ALLOW` only when evidence, authority, dependencies, and applicable standards support proceeding. Use `REVIEW` when qualified judgment or validation is required. Use `HALT` when proceeding would violate an evidence, authorization, dependency, methodology, publication, or client-safety gate.
-
-## Traceability references
-
-```yaml
 evidence_refs: []
 criterion_refs: []
+category_refs: []
 finding_refs: []
 recommendation_refs: []
-prior_ledger_ref: null
-supersedes: null
+routing_refs: []
+roadmap_refs: []
+qc_refs: []
+publication_refs: []
+authorization_refs: []
+
+confidence: high|medium|low|unknown
+impact_score: null
+evidence_strength_score: null
+effort_inverse: null
+strategic_fit_score: null
+priority_score: null
+
+package_eligibility: eligible|validation_required|blocked|not_applicable|null
+primary_package_id: null
+dependent_package_ids: []
+roadmap_phase: 0|1|2|3|4|5|null
+publication_state: internal_only|official|provisional|range_only|blocked|null
+implementation_authorized: false
+implementation_authorization_ref: null
+
+control_gate: ALLOW|REVIEW|HALT
+status: draft|review_required|approved|rejected|blocked|authorized|in_progress|complete|monitoring|cancelled|superseded|closed
+validation_required: []
+acceptance_criteria: []
+completion_evidence_refs: []
+realized_value_evidence_refs: []
+
+owner: ""
+decision_authority: ""
+decided_by: ""
+reviewed_by: null
+approved_by: null
+decided_at: "YYYY-MM-DDThh:mm:ssZ"
+reviewed_at: null
+approved_at: null
+
+client_safe_summary: ""
+change_reason: null
+integrity_ref: null
 ```
 
-All upstream material references must remain resolvable. A decision without evidence must document why evidence is unavailable and what validation is required.
+## 3. Decision construction
 
-## Evidence interpretation
+### Fact summary
 
-### Observation
-
-[State only what was directly observed or supplied.]
+[State only what was directly observed, tested, or supplied.]
 
 ### Interpretation
 
-[Explain what the evidence supports without exceeding its scope.]
+[State what the evidence supports, including scope and limits.]
+
+### Decision and rationale
+
+[Record the bounded decision, why it is justified, and what it does not authorize.]
+
+### Assumptions, limitations, unknowns, and blockers
+
+- Assumptions:
+- Limitations:
+- Unknowns:
+- Blocked conditions:
+
+## 4. Decision-class requirements
+
+| Decision class | Required additions |
+|---|---|
+| Evidence | admission state, scope, limitations, reviewer |
+| Scoring | score-run, criterion/category refs, coverage, confidence, publication effect |
+| Finding | observation, interpretation, impact, confidence, report-use state |
+| Recommendation | finding refs, canonical priority inputs, status, action |
+| Package routing | eligibility, routing ref, one primary package only when eligible, dependencies |
+| Roadmap | phase, dependencies, owner, acceptance criteria, authorization separation |
+| Quality control | QC ref, checks, errors/warnings, reviewer, gate |
+| Publication | artifact/version, state, evidence snapshot, QC ref, approver |
+| Implementation authorization | authorized scope, owner, authority, prerequisites, rollback/escalation |
+| Completion | acceptance criteria, completion evidence, unresolved defects |
+| Monitoring/renewal | realized-value evidence, review window, next decision, renewal/closure authority |
+
+## 5. Control rules
+
+- Unknown and blocked are never score `0`.
+- Confidence never modifies maturity or priority.
+- Package eligibility precedes assignment.
+- Phase 0 is validation, not implementation.
+- QC `ALLOW`, publication approval, roadmap approval, proposal acceptance, and implementation authorization are separate.
+- Work enters `in_progress` only with a resolvable authorization reference.
+- Completion evidence and realized-value evidence are separate.
+- Approved or published records are superseded, never silently overwritten.
+- Unsupported outcome claims are prohibited.
+
+## 6. Pre-approval validation
+
+- [ ] ID, subject, decision type, owner, authority, and timestamp are present.
+- [ ] Upstream references resolve.
+- [ ] Fact, interpretation, assumptions, and limitations are separated.
+- [ ] Confidence matches evidence and does not alter performance.
+- [ ] Unknown and blocked states are preserved.
+- [ ] Canonical priority inputs are present where applicable.
+- [ ] Package eligibility and primary ownership are valid.
+- [ ] Phase 0 and roadmap dependencies are valid.
+- [ ] Publication and implementation authorization remain separate.
+- [ ] QC and approval requirements are satisfied.
+- [ ] Completion and realized value remain separate.
+- [ ] Supersession preserves prior history.
+- [ ] Client-safe summary is bounded and supportable.
+
+## 7. Release decision
 
 ```yaml
-confidence: unknown
-unknown_state: none
-limitations: []
-assumptions: []
-validation_required: []
-```
-
-**Allowed confidence values:** `high`, `medium`, `low`, `unknown`
-
-**Allowed unknown states:** `none`, `unknown`, `blocked`, `not_applicable`
-
-Unknown and blocked conditions remain unscored. Missing access is not negative evidence, and public absence cannot prove that an internal capability does not exist.
-
-## Finding decision
-
-Complete when the record creates, revises, suppresses, or closes a finding.
-
-```yaml
-finding_action: null
-business_relevance: ""
-weighted_owner: null
-reference_only_uses: []
-```
-
-**Finding action values:** `create`, `revise`, `suppress`, `close`, or `null`
-
-A finding requires evidence, business relevance, confidence, and a governed subject. Suppressed findings remain traceable with the suppression reason. Duplicate signals must identify one weighted owner; all other uses are reference-only.
-
-## Recommendation and package routing
-
-Complete when the record affects a recommendation or delivery route.
-
-```yaml
-recommendation_class: null
-primary_package: null
-secondary_packages: []
-dependency_refs: []
-roadmap_phase: null
-implementation_authorization: not_requested
-acceptance_evidence_required: []
-```
-
-Every implementation recommendation requires exactly one primary package. Secondary packages may represent prerequisite, dependency, downstream, or reference relationships only. Validation recommendations may precede package selection when evidence is insufficient.
-
-**Implementation authorization values:** `not_requested`, `pending`, `authorized`, `declined`, `blocked`
-
-Roadmap phase must follow the canonical roadmap standard. Priority alone cannot bypass prerequisites. Undefined workflows cannot advance into automation, and AI work cannot advance without required workflow, data, privacy, review, escalation, logging, and QA controls.
-
-## Publication effect
-
-```yaml
-publication_effect: none
-publication_state_ref: null
-weighted_evidence_coverage: null
-report_version: null
-```
-
-**Allowed publication effects:** `none`, `official`, `provisional`, `range_only`, `blocked`, `internal_only`
-
-Published scores must disclose evidence coverage and limitations. Publication approval does not authorize implementation.
-
-## Ownership and approval
-
-```yaml
-decided_by: ""
-decided_at: ""
-reviewed_by: ""
-reviewed_at: null
-approved_by: ""
-approved_at: null
-```
-
-Package routing, roadmap changes, publication, exceptions, approvals, `HALT`, and supersession require review and approval. Record names or accountable roles; do not use unassigned placeholders in a released ledger.
-
-## Change control
-
-Complete when correcting or replacing a prior decision.
-
-```yaml
-change_reason: null
-new_or_corrected_evidence_refs: []
-dependent_records_updated: []
-```
-
-Approved records must not be silently overwritten. Corrections create a new record that references and supersedes the prior record while preserving the original history.
-
-## Client-safe summary
-
-```yaml
-client_safe_summary: ""
-```
-
-Use plain executive language that distinguishes observation from interpretation, discloses material limitations, avoids certainty beyond the evidence, and does not imply publication or implementation authority. Do not state unsupported ROI, revenue, lead-loss, conversion, ranking, market-share, competitor-performance, or timeline claims.
-
-## Pre-approval validation
-
-- [ ] `ledger_id` is unique and immutable.
-- [ ] Assessment or score-run reference is present.
-- [ ] Decision type, subject, decision, and rationale are explicit.
-- [ ] Evidence references are present, or the evidence limitation is documented.
-- [ ] Confidence does not exceed the supporting evidence chain.
-- [ ] Unknown or blocked conditions remain unscored.
-- [ ] Control gate matches the unresolved risk and authority state.
-- [ ] Findings identify governed evidence and business relevance.
-- [ ] Duplicate signals have one weighted owner.
-- [ ] Each implementation recommendation has exactly one primary package.
-- [ ] Roadmap phase respects dependencies and entry gates.
-- [ ] Publication effect matches the publication standard.
-- [ ] Publication approval and implementation authorization remain separate.
-- [ ] Material decisions include required reviewer and approver records.
-- [ ] Supersession preserves prior history and updates dependent records.
-- [ ] Client-safe summary avoids unsupported claims.
-
-## Release decision
-
-```yaml
-quality_control_result: REVIEW
+quality_control_result: ALLOW|REVIEW|HALT
 release_blockers: []
-final_status: review_required
+warning_dispositions: []
+final_status: draft|review_required|approved|rejected|blocked|authorized|in_progress|complete|monitoring|cancelled|superseded|closed
 ```
 
 Any failed blocking check requires `HALT` until a superseding record resolves the condition.
+
+## 8. Commercial v1.0 connection
+
+This template operationalizes the canonical DecisionLedger schema so assessments, reports, proposals, implementation decisions, and renewals remain auditable and reproducible.
+
+## 9. References
+
+- `standards/decision-ledger-standard.md`
+- `standards/evidence-standard.md`
+- `standards/recommendation-standard.md`
+- `standards/package-routing-standard.md`
+- `standards/roadmap-standard.md`
+- `standards/publication-standard.md`
+- `standards/quality-control-standard.md`
