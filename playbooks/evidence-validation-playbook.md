@@ -1,207 +1,214 @@
 # Evidence Validation Playbook
 
-## Purpose
+Version: v1.0 commercial operating playbook  
+Stage alignment: Stage 6 — `playbooks/`  
+Folder alignment: `playbooks/`  
+Status: Governed evidence-admission workflow
 
-Use this playbook to determine whether collected evidence is admissible for scoring, findings, recommendations, publication, or implementation planning.
+## 1. Purpose
 
-It operationalizes the repository evidence gates without replacing the Evidence Register, scoring rules, finding standards, recommendation standards, or DecisionLedger.
+Use this playbook to decide whether collected material is admissible for scoring, findings, recommendations, publication, package eligibility, roadmap decisions, or implementation planning.
 
-## Required inputs
+It operationalizes the evidence and confidence standards. It does not replace the Evidence Register, scoring rules, DecisionLedger, QC, or publication approval.
 
-- Approved assessment scope
-- Completed client intake
-- Evidence Register
-- Applicable criteria and scoring sheets
-- Finding Register
+## 2. Inputs
+
+- approved intake scope and exclusions
+- access/testing authorization
+- evidence register and source artifacts
+- criteria library and category sheets
+- current finding/recommendation records
+- publication target
 - DecisionLedger
-- Current publication state
 
-## Required outputs
+## 3. Outputs
 
-- Validated Evidence Register
-- Evidence coverage result
-- Material unknown and blocked-condition register
-- Confidence decisions
-- Finding authorization state
-- DecisionLedger references for material decisions
+- accepted, limited, rejected, superseded, unknown, and blocked evidence states
+- evidence class, strength, confidence support, limitations, and traceability
+- duplicate-ownership decisions
+- contradiction and validation register
+- evidence coverage inputs
+- ALLOW/REVIEW/HALT decision
+- ledger events for material decisions
 
-## Validation sequence
+## 4. Validation sequence
 
-### 1. Confirm scope and authorization
+### 4.1 Scope and authorization
 
-For each evidence item, confirm:
+For every item verify:
 
-- the source is inside the approved assessment scope;
-- access and collection were authorized;
-- collection did not exceed privacy, confidentiality, or testing limits;
-- the evidence represents the stated system, workflow, owner, and date range.
+- it is inside approved systems, channels, locations, date range, and test boundary
+- collection and storage were authorized
+- privacy, confidentiality, retention, and sharing rules are satisfied
+- the item represents the stated source and period
 
-Use `HALT` when authorization, scope, or handling integrity cannot be established.
+Missing authority or material scope integrity requires HALT.
 
-### 2. Verify provenance
+### 4.2 Canonical identity and provenance
 
-Record or confirm:
+Required:
 
-- stable Evidence ID;
-- source type and source owner;
-- collection method and collection date;
-- represented date range;
-- original artifact or resolvable reference;
-- analyst responsible for collection;
-- verification state.
+- stable Evidence ID
+- capture date and collector
+- source type, owner, location, and source date
+- scope, sample scope, capture method, and observation
+- authorization, storage, and integrity reference
+- reviewer and review state
 
-A client statement remains `reported` until corroborated. Missing access is not negative evidence. Public absence does not prove internal absence.
+A client statement remains reported/Class E context until its use and reliability are admitted. Public absence does not prove internal absence.
 
-### 3. Test relevance and sufficiency
+### 4.3 Evidence class and strength
 
-An item is admissible only when it directly supports or contradicts a defined criterion, finding, limitation, or validation requirement.
+| Class | Use |
+|---|---|
+| A | Direct observation/test; may support scoring/findings after admission |
+| B | Defined comparative evidence; comparability must be recorded |
+| C | Approved pattern applied to visible evidence; requires criterion permission |
+| D | Inference; validation only, not independent negative scoring or routing |
+| E | Client-provided material; use depends on completeness, reliability, corroboration, and scope |
 
-Mark evidence as insufficient when it is outdated, incomplete, non-representative, materially ambiguous, or disconnected from the decision being made.
+Class, evidence strength, confidence support, and review state remain separate.
 
-Do not increase confidence by accumulating multiple copies of the same underlying signal.
+### 4.4 Relevance and sufficiency
 
-### 4. Resolve duplicates and ownership
+Evidence must support or contradict a specific criterion, finding, claim, limitation, or validation requirement.
 
-For each repeated signal:
+Limit when evidence is:
 
-1. identify the original source;
-2. identify transformed, quoted, summarized, or syndicated copies;
-3. assign one weighted criterion owner;
-4. retain secondary references as non-weighted context;
-5. record the ownership decision when it materially affects scoring.
+- stale for the decision
+- incomplete or narrow
+- ambiguous
+- nonrepresentative
+- disconnected from the governed subject
+- unable to support the proposed assertion strength
 
-Duplicate weighted ownership requires `HALT` until corrected.
+Multiple copies of one underlying signal do not increase evidence strength.
 
-### 5. Preserve contradictions
+### 4.5 Duplicate ownership
 
-Do not remove evidence because it conflicts with the leading interpretation.
+For repeated signals:
 
-For each contradiction, record:
+1. identify the source condition
+2. identify transformed or syndicated copies
+3. assign one weighted owner
+4. mark other uses reference-only
+5. ledger material ownership decisions
 
-- conflicting Evidence IDs;
-- the exact disputed condition;
-- whether the conflict is resolvable;
-- the validation action required;
-- the effect on confidence, scoring, findings, and publication.
+Duplicate weighted ownership requires HALT.
 
-Use `REVIEW` for resolvable contradictions. Use `HALT` when the contradiction can materially change a score, package route, roadmap phase, or executive conclusion and remains unresolved.
+### 4.6 Contradictions
 
-### 6. Classify unknown and blocked conditions
+Retain conflicting evidence. Record:
 
-Use:
+- evidence IDs
+- disputed condition
+- resolution action
+- effect on score, confidence, finding, route, roadmap, and publication
+- owner and deadline/condition
 
-- `unknown` when the condition cannot be determined from available evidence;
-- `blocked` when required evidence exists in principle but access, authorization, timing, or system constraints prevent validation.
+Use REVIEW for bounded conflicts. Use HALT when unresolved conflict can materially alter the client decision.
 
-Unknown and blocked conditions:
+### 4.7 Unknown and blocked states
 
-- remain visible;
-- are not scored as zero;
-- do not support negative findings;
-- reduce evidence coverage where applicable;
-- route to validation before implementation.
+- `unknown`: available evidence cannot determine the condition.
+- `blocked`: evidence may exist but access, authority, timing, or system constraints prevent validation.
 
-### 7. Assign confidence
+Both states remain visible, are not score zero, reduce coverage where applicable, cannot independently create negative findings, and normally route to Phase 0 before implementation.
 
-Confidence must reflect the weakest material link in the evidence chain.
+### 4.8 Confidence support
 
-Use the repository-controlled confidence vocabulary. Document:
+Assign confidence based on the weakest material evidence dependency, considering:
 
-- confidence level;
-- evidence basis;
-- contradictory evidence;
-- material limitations;
-- conditions that would change the decision.
+- directness
+- provenance and integrity
+- recency
+- scope/sample coverage
+- corroboration
+- contradiction
+- authorization and reproducibility
 
-Confidence cannot exceed evidence quality, provenance integrity, scope coverage, or contradiction status.
+Confidence cannot exceed evidence quality and never modifies maturity or priority.
 
-### 8. Calculate evidence coverage
+### 4.9 Coverage inputs
 
-Calculate coverage using only criteria eligible for the approved assessment scope.
+Record applicable, known, unknown, blocked, and not-applicable weight under the scoring specification. Do not independently publish a score from the evidence register.
 
-Exclude unknown and blocked criteria from achieved points, but keep their eligible weight visible. Report:
+### 4.10 Downstream-use decision
 
-- verified weighted coverage;
-- reported-only weighted coverage;
-- unknown weighted coverage;
-- blocked weighted coverage;
-- total eligible weight.
+Evidence may support a governed finding only when:
 
-Do not publish an Operator Score without the coverage disclosure required by the scoring and publication standards.
+- identity and provenance resolve
+- scope and authorization pass
+- review state permits use
+- weighted ownership is unique
+- contradictions and limitations are resolved or disclosed
+- confidence support is appropriate
+- unknown/blocked handling is correct
 
-### 9. Authorize downstream use
+Evidence does not directly authorize a package, roadmap item, report, or implementation action.
 
-Evidence may support a finding only when:
-
-- provenance is resolvable;
-- scope and authorization pass;
-- weighted ownership is unique;
-- material contradictions are resolved or disclosed;
-- confidence is evidence-bounded;
-- unknown and blocked states are correctly preserved.
-
-Evidence may support implementation routing only after the related finding and recommendation pass their own approval gates.
-
-### 10. Record material decisions
-
-Create or reference DecisionLedger records for material:
-
-- admissibility exceptions;
-- duplicate ownership decisions;
-- confidence overrides;
-- contradiction resolutions;
-- unknown or blocked treatment;
-- score-impact decisions;
-- publication restrictions;
-- supersession events.
-
-Approved evidence records are corrected through supersession or controlled update history, never silent replacement.
-
-## Decision gates
+## 5. Decision gates
 
 ### ALLOW
 
-Use when all material evidence is authorized, traceable, admissible, uniquely owned, and sufficient for the intended downstream decision.
+The evidence is admissible for its stated bounded use.
 
 ### REVIEW
 
-Use when uncertainty is bounded and resolvable without invalidating the assessment, score, package route, or executive conclusion.
+A limitation, contradiction, recency, sample, or authority question requires qualified judgment or validation.
 
 ### HALT
 
-Use when any of the following exists:
+Use for unauthorized collection, broken provenance/integrity, duplicate weighted ownership, material unresolved contradiction, unknown-as-failure treatment, unsupported assertion strength, or missing traceability.
 
-- unauthorized collection or access;
-- broken provenance or artifact integrity;
-- duplicate weighted ownership;
-- material unresolved contradiction;
-- unknown treated as a failure;
-- confidence exceeding the evidence chain;
-- unsupported downstream claim;
-- missing required DecisionLedger traceability.
+## 6. Decision record
 
-## Completion checklist
+```yaml
+evidence_validation_id: OI-EVVAL-YYYY-NNN
+evidence_refs: []
+intended_uses: []
+accepted_uses: []
+limited_uses: []
+rejected_uses: []
+unknowns: []
+blocked_conditions: []
+contradictions: []
+duplicate_owner_decisions: []
+confidence_support: high|medium|low|unknown
+review_state: ALLOW|REVIEW|HALT
+reviewer: ""
+ledger_refs: []
+```
 
-- [ ] Scope and authorization verified
-- [ ] Every material item has a stable Evidence ID
-- [ ] Provenance and represented date range recorded
-- [ ] Reported claims are distinguished from verified evidence
-- [ ] Duplicate signals have one weighted owner
-- [ ] Contradictions remain visible and governed
-- [ ] Unknown and blocked conditions remain unscored
-- [ ] Confidence is evidence-bounded
-- [ ] Evidence coverage is reproducible
-- [ ] Finding authorization is explicit
-- [ ] Material decisions are traceable in the DecisionLedger
-- [ ] Publication restrictions are recorded
+## 7. Recovery and supersession
 
-## Cross-references
+When evidence changes:
 
-- `templates/client-intake.md`
+1. preserve the prior record
+2. create a new source/version
+3. link supersession
+4. reassess dependent scores, findings, recommendations, routes, roadmaps, reports, and authorizations
+5. rerun QC
+
+## 8. Completion checklist
+
+- [ ] Scope and authorization pass.
+- [ ] Canonical fields resolve.
+- [ ] Class, strength, confidence support, and review state are separate.
+- [ ] Reported/inferred material is not presented as verified fact.
+- [ ] Duplicate and contradiction controls pass.
+- [ ] Unknown and blocked states remain visible.
+- [ ] Coverage inputs reproduce.
+- [ ] Material decisions are ledgered.
+- [ ] Downstream use is bounded.
+
+## 9. Commercial v1.0 connection
+
+This playbook makes evidence admission repeatable and defensible across assessors, protecting every downstream score, finding, recommendation, and report.
+
+## 10. References
+
+- `standards/evidence-standard.md`
+- `standards/confidence-standard.md`
 - `templates/evidence-register.md`
-- `templates/finding-register.md`
-- `templates/recommendation-register.md`
-- `standards/decision-ledger-standard.md`
-- `standards/quality-control-standard.md`
-- `standards/recommendation-standard.md`
-- `standards/roadmap-standard.md`
+- `templates/quality-control-checklist.md`
