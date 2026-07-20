@@ -1,196 +1,217 @@
 # Governed Implementation Proposal Template
 
-## 1. Proposal control
+Version: v0.2 template reconciliation  
+Stage alignment: Stage 5 — `templates/`  
+Folder alignment: `templates/`  
+Status: Governed commercial v1.0 proposal template
+
+## 1. Purpose
+
+Use this template to convert package-eligible, governed recommendations into bounded commercial scope. A proposal records the offered work and acceptance decision; it does not increase evidence certainty, override a control gate, or authorize implementation by itself.
+
+## 2. Proposal control
 
 | Field | Value |
 |---|---|
-| Client | [Client name] |
-| Proposal ID | [PROP-YYYY-NNN] |
-| Assessment/report version | [Version] |
-| Publication state | [official / provisional / range_only] |
-| Weighted evidence coverage | [Percent] |
-| Prepared by | Drew D. Burt |
-| Prepared date | [YYYY-MM-DD] |
-| Valid through | [YYYY-MM-DD or stated review condition] |
-| DecisionLedger references | [Ledger IDs] |
-| Implementation authorization | [not_requested / pending / approved / denied / halted] |
+| Proposal ID | `OI-PROP-YYYY-NNN` |
+| Client / assessment ID | |
+| Source report ID and version | |
+| Proposal version | |
+| Supersedes | |
+| Methodology version | |
+| Evidence snapshot date | |
+| Source publication state | `official` / `provisional` / `range_only` / `blocked` |
+| QC reference | |
+| Prepared by / date | |
+| Valid-through condition | |
+| DecisionLedger refs | |
+| Proposal acceptance | `pending` / `accepted` / `rejected` / `change_requested` |
+| Implementation authorized | `false` unless separately granted |
+| Authorization reference | |
 
-> This proposal converts approved assessment recommendations into bounded implementation work. It does not increase the certainty of the underlying evidence, authorize work by itself, or guarantee business outcomes.
+> A blocked report or unresolved HALT cannot support dependent implementation scope.
 
-## 2. Executive objective
+## 3. Executive objective
 
-[State the verified operating condition, the approved implementation objective, and the decision this proposal enables. Use evidence-supported language only.]
+[State the verified condition, bounded implementation objective, and client decision enabled.]
 
-### Client-safe objective statement
+**Client-safe objective statement**
 
-> Based on the assessment evidence available as of [snapshot date], this proposal addresses [verified condition] through [primary package]. The work is designed to establish [observable capability or control]. Outcome performance will require separate measurement after implementation.
+> Based on evidence reviewed as of [snapshot date], this proposal addresses [verified condition] through [eligible package and bounded scope]. Completion will be tested against stated acceptance criteria. Business outcomes require separate measurement.
 
-## 3. Governing assessment basis
+## 4. Governing assessment basis
 
-| Finding ID | Verified condition | Confidence | Evidence IDs | Recommendation ID | Gate |
-|---|---|---:|---|---|---|
-| [F-###] | [Condition] | [high / medium / low / unknown] | [E-###] | [R-###] | [ALLOW / REVIEW / HALT] |
+| Finding ID | Observation | Evidence refs | Confidence | Recommendation ID | Priority | Gate |
+|---|---|---|---|---|---:|---|
+| | | | | | | |
 
 ### Material unknowns and blockers
 
-| ID | Condition | Effect on scope | Required validation | Owner | Gate |
+| ID | Condition | Effect on scope | Validation required | Owner | Gate |
 |---|---|---|---|---|---|
-| [U-###] | [Unknown or blocked condition] | [Effect] | [Validation action] | [Owner] | [REVIEW / HALT] |
+| | | | | | REVIEW / HALT |
 
 Rules:
 
-- Unknown and blocked conditions remain visible and are not converted into failures.
-- `HALT` conditions block dependent work until a superseding DecisionLedger record resolves them.
-- Proposal scope may not rely on unpublished, suppressed, or unsupported findings.
+- Unknown and blocked conditions remain visible.
+- Proposal scope cannot rely on suppressed, unsupported, or unpublished findings.
+- HALT blocks dependent work until superseded.
+- Validation-only items remain Phase 0 and are not sold as implementation packages unless a separately defined validation scope is authorized.
 
-## 4. Selected package and routing
+## 5. Package eligibility and route
 
 | Field | Value |
 |---|---|
-| Primary package | [Registered package name] |
-| Package routing reason | [Verified root condition and routing rationale] |
-| Secondary references | [Reference-only packages, if applicable] |
-| Roadmap phase | [Phase 1 / Phase 2 / Phase 3 / Phase 4] |
-| Dependency IDs | [Recommendation, package, or roadmap IDs] |
-| Package approval state | [pending / approved / denied / halted] |
+| Package eligibility | `eligible` / `validation_required` / `blocked` / `not_applicable` |
+| Primary package | [Canonical package ID and name or None] |
+| Routing reference | |
+| Root condition | |
+| Roadmap phase | 0–5 |
+| Prerequisite package refs | |
+| Dependent package refs | |
+| Reference-only package refs | |
+| Routing gate | `ALLOW` / `REVIEW` / `HALT` |
 
-Every recommendation included below must have exactly one primary package. Secondary references cannot duplicate ownership or billing.
+Exactly one primary package is required only for eligible implementation work. Secondary relationships cannot duplicate ownership, scope, or billing.
 
-## 5. Authorized scope of work
+## 6. Proposed scope of work
 
-| Work item ID | Recommendation ID | Deliverable or action | Acceptance criterion | Acceptance evidence | Owner | Gate |
-|---|---|---|---|---|---|---|
-| [WI-###] | [R-###] | [Bounded work] | [Observable pass condition] | [Artifact, test, log, approval, or record] | [Owner] | [ALLOW / REVIEW / HALT] |
+| Work item ID | Recommendation ref | Deliverable / action | Included scope | Acceptance criteria | Acceptance evidence | Owner | Gate |
+|---|---|---|---|---|---|---|---|
+| | | | | | | | |
 
-### Scope requirements
+Each item must:
 
-Each work item must:
+1. trace to a governed recommendation and ledger event
+2. remain inside package and proposal boundaries
+3. state prerequisites and dependencies
+4. define observable acceptance criteria
+5. identify completion evidence
+6. separate completion from outcome validation
 
-1. Trace to an approved recommendation and DecisionLedger record.
-2. Remain within the selected primary package.
-3. State prerequisites and dependencies.
-4. Define observable acceptance criteria.
-5. Identify acceptance evidence.
-6. Separate implementation completion from outcome validation.
+## 7. Excluded, deferred, and blocked scope
 
-## 6. Excluded and deferred scope
-
-| Item | Status | Reason | Re-entry condition |
+| Item | State | Reason | Re-entry condition |
 |---|---|---|---|
-| [Item] | [excluded / deferred / blocked] | [Reason] | [Evidence, approval, prerequisite, or future phase] |
+| | excluded / deferred / blocked / validation_required | | |
 
-Unless explicitly included and authorized, the proposal excludes:
+Unless expressly included, scope excludes third-party spend, licenses, custom software, brand redesign, professional media production, work outside the primary package, Phase 4 AI implementation before controls pass, and unsupported outcome guarantees.
 
-- work outside the registered primary package;
-- unsupported package expansion;
-- paid media spend, third-party licenses, and vendor fees;
-- professional media production or brand redesign;
-- custom software beyond stated scope;
-- Phase 4 AI implementation before required workflow, data, privacy, review, escalation, logging, and QA controls exist;
-- outcome guarantees, unsupported ROI, revenue, conversion, ranking, lead-loss, market-share, or competitor-performance claims.
+## 8. Roadmap and sequencing
 
-## 7. Roadmap and sequencing
+| Phase | Purpose | Entry gate | Proposed work | Dependencies | Completion gate | Planning window |
+|---:|---|---|---|---|---|---|
+| 0 | Validation and Access | unresolved evidence/access/authority | validation only | | decision evidence | |
+| 1 | Quick Wins | verified bounded correction | | | acceptance evidence | |
+| 2 | Growth Foundation | foundation prerequisites pass | | | acceptance evidence | |
+| 3 | Automation and Reporting | workflow/data/ownership defined | | | acceptance evidence | |
+| 4 | Governed AI Enablement | AI control gates pass | | | acceptance evidence | |
+| 5 | Optimization and Renewal | measured implementation/adoption evidence exists | | | renewal/closure decision | |
 
-| Phase | Entry gate | Authorized work | Dependencies | Completion gate | Planning window |
-|---|---|---|---|---|---|
-| Phase 1 — Validate and stabilize | [Gate] | [Work] | [Dependencies] | [Evidence required] | [Assumption, not guarantee] |
-| Phase 2 — Standardize and control | [Gate] | [Work] | [Dependencies] | [Evidence required] | [Assumption, not guarantee] |
-| Phase 3 — Integrate and automate | [Gate] | [Work] | [Dependencies] | [Evidence required] | [Assumption, not guarantee] |
-| Phase 4 — Governed AI enablement | [Gate] | [Work] | [Dependencies] | [Evidence required] | [Assumption, not guarantee] |
+Priority cannot bypass prerequisites. Planning windows are assumptions unless explicitly contracted.
 
-Rules:
-
-- Priority cannot bypass prerequisites.
-- Dates and windows are planning assumptions unless explicitly contracted as fixed obligations.
-- Material resequencing requires review and a new or superseding DecisionLedger record.
-
-## 8. Client responsibilities and access gates
+## 9. Client responsibilities and access gates
 
 | Requirement | Owner | Required by | Verification evidence | Effect if unavailable |
 |---|---|---|---|---|
-| [Account access, approval, data, asset, SME input] | [Client/operator] | [Milestone] | [Evidence] | [Delay / REVIEW / HALT / scope change] |
+| | | | | delay / REVIEW / HALT / change request |
 
-Client responsibilities may include:
+Client responsibilities may include authorized access, accurate business information, data-use approval, assets, assigned decision owners, timely review, and disclosure of material constraints.
 
-- providing authorized access to required systems and records;
-- confirming data ownership, privacy, retention, and permitted use;
-- supplying accurate business information and approved assets;
-- assigning decision owners and reviewers;
-- reviewing deliverables within the agreed governance window;
-- disclosing material constraints that affect evidence, implementation, or acceptance.
-
-Missing access remains an unknown or blocker. It is not treated as proof that a capability does not exist.
-
-## 9. Commercial terms
+## 10. Commercial terms
 
 | Field | Value |
 |---|---|
-| Pricing model | [fixed / milestone / time-and-materials / retainer] |
-| Primary package fee | [$ amount] |
-| Approved optional work | [$ amount or none] |
-| Third-party costs | [Excluded or listed] |
-| Payment schedule | [Terms] |
-| Change-control method | [Written approval and ledger update] |
+| Pricing model | fixed / milestone / time-and-materials / retainer |
+| Primary package fee | |
+| Authorized optional scope | |
+| Third-party costs | excluded / listed |
+| Payment schedule | |
+| Taxes / expenses | |
+| Change-control method | written approval + ledger / proposal update |
+| Cancellation / pause conditions | |
 
-Pricing reflects the authorized implementation scope, not a guarantee of financial or operational outcomes.
+Pricing reflects proposed scope, not a guarantee of outcomes.
 
-### Change control
+## 11. Change control
 
-A change request is required when work would alter:
+A governed change request is required when work alters package, findings relied upon, recommendations, phase, dependencies, authorization, acceptance criteria, timeline assumptions, scope, fees, privacy, data use, or control boundaries.
 
-- the primary package;
-- findings or recommendations relied upon;
-- roadmap phase or dependencies;
-- implementation authorization;
-- acceptance criteria;
-- material timeline assumptions;
-- commercial scope or fees.
+| Change ID | Requested change | Evidence / control effect | Scope / fee effect | Decision | Ledger ref |
+|---|---|---|---|---|---|
+| | | | | | |
 
 No material change is effective until approved and recorded.
 
-## 10. Measurement and outcome validation
+## 12. Measurement and outcome validation
 
-| Measure ID | Capability or outcome | Baseline status | Collection method | Review point | Claim boundary |
-|---|---|---|---|---|---|
-| [M-###] | [Measure] | [verified / unknown / unavailable] | [Method] | [Date or milestone] | [What may and may not be concluded] |
+| Measure ID | Capability / outcome | Baseline state | Method | Review window | Owner | Claim boundary |
+|---|---|---|---|---|---|---|
+| | | verified / unknown / unavailable | | | | |
 
-Implementation completion confirms only that agreed acceptance criteria were met. Business, customer, financial, ranking, conversion, or reliability outcomes require separate baseline, observation period, and validation evidence.
+Implementation completion proves only that authorized acceptance criteria were met. Realized value requires separate evidence and decision review.
 
-## 11. Acceptance and authorization
+## 13. Acceptance and authorization
 
 ### Proposal acceptance
 
-Proposal acceptance confirms agreement with the commercial and implementation scope. It does not override a `REVIEW` or `HALT` gate.
+Proposal acceptance confirms agreement with commercial terms and proposed scope. It does not override REVIEW or HALT and does not start work by itself.
 
 | Role | Name | Decision | Date | Reference |
 |---|---|---|---|---|
-| Client decision owner | [Name] | [approve / reject / request change] | [YYYY-MM-DD] | [Record] |
-| Delivery owner | [Name] | [accept / decline] | [YYYY-MM-DD] | [Record] |
-| Governance reviewer, if required | [Name] | [approve / reject / halt] | [YYYY-MM-DD] | [Ledger ID] |
+| Client decision owner | | accept / reject / change requested | | |
+| Delivery owner | | accept / decline | | |
+| Governance reviewer, if required | | ALLOW / REVIEW / HALT | | |
 
-### Authorization boundary
+### Separate implementation authorization
 
 Work may begin only when:
 
-- the proposal is accepted;
-- the relevant package and roadmap gates are approved;
-- required access and prerequisites are verified;
-- no unresolved `HALT` applies;
-- the implementation authorization state is `approved`.
+- proposal acceptance is recorded
+- package and roadmap gates pass
+- access, authority, and prerequisites are verified
+- no unresolved HALT applies
+- authorized scope and exclusions are fixed
+- implementation owner accepts responsibility
+- `implementation_authorized: true`
+- authorization reference resolves
 
-## 12. Pre-release quality-control checklist
+```yaml
+implementation_authorized: false
+authorization_ref: null
+authorized_by: null
+authorized_at: null
+authorized_scope: []
+blocked_scope: []
+```
 
-- [ ] Assessment/report version and publication state are identified.
-- [ ] Evidence coverage, confidence, unknowns, and blockers are disclosed.
-- [ ] Every included finding is evidence-backed and ledger-traceable.
-- [ ] Every recommendation has exactly one primary package.
-- [ ] Scope is proportional to the verified condition.
-- [ ] Roadmap phases and dependencies follow the canonical sequence.
-- [ ] Phase 4 AI prerequisites are satisfied or explicitly blocked.
-- [ ] Acceptance criteria and evidence are observable.
-- [ ] Implementation completion is separated from outcome validation.
+## 14. Pre-release QC checklist
+
+- [ ] Source report, evidence snapshot, publication state, and methodology version resolve.
+- [ ] Included findings and recommendations are governed and ledgered.
+- [ ] Package eligibility is explicit.
+- [ ] Exactly one primary package exists only for eligible work.
+- [ ] Phase 0 and phases 1–5 are correctly used.
+- [ ] Scope, exclusions, prerequisites, owners, and acceptance evidence are explicit.
+- [ ] AI prerequisites pass where applicable.
 - [ ] Commercial terms do not imply unsupported ROI or outcome certainty.
-- [ ] Publication approval is not presented as implementation authorization.
-- [ ] Material changes require approval and DecisionLedger traceability.
-- [ ] Executive language is accurate, bounded, and client-safe.
-- [ ] Any failed blocking check results in `HALT`.
+- [ ] Proposal acceptance and implementation authorization remain separate.
+- [ ] Completion and realized-value evidence remain separate.
+- [ ] Any blocking failure routes to HALT.
+
+## 15. Commercial v1.0 connection
+
+This template converts governed assessment decisions into sellable, bounded, auditable work without allowing commercial pressure to override evidence, package eligibility, dependencies, or authorization boundaries.
+
+## 16. References
+
+- `standards/recommendation-standard.md`
+- `standards/package-routing-standard.md`
+- `standards/roadmap-standard.md`
+- `standards/publication-standard.md`
+- `standards/quality-control-standard.md`
+- `standards/decision-ledger-standard.md`
+- `templates/executive-report.md`
+- `templates/recommendation-register.md`
+- `templates/roadmap.md`
+- `templates/package-catalog.md`
