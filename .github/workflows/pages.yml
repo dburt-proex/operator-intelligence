@@ -35,9 +35,16 @@ jobs:
 
       - name: Prepare isolated site artifact
         run: |
+          set -euo pipefail
           mkdir -p _site/governance-platform
-          cp governance-platform/index.html _site/governance-platform/index.html
-          cp governance-platform/architecture.svg _site/governance-platform/architecture.svg
+          for file in index.html architecture.svg; do
+            source_path="governance-platform/${file}"
+            if [[ ! -f "${source_path}" ]]; then
+              echo "Missing publish asset: ${source_path}" >&2
+              exit 1
+            fi
+            cp "${source_path}" "_site/governance-platform/${file}"
+          done
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

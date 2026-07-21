@@ -18,7 +18,7 @@ DiffWall is the deterministic change-enforcement layer. It gates code, configura
 
 ## Evidence and provenance
 
-Supporting source records for the following claims are retained internally by the repository owner, were reviewed before publication, and are not part of the public release artifact.
+Supporting source records for the following claims were reviewed before publication, remain internal to the repository owner, and are not part of the public release artifact.
 
 - CASA architecture and runtime gate model
 - DiffWall deterministic enforcement, rule trace, and v1 proof
