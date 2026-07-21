@@ -18,17 +18,19 @@ DiffWall is the deterministic change-enforcement layer. It gates code, configura
 
 ## Evidence and provenance
 
-- CASA architecture and runtime gate model: [CASA Governance Knowledge Base](https://app.notion.com/p/58c6799b5a494c2ba4b4198c1d657e17)
-- DiffWall deterministic enforcement, rule trace, and v1 proof: [DiffWall Guardian Layer](https://app.notion.com/p/38ee941db3bc80b0a9a4d96f598d527f)
-- Shared CASA/DiffWall control model and known DiffWall limits: [Project Context File](https://app.notion.com/p/7a3f83708c1e42698504de59804ada3b)
+Supporting source records for the following claims were reviewed before publication, remain internal to the repository owner, and are not part of the public release artifact.
+
+- CASA architecture and runtime gate model
+- DiffWall deterministic enforcement, rule trace, and v1 proof
+- Shared CASA/DiffWall control model and known DiffWall limits
 
 ## Evaluation gate
 
 | Check | Result | Notes |
 |---|---|---|
-| Architecture claims traceable | Pass | CASA and DiffWall claims match the cited Notion source records. |
+| Architecture claims traceable | Pass | CASA and DiffWall claims were reconciled against owner-retained source records before publication. |
 | Cross-product boundaries clear | Pass | The artifact separates operating model, change enforcement, and runtime governance. |
-| Security / privacy review | Pass | Diagram contains no credentials, customer data, private URLs, or implementation secrets. |
+| Security / privacy review | Pass | Published site files contain no credentials, customer data, private URLs, or implementation secrets. |
 | Accessibility | Pass | HTML includes a text alternative; SVG includes title and description. |
 | Public release authority | Pass | Hosting target and repository were approved by the owner on 2026-07-14. |
 
