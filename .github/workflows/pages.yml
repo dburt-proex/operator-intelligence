@@ -36,7 +36,8 @@ jobs:
       - name: Prepare isolated site artifact
         run: |
           mkdir -p _site/governance-platform
-          cp -R governance-platform/. _site/governance-platform/
+          cp governance-platform/index.html _site/governance-platform/index.html
+          cp governance-platform/architecture.svg _site/governance-platform/architecture.svg
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
