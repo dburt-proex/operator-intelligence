@@ -18,7 +18,18 @@ def load_registry() -> dict:
 
 def model(data: dict) -> dict:
     roots = sorted(data["governed_roots"], key=lambda item: item["path"])
-    artifacts = sorted(data["artifacts"], key=lambda item: item["path"])
+    source_artifacts = sorted(data["artifacts"], key=lambda item: item["path"])
+    artifacts = [
+        {
+            "artifact_id": artifact["artifact_id"],
+            "path": artifact["path"],
+            "artifact_type": artifact["artifact_type"],
+            "authority_state": artifact["authority_state"],
+            "release_scope": artifact["release_scope"],
+            "status": artifact["status"],
+        }
+        for artifact in source_artifacts
+    ]
     return {
         "schema_version": "oi-repository-map-v1",
         "source": "registry/artifacts.yaml",
@@ -27,7 +38,7 @@ def model(data: dict) -> dict:
         "edges": sorted(
             [
                 {"from": dependency, "to": artifact["path"], "type": "depends_on"}
-                for artifact in artifacts
+                for artifact in source_artifacts
                 for dependency in artifact.get("depends_on", [])
             ],
             key=lambda item: (item["from"], item["to"]),
