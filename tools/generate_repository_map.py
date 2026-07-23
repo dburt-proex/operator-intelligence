@@ -79,6 +79,21 @@ def markdown(data: dict) -> str:
     return "\n".join(lines)
 
 
+def compact_json(data: dict) -> str:
+    lines = ["{"]
+    for key in ("artifacts", "edges", "governed_roots"):
+        lines.append(f'  "{key}": [')
+        values = data[key]
+        for index, value in enumerate(values):
+            suffix = "," if index < len(values) - 1 else ""
+            lines.append("    " + json.dumps(value, sort_keys=True, separators=(",", ":")) + suffix)
+        lines.append("  ],")
+    lines.append('  "schema_version":' + json.dumps(data["schema_version"]) + ",")
+    lines.append('  "source":' + json.dumps(data["source"]))
+    lines.append("}")
+    return "\n".join(lines) + "\n"
+
+
 def mermaid(data: dict) -> str:
     lines = ["flowchart LR", '  registry["Artifact Registry"]']
     for index, root in enumerate(data["governed_roots"], start=1):
@@ -114,7 +129,7 @@ def outputs(data: dict) -> dict[Path, str]:
     mapped = model(data)
     return {
         OUTPUT_DIR / "repository-map.md": markdown(mapped),
-        OUTPUT_DIR / "repository-map.json": json.dumps(mapped, indent=2, sort_keys=True) + "\n",
+        OUTPUT_DIR / "repository-map.json": compact_json(mapped),
         OUTPUT_DIR / "repository-map.mmd": mermaid(mapped),
         OUTPUT_DIR / "repository-map.dot": dot(mapped),
     }
