@@ -41,3 +41,5 @@ jobs:
         run: python tools/generate_repository_map.py --check
       - name: Run field reliability self-test
         run: python reliability/field_reliability_validator.py --self-test
+      - name: Validate agentic control platform readiness package
+        run: python playbooks/agentic-control-platform-readiness/validate_package.py --self-test
