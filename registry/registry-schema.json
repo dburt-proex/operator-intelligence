@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://operator-intelligence.local/schemas/artifact-registry-v1.json",
+  "title": "Operator Intelligence Artifact Registry",
+  "type": "object",
+  "required": ["schema_version", "authority_states", "governed_roots", "artifacts", "map"],
+  "properties": {
+    "schema_version": {"const": "oi-artifact-registry-v1"},
+    "authority_states": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"enum": ["canonical", "approved_extension", "proposed", "experimental", "generated", "deprecated", "superseded", "archived"]}
+    },
+    "governed_roots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "artifact_type", "authority_state", "release_scope"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "artifact_type": {"type": "string", "minLength": 1},
+          "authority_state": {"type": "string"},
+          "release_scope": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["artifact_id", "path", "title", "artifact_type", "authority_state", "version", "release_scope", "status", "generated"],
+        "properties": {
+          "artifact_id": {"type": "string", "pattern": "^OI-ART-[0-9]{4}$"},
+          "path": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "artifact_type": {"type": "string", "minLength": 1},
+          "domain": {"type": "string"},
+          "authority_state": {"type": "string"},
+          "version": {"type": "string", "minLength": 1},
+          "release_scope": {"type": "string", "minLength": 1},
+          "folder_stage": {"type": "string"},
+          "status": {"type": "string", "minLength": 1},
+          "gate_ref": {"type": ["string", "null"]},
+          "depends_on": {"type": "array", "items": {"type": "string"}},
+          "downstream_consumers": {"type": "array", "items": {"type": "string"}},
+          "supersedes": {"type": ["string", "null"]},
+          "generated": {"type": "boolean"},
+          "sensitivity": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "map": {
+      "type": "object",
+      "required": ["output_directory", "formats"],
+      "properties": {
+        "output_directory": {"type": "string"},
+        "formats": {"type": "array", "uniqueItems": true, "items": {"enum": ["md", "json", "mmd", "dot"]}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
