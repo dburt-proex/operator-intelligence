@@ -1,6 +1,6 @@
 # Operator Intelligence Scenario Fixture Index
 
-Version: v0.1 post-v1 assurance suite  
+Version: v0.2 post-v1 assurance suite  
 Folder alignment: `examples/scenario-fixtures/`  
 Status: Governed regression-fixture registry
 
@@ -10,18 +10,27 @@ Register compact engagement scenarios that prove Operator Intelligence preserves
 
 ## Fixture contract
 
-Each fixture contains four governed sections: scenario brief, input records, expected decision, and validation record. Fixtures are synthetic, contain no client data, do not alter canonical scoring, and must produce deterministic control outcomes.
+Each fixture directory contains exactly four governed records:
 
-| Fixture ID | File | Primary control under test | Expected result |
+```text
+scenario-brief.md
+input-records.md
+expected-decision.md
+validation-record.md
+```
+
+The top-level companion Markdown file remains a concise human-readable scenario summary. Fixtures are synthetic, contain no client data, do not alter canonical scoring, and must produce deterministic control outcomes.
+
+| Fixture ID | Directory | Primary control under test | Expected result |
 |---|---|---|---|
-| OI-FIX-001 | `unknown-heavy.md` | Unknown is not zero; publication gating | `REVIEW`, Phase 0 validation |
-| OI-FIX-002 | `conflicting-evidence.md` | Contradictions remain visible | `REVIEW`, confidence constrained |
-| OI-FIX-003 | `g4-control-boundary.md` | G4 authority/privacy boundary | `HALT` |
-| OI-FIX-004 | `package-ineligible.md` | Package eligibility before assignment | `ALLOW` finding, no package |
-| OI-FIX-005 | `low-confidence-high-impact.md` | Impact does not erase uncertainty | `REVIEW`, validation first |
-| OI-FIX-006 | `recommendation-declined.md` | Client decision without history manipulation | `ALLOW` closure record |
-| OI-FIX-007 | `completion-without-realized-value.md` | Completion is not outcome proof | `ALLOW`, `not_measured` |
-| OI-FIX-008 | `multi-location-scope.md` | Scope and evidence ownership by location | `REVIEW` until separated |
+| OI-FIX-001 | `unknown-heavy/` | Unknown is not zero; publication gating | `REVIEW`, Phase 0 validation |
+| OI-FIX-002 | `conflicting-evidence/` | Contradictions remain visible | `REVIEW`, confidence constrained |
+| OI-FIX-003 | `g4-control-boundary/` | G4 authority/privacy boundary | `HALT` |
+| OI-FIX-004 | `package-ineligible/` | Package eligibility before assignment | `ALLOW` finding, no package |
+| OI-FIX-005 | `low-confidence-high-impact/` | Impact does not erase uncertainty | `REVIEW`, validation first |
+| OI-FIX-006 | `recommendation-declined/` | Client decision without history manipulation | `ALLOW` closure record |
+| OI-FIX-007 | `completion-without-realized-value/` | Completion is not outcome proof | `ALLOW`, `not_measured` |
+| OI-FIX-008 | `multi-location-scope/` | Scope and evidence ownership by location | `REVIEW` until separated |
 
 ## Validation rules
 
@@ -33,7 +42,8 @@ Each fixture contains four governed sections: scenario brief, input records, exp
 - Publication, proposal acceptance, and implementation authorization remain separate.
 - Completion and realized value remain separate.
 - Material decisions require DecisionLedger references.
+- Every expected decision must be reproducible from the listed inputs and governing authorities.
 
 ## Usage
 
-Use these fixtures as acceptance tests for future calculators, report assembly, registry validation, profile extensions, and evaluator calibration. A future automated test may serialize the inputs, but this index and the expected decisions remain the human-readable authority.
+Use these fixtures as acceptance tests for future calculators, report assembly, registry validation, profile extensions, and evaluator calibration. The four-record fixture envelope is the test authority; the companion summary is orientation only.
