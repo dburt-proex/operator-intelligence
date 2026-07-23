@@ -1,0 +1,64 @@
+flowchart LR
+  registry["Artifact Registry"]
+  root1[".github/\ncanonical"]
+  registry --> root1
+  root2["assets/\ncanonical"]
+  registry --> root2
+  root3["docs/\ncanonical"]
+  registry --> root3
+  root4["examples/\ncanonical"]
+  registry --> root4
+  root5["framework/\ncanonical"]
+  registry --> root5
+  root6["generated/\ngenerated"]
+  registry --> root6
+  root7["governance-platform/\napproved_extension"]
+  registry --> root7
+  root8["playbooks/\ncanonical"]
+  registry --> root8
+  root9["registry/\napproved_extension"]
+  registry --> root9
+  root10["reliability/\napproved_extension"]
+  registry --> root10
+  root11["research/\ncanonical"]
+  registry --> root11
+  root12["scoring/\ncanonical"]
+  registry --> root12
+  root13["standards/\ncanonical"]
+  registry --> root13
+  root14["templates/\ncanonical"]
+  registry --> root14
+  root15["tools/\napproved_extension"]
+  registry --> root15
+  artifact1[".github/workflows/validate-registry-and-map.yml\napproved_extension"]
+  root1 --> artifact1
+  artifact2["COMMERCIAL_V1_COMPLETION.md\ncanonical"]
+  registry --> artifact2
+  artifact3["README.md\ncanonical"]
+  registry --> artifact3
+  artifact4["ROADMAP.md\ncanonical"]
+  registry --> artifact4
+  artifact5["examples/scenario-fixtures/index.md\napproved_extension"]
+  root4 --> artifact5
+  artifact6["generated/repository-map.dot\ngenerated"]
+  root6 --> artifact6
+  artifact7["generated/repository-map.json\ngenerated"]
+  root6 --> artifact7
+  artifact8["generated/repository-map.md\ngenerated"]
+  root6 --> artifact8
+  artifact9["generated/repository-map.mmd\ngenerated"]
+  root6 --> artifact9
+  artifact10["playbooks/agentic-ai-governance-readiness-assessment.md\nproposed"]
+  root8 --> artifact10
+  artifact11["registry/artifacts.yaml\napproved_extension"]
+  root9 --> artifact11
+  artifact12["registry/registry-schema.json\napproved_extension"]
+  root9 --> artifact12
+  artifact13["registry/validate_registry.py\napproved_extension"]
+  root9 --> artifact13
+  artifact14["reliability/field_reliability_validator.py\napproved_extension"]
+  root10 --> artifact14
+  artifact15["templates/realized-value-register.md\napproved_extension"]
+  root14 --> artifact15
+  artifact16["tools/generate_repository_map.py\napproved_extension"]
+  root15 --> artifact16
