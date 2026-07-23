@@ -1,13 +1,13 @@
 # Engagement Delivery Playbook
 
-Version: v1.0 commercial operating playbook  
+Version: v1.1 post-v1 field-learning extension  
 Stage alignment: Stage 6 — `playbooks/`  
 Folder alignment: `playbooks/`  
 Status: Governed end-to-end engagement workflow
 
 ## 1. Purpose
 
-This playbook defines the operating sequence for delivering Operator Intelligence from qualification through assessment, client decision, authorized implementation, monitoring, renewal, and closure.
+This playbook defines the operating sequence for delivering Operator Intelligence from qualification through assessment, client decision, authorized implementation, completion, realized-value review, monitoring, renewal, and closure.
 
 It does not replace source standards or authorize work. Every lifecycle advancement requires its own evidence, owner, gate, and record.
 
@@ -20,6 +20,7 @@ It does not replace source standards or authorize work. Every lifecycle advancem
 - standards and package registry
 - industry playbook
 - engagement authorization
+- baseline and measurement authority when realized-value review is opened
 
 ## 3. Outputs
 
@@ -29,7 +30,9 @@ It does not replace source standards or authorize work. Every lifecycle advancem
 - roadmap and proposal where eligible
 - QC/publication/client decision records
 - onboarding and implementation authorization when approved
-- completion, monitoring, renewal, or closure evidence
+- completion evidence
+- realized-value register when measurement is opened
+- monitoring, renewal, or closure evidence
 - complete DecisionLedger history
 
 ## 4. Canonical lifecycle states
@@ -48,7 +51,7 @@ It does not replace source standards or authorize work. Every lifecycle advancem
 | OI-LC-10 | Delivery and Decision | publication and client decisions |
 | OI-LC-11 | Proposal and Onboarding | accepted scope and start prerequisites |
 | OI-LC-12 | Implementation | separately authorized work and completion evidence |
-| OI-LC-13 | Monitoring and Realized Value | measured evidence and next decision |
+| OI-LC-13 | Monitoring and Realized Value | separate baseline, outcome evidence, attribution confidence, and next decision |
 | OI-LC-14 | Renewal or Closure | renewed scope or controlled closure |
 
 A downstream artifact cannot cure an upstream failure.
@@ -124,13 +127,28 @@ A downstream artifact cannot cure an upstream failure.
 - test acceptance criteria
 - retain completion evidence and defects/exceptions
 - record client acceptance/rejection
+- do not represent completion as a business outcome
 
-### 5.11 Monitoring, renewal, closure
+### 5.11 Monitoring and realized-value review
 
-- measure implementation/adoption and separate business outcomes under defined baselines/windows
-- avoid unsupported causation/ROI
-- decide optimize, maintain, renew, defer, or close
-- revoke access and retain/return/delete records as required
+Use `templates/realized-value-register.md` when a stable recommendation, roadmap item, package, completion state, or no-action decision enters outcome measurement.
+
+- define baseline metric, source, owner, period, and evidence refs
+- define measurement window and comparison method
+- separate implementation adoption from business effects
+- record observed direction, confounders, unintended effects, attribution confidence, and limitations
+- use the approved ROI framework before any financial assertion
+- retain `not_measured` and `insufficient_evidence` without treating either as failure
+- record client acceptance, dispute, correction, or unknown state
+- prevent the record from changing the original score or silently authorizing more work
+
+### 5.12 Renewal and closure
+
+- decide validate, optimize, maintain, renew, defer, or close
+- ensure the decision is supported by the realized-value state and client authority
+- revoke access and retain, return, or delete records as required
+- transfer open risks and unknowns to named owners
+- ledger the final state
 
 ## 6. Engagement control record
 
@@ -149,6 +167,11 @@ qc_ref: null
 package_scope_refs: []
 implementation_authorized: false
 authorization_ref: null
+completion_evidence_refs: []
+realized_value_record_refs: []
+realized_value_state: null
+measurement_owner: null
+measurement_review_date: null
 open_unknowns: []
 open_blockers: []
 owner: ""
@@ -159,9 +182,11 @@ ledger_ref: OI-DL-YYYY-NNN
 
 ## 7. Escalation and failure handling
 
-Use REVIEW for bounded evidence/sample/recency/owner/scope questions. Use HALT for missing authority, broken evidence integrity, unreproducible score, unknown-as-zero, unsupported confidence/claims, duplicate ownership, invalid eligibility/route, bypassed phase, uncontrolled AI, missing authorization, or broken traceability.
+Use REVIEW for bounded evidence, sample, recency, owner, scope, attribution, or exception questions.
 
-Correct earliest failed control, supersede material records, and rerun downstream checks.
+Use HALT for missing authority, broken evidence integrity, unreproducible score, unknown-as-zero, unsupported confidence or outcome claims, duplicate ownership, invalid eligibility or route, bypassed phase, uncontrolled AI, missing authorization, unsupported ROI, or broken traceability.
+
+Correct the earliest failed control, supersede material records, and rerun downstream checks.
 
 ## 8. Completion checklist
 
@@ -169,10 +194,12 @@ Correct earliest failed control, supersede material records, and rerun downstrea
 - [ ] Scope, evidence, scoring, findings, and recommendations reproduce.
 - [ ] Package eligibility and phases are valid.
 - [ ] Registered templates are used.
-- [ ] QC/publication/client/proposal/authorization decisions are separate.
+- [ ] QC, publication, client, proposal, and authorization decisions are separate.
 - [ ] Completion and realized value are separate.
+- [ ] Realized-value assertions trace to baseline and outcome evidence.
+- [ ] Attribution confidence and confounders are explicit.
 - [ ] Material changes and decisions are ledgered.
-- [ ] Open risks/unknowns transfer to an owner at closure.
+- [ ] Open risks and unknowns transfer to an owner at closure.
 
 ## 9. Usage instructions
 
@@ -180,16 +207,19 @@ Correct earliest failed control, supersede material records, and rerun downstrea
 2. Advance one lifecycle state only after its exit gate passes.
 3. Use the industry playbook plus contractor base.
 4. Use the delivery checklist as the working execution record.
-5. Stop and reopen upstream decisions when evidence or scope changes materially.
+5. Use the Realized Value Register only when the measurement trigger and authority pass.
+6. Stop and reopen upstream decisions when evidence or scope changes materially.
 
-## 10. Commercial v1.0 connection
+## 10. Commercial v1.0 and post-v1 connection
 
-This playbook defines the complete paid-assessment and governed implementation lifecycle required for repeatable commercial delivery.
+This playbook preserves the complete paid-assessment and governed implementation lifecycle required for commercial-v1 delivery. The post-v1 extension adds a bounded field-learning loop without reopening approved scores, findings, packages, publication states, or authorization rules.
 
 ## 11. References
 
 - `framework/assessment-lifecycle.md`
 - `framework/lifecycle-roadmap-map.md`
+- `framework/roi-framework.md`
 - `templates/index.md`
 - `templates/delivery-checklist.md`
+- `templates/realized-value-register.md`
 - `playbooks/publication-quality-review.md`
