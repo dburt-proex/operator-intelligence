@@ -1,0 +1,43 @@
+name: Validate registry and repository map
+
+on:
+  pull_request:
+    paths:
+      - 'registry/**'
+      - 'tools/generate_repository_map.py'
+      - 'generated/**'
+      - 'templates/**'
+      - 'examples/**'
+      - 'playbooks/**'
+      - 'reliability/**'
+      - '.github/workflows/validate-registry-and-map.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'registry/**'
+      - 'tools/generate_repository_map.py'
+      - 'generated/**'
+      - 'templates/**'
+      - 'examples/**'
+      - 'playbooks/**'
+      - 'reliability/**'
+      - '.github/workflows/validate-registry-and-map.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate artifact registry
+        run: python registry/validate_registry.py
+      - name: Verify generated repository map
+        run: python tools/generate_repository_map.py --check
+      - name: Run field reliability self-test
+        run: python reliability/field_reliability_validator.py --self-test
