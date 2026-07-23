@@ -1,12 +1,12 @@
 # Operator Intelligence Commercial v1.0 Usage Guide
 
-Version: commercial v1.0  
+Version: commercial v1.0 with post-v1 field-learning extension  
 Folder alignment: `docs/`  
 Status: Canonical operating guide
 
 ## 1. Purpose
 
-Provide the practical sequence for qualifying, delivering, reviewing, proposing, implementing, monitoring, and closing an Operator Intelligence engagement using the governed repository artifacts.
+Provide the practical sequence for qualifying, delivering, reviewing, proposing, implementing, monitoring, measuring realized value, renewing, and closing an Operator Intelligence engagement using the governed repository artifacts.
 
 ## 2. Roles
 
@@ -18,6 +18,7 @@ Provide the practical sequence for qualifying, delivering, reviewing, proposing,
 | QC reviewer | Independent reproduction, routing, language, publication review |
 | Client decision owner | Accept, defer, reject, authorize, renew, or close |
 | Implementation owner | Authorized package delivery and acceptance evidence |
+| Measurement owner | Baseline, review window, outcome evidence, attribution limits, renewal signal |
 | Governance owner | REVIEW/HALT, privacy, AI, exception, and escalation decisions |
 
 One person may hold several roles in a small engagement, but authority and review decisions must remain explicit.
@@ -39,7 +40,9 @@ sales-notes.md
 → proposal.md
 → onboarding-checklist.md
 → delivery-checklist.md
-→ completion / monitoring / renewal records
+→ completion evidence
+→ realized-value-register.md
+→ renewal / optimization / maintenance / closure records
 ```
 
 Run `quality-control-checklist.md` before every material release or advancement.
@@ -262,21 +265,47 @@ Before start:
 
 No unresolved HALT may affect the work.
 
-## 16. Step 13 — Complete and monitor
+## 16. Step 13 — Complete, monitor, and measure realized value
 
-Completion requires acceptance evidence against authorized scope.
+Use:
 
-For realized value, separately define:
+- `templates/delivery-checklist.md`
+- `templates/realized-value-register.md`
 
-- metric and baseline
-- source and owner
-- comparison window
-- confounders
-- observed direction
-- confidence and limitations
-- decision triggered
+Completion requires acceptance evidence against authorized scope. Completion is not realized value.
 
-Do not infer causation or ROI from deliverable completion.
+Open a realized-value record only when a stable recommendation, roadmap item, package, completion state, or no-action decision exists and the measurement boundary is authorized.
+
+Record separately:
+
+- baseline metric, source, owner, period, and evidence refs
+- implementation completion and adoption evidence
+- measurement window and comparison method
+- observed effect and direction
+- confounders and unintended effects
+- attribution confidence and limitations
+- financial-method reference when a financial effect is asserted
+- client acceptance, dispute, or correction
+- renewal, optimization, maintenance, validation, or closure decision
+- DecisionLedger and methodology-feedback refs
+
+Controlled realized-value states are:
+
+```text
+not_measured
+measurement_planned
+measurement_active
+insufficient_evidence
+no_material_change
+positive_signal
+negative_signal
+mixed_result
+validated_value
+disputed
+closed
+```
+
+Do not infer causation, conversion lift, savings, revenue, ranking change, or ROI from deliverable completion. A record may remain unmeasured or insufficient without being treated as failure.
 
 ## 17. Step 14 — Renew or close
 
@@ -284,13 +313,13 @@ Record:
 
 - accepted deliverables and residual defects
 - open risks, unknowns, and owners
-- monitoring state
+- monitoring and realized-value state
 - renewed/expanded scope or maintenance decision
 - access revocation
 - record retention/return/deletion
 - final ledger/closure state
 
-Renewal is a governed decision, not an automatic upsell.
+Renewal is a governed decision, not an automatic upsell. A positive signal does not authorize additional implementation.
 
 ## 18. Required engagement records
 
@@ -307,11 +336,13 @@ Minimum commercial engagement set:
 - released report and roadmap
 - client decision record
 - proposal/onboarding/authorization if implementation proceeds
-- completion and monitoring/closure record
+- completion record
+- realized-value register when monitoring or outcome measurement is opened
+- renewal or closure record
 
 ## 19. Quality escalation
 
-Use `REVIEW` for bounded ambiguity, sample, recency, ownership, scope, or exception questions.
+Use `REVIEW` for bounded ambiguity, sample, recency, ownership, scope, attribution, or exception questions.
 
 Use `HALT` for:
 
@@ -321,12 +352,12 @@ Use `HALT` for:
 - unreproducible score
 - confidence exceeding evidence
 - duplicate weighted or package ownership
-- unsupported recommendation or claim
+- unsupported recommendation, outcome, or ROI claim
 - invalid package/phase route
 - AI bypassing controls
 - publication treated as authorization
 - missing DecisionLedger traceability
 
-## 20. Commercial v1.0 connection
+## 20. Commercial v1.0 and post-v1 connection
 
-This guide is the operating bridge between the repository architecture and a real paid assessment. It identifies the artifacts, gates, owners, and completion evidence required to deliver the product consistently.
+This guide remains the operating bridge between the commercial-v1 repository architecture and a real paid assessment. The post-v1 extension closes the field-learning loop by requiring a separate realized-value record for outcome measurement without reopening approved scores, findings, packages, or release authority.
