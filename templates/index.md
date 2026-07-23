@@ -1,15 +1,15 @@
 # Operator Intelligence Template Index
 
-Version: v0.1 commercial v1.0 index  
-Stage alignment: Stage 5 — `templates/`  
+Version: v0.2 post-v1 registry extension  
+Stage alignment: Stage 5 — `templates/` plus post-v1 field learning  
 Folder alignment: `templates/`  
 Status: Canonical template registry
 
 ## 1. Purpose
 
-This index defines the canonical templates used to qualify, assess, score, report, propose, authorize, deliver, review, and close an Operator Intelligence engagement.
+This index defines the canonical templates used to qualify, assess, score, report, propose, authorize, deliver, review, monitor, measure realized value, renew, and close an Operator Intelligence engagement.
 
-Use the registered file for each record type. Do not create alternate templates that change controlled fields, package identities, publication states, roadmap phases, authorization boundaries, or DecisionLedger requirements without reopening the template completion gate.
+Use the registered file for each record type. Do not create alternate templates that change controlled fields, package identities, publication states, roadmap phases, authorization boundaries, realized-value states, or DecisionLedger requirements without reopening the applicable completion gate.
 
 ## 2. Canonical registry
 
@@ -23,13 +23,14 @@ Use the registered file for each record type. Do not create alternate templates 
 | `recommendation-register.md` | Evidence-to-action control | Governed findings | Priority, eligibility, route, phase, and acceptance state |
 | `decision-ledger.md` | Immutable material decision record | Any governed state change | Traceable decision event |
 | `executive-report.md` | Canonical client decision artifact | Assessment synthesis | Published score, findings, recommendations, roadmap, decision memo |
-| `contractor-report.md` | Concise owner/operator report | Executive report release | Practical assessment summary using same governed source objects |
+| `contractor-report.md` | Concise owner/operator report | Executive report release | Practical assessment summary using the same governed source objects |
 | `roadmap.md` | Sequenced validation and implementation plan | Approved recommendations | Phase 0 and phases 1–5 roadmap items |
 | `package-catalog.md` | Canonical package and scope registry | Package-eligible recommendation | Versioned package scope and delivery boundaries |
 | `proposal.md` | Commercial implementation offer | Eligible package scope | Bounded commercial scope and acceptance decision |
 | `onboarding-checklist.md` | Pre-start implementation control | Accepted proposal | Authority, access, prerequisites, testing, and start gate |
 | `delivery-checklist.md` | End-to-end engagement control | Engagement start | Lifecycle completion evidence and closure state |
 | `quality-control-checklist.md` | Executable release review | Any releasable artifact | Bounded ALLOW/REVIEW/HALT QC decision |
+| `realized-value-register.md` | Post-delivery outcome and field-learning record | Completion, monitoring, or no-action review | Evidence-bound outcome state, attribution confidence, renewal/closure decision, methodology feedback |
 
 ## 3. Record flow
 
@@ -48,10 +49,14 @@ Sales Notes
 → Proposal
 → Onboarding Checklist
 → Delivery Checklist
-→ Completion / Monitoring / Renewal
+→ Completion Evidence
+→ Monitoring Window
+→ Realized Value Register
+→ Renewal / Optimization / Maintenance / Closure
+→ Governed Methodology Feedback
 ```
 
-The quality-control checklist applies before every material release or governed advancement.
+The quality-control checklist applies before every material release or governed advancement. Realized-value review never changes the original assessment score and does not authorize additional implementation.
 
 ## 4. Shared invariants
 
@@ -63,8 +68,9 @@ The quality-control checklist applies before every material release or governed 
 - Phase 0 is validation; phases 1–5 are governed roadmap states.
 - QC, publication, roadmap approval, proposal acceptance, and implementation authorization are separate.
 - Completion evidence and realized-value evidence are separate.
+- Correlation is not automatically causation.
 - Approved history is superseded, not overwritten.
-- Unsupported outcome claims are prohibited.
+- Unsupported outcome and ROI claims are prohibited.
 - Material state changes require DecisionLedger records.
 
 ## 5. Template selection rules
@@ -75,14 +81,16 @@ The quality-control checklist applies before every material release or governed 
 4. Use `package-catalog.md` only after package eligibility is governed.
 5. Use `proposal.md` to offer scope; use `onboarding-checklist.md` and a separate authorization event before start.
 6. Use `delivery-checklist.md` across the lifecycle and retain completion/closure evidence.
-7. Use `quality-control-checklist.md` against exact artifact versions.
+7. Use `realized-value-register.md` only after a stable recommendation, roadmap item, package, completion state, or no-action decision exists.
+8. Use `quality-control-checklist.md` against exact artifact versions.
 
-## 6. Commercial v1.0 connection
+## 6. Post-v1 connection
 
-This registry makes the client-delivery system repeatable and prevents uncontrolled alternate forms from weakening the assessment architecture.
+This registry closes the post-delivery measurement gap and extends Operator Intelligence from a governed assessment-and-delivery system into a governed field-learning system without reopening commercial-v1 scoring or release authority.
 
 ## 7. References
 
 - `standards/completion-status.md`
 - `scoring/completion-status.md`
 - `framework/lifecycle-roadmap-map.md`
+- `templates/realized-value-register.md`
