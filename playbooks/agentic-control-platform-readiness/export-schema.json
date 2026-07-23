@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://operator-intelligence.local/schemas/agentic-control-platform-readiness-v0.1.json",
+  "title": "Agentic Control Platform Readiness Export",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "assessment",
+    "scope",
+    "evidence_summary",
+    "domain_results",
+    "control_results",
+    "findings",
+    "roadmap",
+    "decision",
+    "authorization",
+    "ledger_refs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "oi-acpr-export-v0.1"
+    },
+    "assessment": {
+      "type": "object",
+      "required": ["assessment_id", "protocol_version", "scoring_profile_version", "evidence_snapshot_date", "owner", "decision_authority", "independent_reviewer"],
+      "properties": {
+        "assessment_id": {"type": "string", "minLength": 1},
+        "protocol_version": {"const": "0.1.0"},
+        "scoring_profile_version": {"const": "0.1.0"},
+        "evidence_snapshot_date": {"type": "string", "format": "date"},
+        "owner": {"type": "string", "minLength": 1},
+        "decision_authority": {"type": "string", "minLength": 1},
+        "independent_reviewer": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "required": ["decision", "included", "excluded", "environments", "asset_ids"],
+      "properties": {
+        "decision": {"type": "string", "minLength": 1},
+        "included": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "excluded": {"type": "array", "items": {"type": "string"}},
+        "environments": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "asset_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "evidence_summary": {
+      "type": "object",
+      "required": ["snapshot_date", "coverage_percent", "confidence", "accepted_ids", "limited_ids", "rejected_ids", "unknowns", "blocked_conditions"],
+      "properties": {
+        "snapshot_date": {"type": "string", "format": "date"},
+        "coverage_percent": {"type": "number", "minimum": 0, "maximum": 100},
+        "confidence": {"enum": ["high", "medium", "low", "unknown"]},
+        "accepted_ids": {"type": "array", "items": {"type": "string"}},
+        "limited_ids": {"type": "array", "items": {"type": "string"}},
+        "rejected_ids": {"type": "array", "items": {"type": "string"}},
+        "unknowns": {"type": "array", "items": {"type": "string"}},
+        "blocked_conditions": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "domain_results": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["domain_id", "weight", "score", "coverage_percent", "confidence", "finding_refs", "evidence_refs"],
+        "properties": {
+          "domain_id": {"enum": ["AIGR-D1", "AIGR-D2", "AIGR-D3", "AIGR-D4", "AIGR-D5", "AIGR-D6", "AIGR-D7"]},
+          "weight": {"type": "number", "minimum": 0, "maximum": 100},
+          "score": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+          "coverage_percent": {"type": "number", "minimum": 0, "maximum": 100},
+          "confidence": {"enum": ["high", "medium", "low", "unknown"]},
+          "finding_refs": {"type": "array", "items": {"type": "string"}},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "control_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["control_id", "domain_id", "control_plane", "mechanism", "state", "confidence", "owner", "evidence_refs", "control_gate"],
+        "properties": {
+          "control_id": {"type": "string", "pattern": "^ACPR-C-D[1-7]-[0-9]{3}$"},
+          "domain_id": {"enum": ["AIGR-D1", "AIGR-D2", "AIGR-D3", "AIGR-D4", "AIGR-D5", "AIGR-D6", "AIGR-D7"]},
+          "control_plane": {"enum": ["governance", "change_time", "runtime", "assurance"]},
+          "mechanism": {"enum": ["automated", "human_approved", "human_executed", "advisory"]},
+          "state": {"enum": ["VERIFIED_GAP", "PARTIAL_CONTROL", "CONTROLLED", "UNKNOWN", "NOT_APPLICABLE"]},
+          "confidence": {"enum": ["high", "medium", "low", "unknown"]},
+          "owner": {"type": "string"},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}},
+          "control_gate": {"enum": ["ALLOW", "REVIEW", "HALT"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["finding_id", "domain_id", "control_plane", "state", "severity", "observation", "interpretation", "platform_decision_effect", "evidence_refs", "confidence", "owner", "target_gate", "acceptance_criteria", "control_gate", "ledger_refs"],
+        "properties": {
+          "finding_id": {"type": "string", "pattern": "^ACPR-F-D[1-7]-[0-9]{3}$"},
+          "domain_id": {"enum": ["AIGR-D1", "AIGR-D2", "AIGR-D3", "AIGR-D4", "AIGR-D5", "AIGR-D6", "AIGR-D7"]},
+          "control_plane": {"enum": ["governance", "change_time", "runtime", "assurance"]},
+          "state": {"enum": ["VERIFIED_GAP", "PARTIAL_CONTROL", "CONTROLLED", "UNKNOWN", "NOT_APPLICABLE"]},
+          "severity": {"enum": ["critical", "high", "medium", "low", "informational"]},
+          "observation": {"type": "string"},
+          "interpretation": {"type": "string"},
+          "platform_decision_effect": {"type": "string"},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}},
+          "confidence": {"enum": ["high", "medium", "low", "unknown"]},
+          "owner": {"type": "string"},
+          "target_gate": {"enum": ["pre_procurement", "pre_configuration", "pre_pilot", "pre_expansion", "monitoring"]},
+          "acceptance_criteria": {"type": "array", "items": {"type": "string"}},
+          "control_gate": {"enum": ["ALLOW", "REVIEW", "HALT"]},
+          "ledger_refs": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "roadmap": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item_id", "finding_refs", "action", "target_gate", "priority_score", "confidence", "owner", "decision_authority", "dependencies", "acceptance_criteria", "acceptance_evidence", "control_gate", "implementation_authorized", "ledger_refs"],
+        "properties": {
+          "item_id": {"type": "string", "pattern": "^ACPR-RM-ITEM-[0-9]{3}$"},
+          "finding_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "action": {"type": "string", "minLength": 1},
+          "target_gate": {"enum": ["pre_procurement", "pre_configuration", "pre_pilot", "pre_expansion", "monitoring"]},
+          "priority_score": {"type": "number", "minimum": 0, "maximum": 100},
+          "confidence": {"enum": ["high", "medium", "low", "unknown"]},
+          "owner": {"type": "string", "minLength": 1},
+          "decision_authority": {"type": "string", "minLength": 1},
+          "dependencies": {"type": "array", "items": {"type": "string"}},
+          "acceptance_criteria": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "acceptance_evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "control_gate": {"enum": ["ALLOW", "REVIEW", "HALT"]},
+          "implementation_authorized": {"const": false},
+          "ledger_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "decision": {
+      "type": "object",
+      "required": ["readiness_score", "publication_state", "outcome", "control_gate", "reasons", "review_trigger"],
+      "properties": {
+        "readiness_score": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+        "publication_state": {"enum": ["internal_only", "official", "provisional", "range_only", "blocked"]},
+        "outcome": {"enum": ["READY", "CONDITIONAL", "NOT_READY", "BLOCKED"]},
+        "control_gate": {"enum": ["ALLOW", "REVIEW", "HALT"]},
+        "reasons": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "review_trigger": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "authorization": {
+      "type": "object",
+      "required": ["assessment_authorized", "procurement_authorized", "implementation_authorized", "production_authorized"],
+      "properties": {
+        "assessment_authorized": {"const": true},
+        "procurement_authorized": {"type": "boolean"},
+        "implementation_authorized": {"const": false},
+        "production_authorized": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "ledger_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}

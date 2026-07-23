@@ -2,6 +2,24 @@
 
 All notable Operator Intelligence changes are documented here.
 
+## Unreleased — Agentic Control Platform Readiness Sprint
+
+### Added
+
+- Vendor-neutral readiness protocol inheriting the seven-domain Agentic AI Governance Readiness model.
+- Assessment questionnaire and minimum evidence requirements.
+- Control map separating governance, change-time, runtime, and assurance controls.
+- Deterministic scoring profile with readiness, coverage, confidence, and critical-gate separation.
+- Gap register, prioritized remediation roadmap, and executive decision brief.
+- Bounded DiffWall change-time enforcement demonstration.
+- Machine-readable JSON Schema export and valid reference fixture.
+- Fail-closed self-test covering artifact completeness, domain weights, evidence requirements, enforcement-plane separation, authorization boundaries, and decision routing.
+- CI and artifact-registry integration.
+
+### Governance boundary
+
+The sprint prepares a bounded platform decision. It does not select or endorse a vendor, certify an organization, attest compliance, authorize procurement, authorize implementation, or approve production use.
+
 ## v1.0.0 — Commercial Governed Assessment System
 
 **Release date:** 2026-07-20  

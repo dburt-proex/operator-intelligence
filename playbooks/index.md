@@ -28,7 +28,14 @@ Playbooks adapt execution and evidence priorities. They do not create alternate 
 | `painting.md` | Residential, commercial, specialty, and maintenance painting | `contractor-base.md` |
 | `tree-service.md` | Tree removal, trimming, storm response, stump, clearing, urgent-service controls | `contractor-base.md` |
 
-## 4. Application order
+## 4. Post-v1 engagement profiles
+
+| Profile | Scope | Required base | Authority |
+|---|---|---|---|
+| `agentic-ai-governance-readiness-assessment.md` | Bounded seven-domain governance-readiness assessment | Canonical evidence, confidence, recommendation, and DecisionLedger standards | Proposed internal-only profile |
+| `agentic-control-platform-readiness/` | Vendor-neutral readiness and implementation-preparation sprint for enterprise AI control platforms | Agentic governance protocol plus canonical evidence and decision controls | Approved post-v1 extension |
+
+## 5. Application order
 
 ```text
 Engagement Delivery
@@ -42,7 +49,7 @@ Engagement Delivery
 → Client Decision / Onboarding / Delivery
 ```
 
-## 5. Shared controls
+## 6. Shared controls
 
 Every playbook preserves:
 
@@ -59,7 +66,7 @@ Every playbook preserves:
 - DecisionLedger traceability
 - executive-safe language
 
-## 6. Extension rules
+## 7. Extension rules
 
 A new industry playbook must include:
 
@@ -76,6 +83,6 @@ A new industry playbook must include:
 
 New playbooks cannot invent findings or packages.
 
-## 7. Commercial v1.0 connection
+## 8. Commercial v1.0 connection
 
 This registry provides sufficient operating guidance and initial vertical coverage to deliver, review, and demonstrate the commercial assessment system.

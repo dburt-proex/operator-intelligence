@@ -1,0 +1,114 @@
+{
+  "schema_version": "oi-acpr-export-v0.1",
+  "assessment": {
+    "assessment_id": "ACPR-ASSESS-2026-001",
+    "protocol_version": "0.1.0",
+    "scoring_profile_version": "0.1.0",
+    "evidence_snapshot_date": "2026-07-23",
+    "owner": "Assessment Owner",
+    "decision_authority": "Executive Sponsor",
+    "independent_reviewer": "Independent Reviewer"
+  },
+  "scope": {
+    "decision": "Determine whether the bounded AI portfolio may advance to implementation planning.",
+    "included": ["Employee-facing AI workflow portfolio"],
+    "excluded": ["Production deployment", "Vendor selection"],
+    "environments": ["test"],
+    "asset_ids": ["AI-ASSET-001"]
+  },
+  "evidence_summary": {
+    "snapshot_date": "2026-07-23",
+    "coverage_percent": 90,
+    "confidence": "high",
+    "accepted_ids": ["OI-EV-2026-001", "OI-EV-2026-002"],
+    "limited_ids": [],
+    "rejected_ids": [],
+    "unknowns": [],
+    "blocked_conditions": []
+  },
+  "domain_results": [
+    {"domain_id": "AIGR-D1", "weight": 10, "score": 80, "coverage_percent": 90, "confidence": "high", "finding_refs": [], "evidence_refs": ["OI-EV-2026-001"]},
+    {"domain_id": "AIGR-D2", "weight": 15, "score": 75, "coverage_percent": 90, "confidence": "high", "finding_refs": [], "evidence_refs": ["OI-EV-2026-001"]},
+    {"domain_id": "AIGR-D3", "weight": 15, "score": 80, "coverage_percent": 90, "confidence": "high", "finding_refs": [], "evidence_refs": ["OI-EV-2026-001"]},
+    {"domain_id": "AIGR-D4", "weight": 15, "score": 80, "coverage_percent": 90, "confidence": "high", "finding_refs": [], "evidence_refs": ["OI-EV-2026-001"]},
+    {"domain_id": "AIGR-D5", "weight": 15, "score": 75, "coverage_percent": 90, "confidence": "medium", "finding_refs": ["ACPR-F-D5-001"], "evidence_refs": ["OI-EV-2026-002"]},
+    {"domain_id": "AIGR-D6", "weight": 15, "score": 80, "coverage_percent": 90, "confidence": "high", "finding_refs": [], "evidence_refs": ["OI-EV-2026-001"]},
+    {"domain_id": "AIGR-D7", "weight": 15, "score": 80, "coverage_percent": 90, "confidence": "high", "finding_refs": [], "evidence_refs": ["OI-EV-2026-002"]}
+  ],
+  "control_results": [
+    {
+      "control_id": "ACPR-C-D5-001",
+      "domain_id": "AIGR-D5",
+      "control_plane": "change_time",
+      "mechanism": "automated",
+      "state": "PARTIAL_CONTROL",
+      "confidence": "medium",
+      "owner": "Engineering Control Owner",
+      "evidence_refs": ["OI-EV-2026-002"],
+      "control_gate": "ALLOW"
+    },
+    {
+      "control_id": "ACPR-C-D3-001",
+      "domain_id": "AIGR-D3",
+      "control_plane": "runtime",
+      "mechanism": "automated",
+      "state": "CONTROLLED",
+      "confidence": "high",
+      "owner": "Runtime Control Owner",
+      "evidence_refs": ["OI-EV-2026-001"],
+      "control_gate": "ALLOW"
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "ACPR-F-D5-001",
+      "domain_id": "AIGR-D5",
+      "control_plane": "change_time",
+      "state": "PARTIAL_CONTROL",
+      "severity": "medium",
+      "observation": "The reviewed test suite covers required release cases but does not yet include one approved edge case.",
+      "interpretation": "The change-time evaluation control operates with one bounded coverage limitation.",
+      "platform_decision_effect": "Resolve before pilot expansion.",
+      "evidence_refs": ["OI-EV-2026-002"],
+      "confidence": "medium",
+      "owner": "Engineering Control Owner",
+      "target_gate": "pre_pilot",
+      "acceptance_criteria": ["The missing edge case is added and produces the expected gate."],
+      "control_gate": "ALLOW",
+      "ledger_refs": ["OI-DL-2026-001"]
+    }
+  ],
+  "roadmap": [
+    {
+      "item_id": "ACPR-RM-ITEM-001",
+      "finding_refs": ["ACPR-F-D5-001"],
+      "action": "Add and validate the missing edge-case fixture.",
+      "target_gate": "pre_pilot",
+      "priority_score": 65,
+      "confidence": "medium",
+      "owner": "Engineering Control Owner",
+      "decision_authority": "Platform Owner",
+      "dependencies": [],
+      "acceptance_criteria": ["The fixture passes with the expected deterministic decision."],
+      "acceptance_evidence": ["Versioned test result and review record"],
+      "control_gate": "ALLOW",
+      "implementation_authorized": false,
+      "ledger_refs": ["OI-DL-2026-001"]
+    }
+  ],
+  "decision": {
+    "readiness_score": 78.5,
+    "publication_state": "official",
+    "outcome": "READY",
+    "control_gate": "ALLOW",
+    "reasons": ["All READY conditions pass for the reviewed scope and bounded limitation."],
+    "review_trigger": "Material scope, control, evidence, or platform architecture change."
+  },
+  "authorization": {
+    "assessment_authorized": true,
+    "procurement_authorized": false,
+    "implementation_authorized": false,
+    "production_authorized": false
+  },
+  "ledger_refs": ["OI-DL-2026-001"]
+}
