@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -34,6 +35,102 @@ def under_root(path: str, root: str) -> bool:
     return path == prefix or path.startswith(prefix + "/")
 
 
+def scan_tracked_files() -> set[str]:
+    try:
+        completed = subprocess.run(
+            ["git", "ls-files", "-z"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+        )
+    except FileNotFoundError as exc:
+        raise ValueError("tracked file scan failed: git executable not found") from exc
+    except subprocess.CalledProcessError as exc:
+        detail = exc.stderr.decode("utf-8", errors="replace").strip()
+        suffix = f": {detail}" if detail else ""
+        raise ValueError(f"tracked file scan failed{suffix}") from exc
+
+    try:
+        tracked = {
+            path
+            for path in completed.stdout.decode("utf-8").split("\0")
+            if path
+        }
+    except UnicodeDecodeError as exc:
+        raise ValueError("tracked file scan failed: paths are not valid UTF-8") from exc
+    if not tracked:
+        raise ValueError("tracked file scan failed: git returned no tracked files")
+    return tracked
+
+
+def validate_documented_ignores(
+    entries: object,
+    tracked_files: set[str],
+    root_paths: set[str],
+    explicit_paths: set[str],
+) -> tuple[set[str], list[str]]:
+    errors: list[str] = []
+    ignored_paths: set[str] = set()
+    if not isinstance(entries, list):
+        return ignored_paths, ["tracked_file_ignores must be an array"]
+
+    for index, entry in enumerate(entries):
+        if not isinstance(entry, dict):
+            errors.append(f"tracked_file_ignores[{index}] must be an object")
+            continue
+        if set(entry) != {"path", "reason"}:
+            errors.append(
+                f"tracked_file_ignores[{index}] must contain only path and reason"
+            )
+            continue
+        path = entry["path"]
+        reason = entry["reason"]
+        if not isinstance(path, str) or not path:
+            errors.append(f"tracked_file_ignores[{index}]: path is required")
+            continue
+        if (
+            path != path.strip()
+            or path.startswith("/")
+            or path.endswith("/")
+            or "\\" in path
+            or "//" in path
+            or ".." in path.split("/")
+            or any(token in path for token in ("*", "?", "["))
+        ):
+            errors.append(
+                f"tracked_file_ignores[{index}]: path must be one exact repository-relative file"
+            )
+            continue
+        if not isinstance(reason, str) or not reason.strip():
+            errors.append(f"tracked_file_ignores[{index}]: reason is required")
+        if path in ignored_paths:
+            errors.append(f"duplicate tracked file ignore: {path}")
+        ignored_paths.add(path)
+        if path not in tracked_files:
+            errors.append(f"documented ignore is not tracked: {path}")
+        if path in explicit_paths or any(
+            under_root(path, root) for root in root_paths
+        ):
+            errors.append(f"documented ignore overlaps governed classification: {path}")
+
+    return ignored_paths, errors
+
+
+def validate_tracked_paths(
+    tracked_files: set[str],
+    root_paths: set[str],
+    explicit_paths: set[str],
+    ignored_paths: set[str],
+) -> list[str]:
+    return [
+        f"unclassified tracked path: {path}"
+        for path in sorted(tracked_files)
+        if path not in explicit_paths
+        and path not in ignored_paths
+        and not any(under_root(path, root) for root in root_paths)
+    ]
+
+
 def detect_cycles(graph: dict[str, list[str]]) -> list[str]:
     errors: list[str] = []
     visiting: set[str] = set()
@@ -58,7 +155,7 @@ def detect_cycles(graph: dict[str, list[str]]) -> list[str]:
     return sorted(set(errors))
 
 
-def validate(data: dict) -> list[str]:
+def validate(data: dict, tracked_files: set[str] | None = None) -> list[str]:
     errors: list[str] = []
     if set(data.get("authority_states", [])) != VALID_STATES:
         errors.append("authority_states must match the governed state set")
@@ -131,6 +228,24 @@ def validate(data: dict) -> list[str]:
         errors.append("map.output_directory must be generated")
     if set(map_config.get("formats", [])) != {"md", "json", "mmd", "dot"}:
         errors.append("map.formats must contain md, json, mmd, and dot")
+
+    if tracked_files is None:
+        tracked_files = scan_tracked_files()
+    ignored_paths, ignore_errors = validate_documented_ignores(
+        data.get("tracked_file_ignores", []),
+        tracked_files,
+        root_paths,
+        paths,
+    )
+    errors.extend(ignore_errors)
+    errors.extend(
+        validate_tracked_paths(
+            tracked_files,
+            root_paths,
+            paths,
+            ignored_paths,
+        )
+    )
 
     return errors
 
