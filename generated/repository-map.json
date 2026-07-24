@@ -1,8 +1,10 @@
 {
   "artifacts": [
     {"artifact_id":"OI-ART-0016","artifact_type":"workflow","authority_state":"approved_extension","path":".github/workflows/validate-registry-and-map.yml","release_scope":"post-v1","status":"governed-working"},
+    {"artifact_id":"OI-ART-0030","artifact_type":"release-history","authority_state":"canonical","path":"CHANGELOG.md","release_scope":"commercial-v1-and-post-v1","status":"approved"},
     {"artifact_id":"OI-ART-0003","artifact_type":"release-gate","authority_state":"canonical","path":"COMMERCIAL_V1_COMPLETION.md","release_scope":"commercial-v1","status":"approved"},
     {"artifact_id":"OI-ART-0001","artifact_type":"root-authority","authority_state":"canonical","path":"README.md","release_scope":"commercial-v1","status":"approved"},
+    {"artifact_id":"OI-ART-0031","artifact_type":"release-notes","authority_state":"canonical","path":"RELEASE_NOTES_v1.0.0.md","release_scope":"commercial-v1","status":"approved"},
     {"artifact_id":"OI-ART-0002","artifact_type":"root-authority","authority_state":"canonical","path":"ROADMAP.md","release_scope":"commercial-v1-and-post-v1","status":"approved"},
     {"artifact_id":"OI-ART-0005","artifact_type":"fixture-registry","authority_state":"approved_extension","path":"examples/scenario-fixtures/index.md","release_scope":"post-v1","status":"governed-working"},
     {"artifact_id":"OI-ART-0015","artifact_type":"generated-map","authority_state":"generated","path":"generated/repository-map.dot","release_scope":"post-v1","status":"generated"},
@@ -25,12 +27,14 @@
     {"artifact_id":"OI-ART-0028","artifact_type":"validator","authority_state":"approved_extension","path":"playbooks/agentic-control-platform-readiness/validate_package.py","release_scope":"post-v1","status":"governed-working"},
     {"artifact_id":"OI-ART-0008","artifact_type":"registry","authority_state":"approved_extension","path":"registry/artifacts.yaml","release_scope":"post-v1","status":"governed-working"},
     {"artifact_id":"OI-ART-0009","artifact_type":"schema","authority_state":"approved_extension","path":"registry/registry-schema.json","release_scope":"post-v1","status":"governed-working"},
+    {"artifact_id":"OI-ART-0032","artifact_type":"conformance-test","authority_state":"approved_extension","path":"registry/test_validate_registry.py","release_scope":"post-v1","status":"governed-working"},
     {"artifact_id":"OI-ART-0010","artifact_type":"validator","authority_state":"approved_extension","path":"registry/validate_registry.py","release_scope":"post-v1","status":"governed-working"},
     {"artifact_id":"OI-ART-0007","artifact_type":"validator","authority_state":"approved_extension","path":"reliability/field_reliability_validator.py","release_scope":"post-v1","status":"field-validation"},
     {"artifact_id":"OI-ART-0004","artifact_type":"template","authority_state":"approved_extension","path":"templates/realized-value-register.md","release_scope":"post-v1","status":"governed-working"},
     {"artifact_id":"OI-ART-0011","artifact_type":"generator","authority_state":"approved_extension","path":"tools/generate_repository_map.py","release_scope":"post-v1","status":"governed-working"}
   ],
   "edges": [
+    {"from":"COMMERCIAL_V1_COMPLETION.md","to":"RELEASE_NOTES_v1.0.0.md","type":"depends_on"},
     {"from":"docs/commercial-v1-release-readiness.md","to":"COMMERCIAL_V1_COMPLETION.md","type":"depends_on"},
     {"from":"docs/index.md","to":"README.md","type":"depends_on"},
     {"from":"framework/roi-framework.md","to":"templates/realized-value-register.md","type":"depends_on"},
@@ -63,7 +67,9 @@
     {"from":"registry/artifacts.yaml","to":"registry/validate_registry.py","type":"depends_on"},
     {"from":"registry/artifacts.yaml","to":"tools/generate_repository_map.py","type":"depends_on"},
     {"from":"registry/registry-schema.json","to":"registry/artifacts.yaml","type":"depends_on"},
+    {"from":"registry/test_validate_registry.py","to":".github/workflows/validate-registry-and-map.yml","type":"depends_on"},
     {"from":"registry/validate_registry.py","to":".github/workflows/validate-registry-and-map.yml","type":"depends_on"},
+    {"from":"registry/validate_registry.py","to":"registry/test_validate_registry.py","type":"depends_on"},
     {"from":"scoring/calculator-spec.md","to":"reliability/field_reliability_validator.py","type":"depends_on"},
     {"from":"standards/confidence-standard.md","to":"playbooks/agentic-ai-governance-readiness-assessment.md","type":"depends_on"},
     {"from":"standards/confidence-standard.md","to":"playbooks/agentic-control-platform-readiness/README.md","type":"depends_on"},
