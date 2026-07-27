@@ -2,26 +2,8 @@ name: Validate registry and repository map
 
 on:
   pull_request:
-    paths:
-      - 'registry/**'
-      - 'tools/generate_repository_map.py'
-      - 'generated/**'
-      - 'templates/**'
-      - 'examples/**'
-      - 'playbooks/**'
-      - 'reliability/**'
-      - '.github/workflows/validate-registry-and-map.yml'
   push:
     branches: [main]
-    paths:
-      - 'registry/**'
-      - 'tools/generate_repository_map.py'
-      - 'generated/**'
-      - 'templates/**'
-      - 'examples/**'
-      - 'playbooks/**'
-      - 'reliability/**'
-      - '.github/workflows/validate-registry-and-map.yml'
   workflow_dispatch:
 
 permissions:
@@ -35,6 +17,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Run registry conformance regression tests
+        run: python -m unittest registry/test_validate_registry.py
       - name: Validate artifact registry
         run: python registry/validate_registry.py
       - name: Verify generated repository map
