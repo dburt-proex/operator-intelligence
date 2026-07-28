@@ -3,51 +3,968 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="The Unified Governance Platform architecture: Operator Intelligence assesses, DiffWall gates change, CASA governs runtime execution, and the shared ledger proves every decision." />
-    <meta property="og:title" content="Unified Governance Platform Architecture" />
-    <meta property="og:description" content="Assess → prioritize → enforce → audit." />
+    <meta name="theme-color" content="#07100f" />
+    <meta name="description" content="Operator Intelligence is a governed business growth systems assessment that converts evidence into scores, findings, recommendations, roadmaps, and controlled implementation decisions." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Operator Intelligence — Governed Business Growth Systems Assessment" />
+    <meta property="og:description" content="Evidence to decision. Assessment to controlled implementation." />
+    <meta property="og:url" content="https://dburt-proex.github.io/operator-intelligence/governance-platform/" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://dburt-proex.github.io/operator-intelligence/governance-platform/" />
-    <title>Unified Governance Platform Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <title>Operator Intelligence — Governed Assessment and Execution</title>
     <style>
-      :root { color-scheme: dark; font-family: Arial, Helvetica, sans-serif; background: #060a13; color: #f5f8ff; }
-      * { box-sizing: border-box; } body { margin: 0; background: radial-gradient(circle at 50% 0,#101b35 0,#060a13 42%); } main { max-width: 1600px; margin: auto; padding: 28px; }
-      header { display:flex; align-items:flex-end; justify-content:space-between; gap:36px; padding:44px 4px 34px; }
-      .context { color:#68ddff; font-size:13px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; }
-      h1 { max-width:850px; margin:12px 0 12px; font-size:clamp(34px,5vw,64px); line-height:1; letter-spacing:-.045em; }
-      .intro { max-width:850px; margin:0; color:#b8c5dd; font-size:18px; line-height:1.55; }
-      .repo { flex:0 0 auto; color:#d8e8ff; text-decoration:none; border:1px solid #304665; border-radius:10px; padding:11px 14px; }
-      .repo:hover { border-color:#70d8ff; }
-      .hierarchy { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid #263a59; border-radius:14px; overflow:hidden; margin-bottom:24px; background:#081120; }
-      .layer { padding:18px 20px; border-right:1px solid #263a59; }
-      .layer:last-child { border-right:0; }
-      .layer strong { display:block; margin-bottom:7px; font-size:15px; }
-      .layer span { color:#92a6c5; font-size:14px; }
-      .diagram { display:block; width:100%; height:auto; border:1px solid #1b2b47; border-radius:16px; box-shadow:0 18px 80px #0009; }
-      footer { display:flex; gap:20px; justify-content:space-between; color:#aab8d4; font-size:14px; padding:18px 4px 0; }
-      a { color:#70d8ff; } @media (max-width:800px) { main{padding:12px} header{display:block;padding-top:26px}.repo{display:inline-block;margin-top:22px}.hierarchy{grid-template-columns:1fr 1fr}.layer:nth-child(2){border-right:0}.layer:nth-child(-n+2){border-bottom:1px solid #263a59}footer{display:block;line-height:1.7} }
+      :root {
+        color-scheme: dark;
+        --bg: #050908;
+        --bg-soft: #07100f;
+        --surface: rgba(14, 25, 23, 0.72);
+        --surface-strong: #0d1715;
+        --surface-muted: #101c1a;
+        --text: #f3f7f5;
+        --muted: #a0afa9;
+        --subtle: #72817b;
+        --line: rgba(173, 202, 191, 0.16);
+        --line-strong: rgba(173, 202, 191, 0.29);
+        --accent: #a8f0cf;
+        --accent-2: #63d8b0;
+        --accent-dark: #133c31;
+        --allow: #71e6b9;
+        --review: #f3c86a;
+        --halt: #ff7e86;
+        --max: 1220px;
+        --radius: 24px;
+        --shadow: 0 30px 100px rgba(0, 0, 0, 0.38);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        min-width: 320px;
+        background:
+          radial-gradient(circle at 18% -12%, rgba(74, 174, 139, 0.18), transparent 34%),
+          radial-gradient(circle at 88% 9%, rgba(91, 119, 255, 0.09), transparent 30%),
+          linear-gradient(180deg, #06100e 0%, var(--bg) 28%, #060a09 100%);
+        color: var(--text);
+        font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+        opacity: 0.32;
+        background-image:
+          linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(to bottom, black, transparent 82%);
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        width: 560px;
+        height: 560px;
+        border-radius: 50%;
+        left: var(--glow-x, 70%);
+        top: var(--glow-y, 18%);
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, rgba(99, 216, 176, 0.07), transparent 66%);
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      a { color: inherit; }
+      button, a { -webkit-tap-highlight-color: transparent; }
+      img { max-width: 100%; }
+      section { position: relative; }
+
+      .skip-link {
+        position: fixed;
+        left: 16px;
+        top: 12px;
+        transform: translateY(-180%);
+        z-index: 100;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: var(--text);
+        color: #07100f;
+        font-weight: 700;
+      }
+      .skip-link:focus { transform: translateY(0); }
+
+      .shell { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
+      .mono { font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .muted { color: var(--muted); }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        border-bottom: 1px solid transparent;
+        transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
+      }
+      .site-header.scrolled {
+        background: rgba(5, 9, 8, 0.76);
+        border-color: var(--line);
+        backdrop-filter: blur(18px) saturate(130%);
+      }
+      .nav {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+      }
+      .brand-mark {
+        width: 34px;
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--line-strong);
+        background: linear-gradient(145deg, rgba(168, 240, 207, 0.16), rgba(168, 240, 207, 0.02));
+        clip-path: polygon(50% 0, 94% 25%, 94% 75%, 50% 100%, 6% 75%, 6% 25%);
+        color: var(--accent);
+        font: 500 12px/1 "DM Mono", monospace;
+      }
+      .nav-links { display: flex; align-items: center; gap: 28px; }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: color .2s ease;
+      }
+      .nav-links a:hover, .nav-links a:focus-visible { color: var(--text); }
+      .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0 16px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        background: rgba(255,255,255,.035);
+        color: var(--text) !important;
+      }
+      .menu-button {
+        display: none;
+        width: 42px;
+        height: 42px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: transparent;
+        color: var(--text);
+      }
+
+      .hero { padding: 110px 0 74px; }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(380px, .92fr);
+        gap: 74px;
+        align-items: center;
+      }
+      .hero h1 {
+        margin: 0;
+        max-width: 780px;
+        font-size: clamp(48px, 7.3vw, 92px);
+        line-height: .98;
+        letter-spacing: -0.066em;
+        font-weight: 700;
+        text-wrap: balance;
+      }
+      .hero h1 span {
+        display: block;
+        color: var(--accent);
+        background: linear-gradient(110deg, #f3f7f5 5%, #a8f0cf 52%, #71d3ae 94%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero-copy {
+        max-width: 690px;
+        margin: 30px 0 0;
+        color: var(--muted);
+        font-size: clamp(18px, 2vw, 22px);
+        line-height: 1.62;
+      }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 34px; }
+      .button {
+        min-height: 52px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 21px;
+        border-radius: 999px;
+        border: 1px solid var(--line-strong);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 15px;
+        transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      }
+      .button:hover { transform: translateY(-2px); }
+      .button-primary { background: var(--accent); color: #06100d; border-color: var(--accent); }
+      .button-secondary { background: rgba(255,255,255,.035); color: var(--text); }
+      .button svg { width: 17px; height: 17px; }
+      .hero-note { margin-top: 22px; color: var(--subtle); font-size: 13px; }
+
+      .control-window {
+        position: relative;
+        padding: 1px;
+        border-radius: 28px;
+        background: linear-gradient(145deg, rgba(168,240,207,.4), rgba(168,240,207,.05) 44%, rgba(121,137,255,.22));
+        box-shadow: var(--shadow);
+      }
+      .control-window::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        background: radial-gradient(circle at 50% 0, rgba(168,240,207,.2), transparent 52%);
+        filter: blur(22px);
+        z-index: -1;
+      }
+      .control-inner {
+        min-height: 560px;
+        padding: 24px;
+        border-radius: 27px;
+        background: linear-gradient(180deg, rgba(12, 24, 21, .96), rgba(7, 14, 13, .98));
+        overflow: hidden;
+      }
+      .window-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
+      .window-dots { display: flex; gap: 7px; }
+      .window-dots span { width: 7px; height: 7px; border-radius: 50%; background: #33443e; }
+      .window-state { color: var(--accent); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+      .signal-stack { position: relative; display: grid; gap: 16px; }
+      .signal-stack::before {
+        content: "";
+        position: absolute;
+        left: 28px;
+        top: 54px;
+        bottom: 54px;
+        width: 1px;
+        background: linear-gradient(var(--accent-2), rgba(99,216,176,.07));
+      }
+      .signal {
+        position: relative;
+        display: grid;
+        grid-template-columns: 58px 1fr auto;
+        align-items: center;
+        gap: 14px;
+        min-height: 82px;
+        padding: 14px 15px;
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: rgba(255,255,255,.025);
+      }
+      .signal-index {
+        position: relative;
+        z-index: 1;
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        margin-left: 0;
+        border-radius: 50%;
+        border: 1px solid rgba(168,240,207,.48);
+        background: #0a1714;
+        color: var(--accent);
+        font-size: 10px;
+      }
+      .signal strong { display: block; font-size: 14px; letter-spacing: -.01em; }
+      .signal small { display: block; color: var(--subtle); margin-top: 4px; font-size: 12px; }
+      .signal-value { color: var(--muted); font-size: 11px; }
+      .signal-value.good { color: var(--allow); }
+      .decision-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 23px;
+      }
+      .decision {
+        min-height: 72px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: rgba(255,255,255,.022);
+      }
+      .decision b { display: block; font: 500 11px/1 "DM Mono", monospace; letter-spacing: .1em; }
+      .decision span { display: block; margin-top: 9px; color: var(--subtle); font-size: 11px; }
+      .decision.allow b { color: var(--allow); }
+      .decision.review b { color: var(--review); }
+      .decision.halt b { color: var(--halt); }
+      .ledger-line {
+        margin-top: 18px;
+        padding: 14px 15px;
+        border-left: 2px solid var(--accent-2);
+        background: rgba(99,216,176,.045);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .metrics { padding: 20px 0 98px; }
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .metric { padding: 28px 26px; border-right: 1px solid var(--line); }
+      .metric:first-child { padding-left: 0; }
+      .metric:last-child { border-right: 0; }
+      .metric strong { display: block; font-size: clamp(28px, 4vw, 44px); letter-spacing: -.045em; }
+      .metric span { color: var(--muted); font-size: 13px; }
+
+      .section { padding: 110px 0; }
+      .section-header {
+        display: grid;
+        grid-template-columns: .72fr 1.28fr;
+        gap: 70px;
+        align-items: start;
+        margin-bottom: 64px;
+      }
+      .section-kicker { color: var(--accent); font: 500 12px/1.4 "DM Mono", monospace; letter-spacing: .13em; text-transform: uppercase; }
+      .section-title {
+        margin: 0;
+        max-width: 810px;
+        font-size: clamp(38px, 5vw, 68px);
+        line-height: 1.04;
+        letter-spacing: -0.055em;
+        text-wrap: balance;
+      }
+      .section-intro { max-width: 720px; margin: 22px 0 0; color: var(--muted); font-size: 18px; }
+
+      .engine {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(120px, 1fr));
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 14px;
+        scrollbar-width: thin;
+      }
+      .engine-step {
+        min-height: 178px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.012));
+      }
+      .engine-step:first-child { border-color: rgba(168,240,207,.45); background: rgba(168,240,207,.055); }
+      .engine-step span { color: var(--subtle); font: 500 10px/1 "DM Mono", monospace; }
+      .engine-step strong { font-size: 15px; letter-spacing: -.02em; }
+      .engine-step svg { width: 16px; color: var(--accent); }
+
+      .architecture-wrap {
+        padding: 1px;
+        border-radius: 28px;
+        background: linear-gradient(145deg, rgba(168,240,207,.3), rgba(255,255,255,.035), rgba(123,117,255,.18));
+        box-shadow: var(--shadow);
+      }
+      .architecture-frame {
+        border-radius: 27px;
+        overflow: hidden;
+        background: #07100f;
+      }
+      .architecture-frame img { display: block; width: 100%; height: auto; }
+      .architecture-caption {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 22px 24px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .system-layers {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        margin-top: 28px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: var(--line);
+      }
+      .layer {
+        min-height: 230px;
+        padding: 26px;
+        background: var(--surface-strong);
+      }
+      .layer-number { color: var(--accent); font: 500 11px/1 "DM Mono", monospace; }
+      .layer h3 { margin: 48px 0 10px; font-size: 20px; letter-spacing: -.025em; }
+      .layer p { margin: 0; color: var(--muted); font-size: 14px; }
+
+      .control-grid {
+        display: grid;
+        grid-template-columns: 1.05fr .95fr;
+        gap: 26px;
+      }
+      .gate-panel, .boundary-panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        backdrop-filter: blur(12px);
+      }
+      .gate-panel { padding: 30px; }
+      .gate-list { display: grid; gap: 11px; margin-top: 26px; }
+      .gate-item {
+        display: grid;
+        grid-template-columns: 112px 1fr;
+        gap: 20px;
+        align-items: center;
+        padding: 18px 0;
+        border-top: 1px solid var(--line);
+      }
+      .gate-item:first-child { border-top: 0; }
+      .gate-label { font: 500 13px/1 "DM Mono", monospace; letter-spacing: .12em; }
+      .gate-label.allow { color: var(--allow); }
+      .gate-label.review { color: var(--review); }
+      .gate-label.halt { color: var(--halt); }
+      .gate-item p { margin: 0; color: var(--muted); font-size: 14px; }
+      .boundary-panel { padding: 30px; overflow: hidden; }
+      .boundary-panel h3, .gate-panel h3 { margin: 0; font-size: 25px; letter-spacing: -.035em; }
+      .boundary-list { margin: 30px 0 0; padding: 0; list-style: none; }
+      .boundary-list li {
+        position: relative;
+        padding: 15px 0 15px 28px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .boundary-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 22px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: 1px solid var(--accent-2);
+      }
+
+      .domain-layout {
+        display: grid;
+        grid-template-columns: .9fr 1.1fr;
+        gap: 70px;
+        align-items: start;
+      }
+      .domain-copy { position: sticky; top: 116px; }
+      .domain-copy h2 { margin: 0; font-size: clamp(38px, 5vw, 64px); line-height: 1.04; letter-spacing: -.05em; }
+      .domain-copy p { color: var(--muted); font-size: 17px; max-width: 520px; }
+      .domain-list { border-top: 1px solid var(--line); }
+      .domain-item {
+        display: grid;
+        grid-template-columns: 54px 1fr auto;
+        gap: 18px;
+        align-items: center;
+        min-height: 74px;
+        border-bottom: 1px solid var(--line);
+      }
+      .domain-item span:first-child { color: var(--subtle); font: 500 11px/1 "DM Mono", monospace; }
+      .domain-item strong { font-size: 16px; letter-spacing: -.02em; }
+      .domain-item svg { width: 17px; color: var(--accent); opacity: .8; }
+
+      .outputs {
+        display: grid;
+        grid-template-columns: 1.1fr .9fr;
+        gap: 22px;
+      }
+      .output-primary, .output-secondary {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--surface-strong);
+      }
+      .output-primary { min-height: 520px; padding: 36px; display: flex; flex-direction: column; justify-content: space-between; }
+      .report-preview {
+        max-width: 520px;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: #eef4f0;
+        color: #10201a;
+        transform: rotate(-1.2deg);
+        box-shadow: 0 30px 80px rgba(0,0,0,.26);
+      }
+      .report-preview .report-top { display: flex; justify-content: space-between; font: 500 10px/1 "DM Mono", monospace; color: #4a5b54; }
+      .report-preview h3 { margin: 58px 0 18px; font-size: 31px; line-height: 1.05; letter-spacing: -.055em; }
+      .report-score { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 20px; border-top: 1px solid #c8d3cd; padding-top: 18px; }
+      .report-score strong { font-size: 54px; line-height: 1; letter-spacing: -.06em; }
+      .report-score span { font-size: 11px; color: #53645d; }
+      .output-primary h3, .output-secondary h3 { margin: 0; font-size: 25px; letter-spacing: -.035em; }
+      .output-primary > div > p, .output-secondary p { color: var(--muted); }
+      .output-secondary { display: grid; grid-template-rows: repeat(3, 1fr); }
+      .output-card { padding: 28px; border-bottom: 1px solid var(--line); }
+      .output-card:last-child { border-bottom: 0; }
+      .output-card span { color: var(--accent); font: 500 10px/1 "DM Mono", monospace; }
+      .output-card h4 { margin: 32px 0 9px; font-size: 19px; }
+      .output-card p { margin: 0; font-size: 13px; }
+
+      .phases { counter-reset: phase; border-top: 1px solid var(--line); }
+      .phase {
+        counter-increment: phase;
+        display: grid;
+        grid-template-columns: 100px .75fr 1.25fr;
+        gap: 24px;
+        align-items: start;
+        padding: 30px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .phase::before { content: "0" counter(phase); color: var(--accent); font: 500 12px/1.4 "DM Mono", monospace; }
+      .phase h3 { margin: 0; font-size: 21px; letter-spacing: -.03em; }
+      .phase p { margin: 0; color: var(--muted); }
+
+      .cta { padding: 120px 0 70px; }
+      .cta-panel {
+        position: relative;
+        overflow: hidden;
+        min-height: 430px;
+        display: grid;
+        place-items: center;
+        padding: 64px;
+        border: 1px solid rgba(168,240,207,.25);
+        border-radius: 34px;
+        background:
+          radial-gradient(circle at 50% 0, rgba(168,240,207,.16), transparent 46%),
+          linear-gradient(160deg, #0d1916, #07100e);
+        text-align: center;
+        box-shadow: var(--shadow);
+      }
+      .cta-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(168,240,207,.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(168,240,207,.04) 1px, transparent 1px);
+        background-size: 54px 54px;
+        mask-image: radial-gradient(circle at center, black, transparent 76%);
+      }
+      .cta-content { position: relative; z-index: 1; max-width: 800px; }
+      .cta h2 { margin: 0; font-size: clamp(42px, 6.2vw, 76px); line-height: 1; letter-spacing: -.06em; text-wrap: balance; }
+      .cta p { max-width: 650px; margin: 24px auto 32px; color: var(--muted); font-size: 18px; }
+      .cta-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+
+      footer { padding: 34px 0 54px; }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px;
+        align-items: center;
+        padding-top: 26px;
+        border-top: 1px solid var(--line);
+        color: var(--subtle);
+        font-size: 12px;
+      }
+      .footer-links { display: flex; gap: 20px; }
+      .footer-links a { color: var(--muted); text-decoration: none; }
+      .footer-links a:hover { color: var(--text); }
+
+      .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
+
+      @media (max-width: 1040px) {
+        .hero-grid, .section-header, .domain-layout, .outputs, .control-grid { grid-template-columns: 1fr; }
+        .hero-grid { gap: 54px; }
+        .hero { padding-top: 82px; }
+        .control-window { max-width: 700px; }
+        .section-header { gap: 16px; }
+        .system-layers { grid-template-columns: 1fr 1fr; }
+        .domain-copy { position: static; }
+        .outputs { gap: 16px; }
+      }
+
+      @media (max-width: 760px) {
+        .shell { width: min(calc(100% - 28px), var(--max)); }
+        .nav-links {
+          position: fixed;
+          left: 14px;
+          right: 14px;
+          top: 68px;
+          display: none;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0;
+          padding: 12px;
+          border: 1px solid var(--line);
+          border-radius: 18px;
+          background: rgba(8, 16, 14, .97);
+          box-shadow: var(--shadow);
+        }
+        .nav-links.open { display: flex; }
+        .nav-links a { padding: 14px; }
+        .menu-button { display: grid; place-items: center; }
+        .hero { padding: 64px 0 46px; }
+        .hero h1 { font-size: clamp(46px, 15vw, 68px); }
+        .hero-copy { font-size: 17px; }
+        .control-inner { min-height: auto; padding: 18px; }
+        .signal { grid-template-columns: 44px 1fr; }
+        .signal-value { display: none; }
+        .decision-row { grid-template-columns: 1fr; }
+        .metrics-grid { grid-template-columns: 1fr 1fr; }
+        .metric { padding: 20px; border-bottom: 1px solid var(--line); }
+        .metric:nth-child(2) { border-right: 0; }
+        .metric:nth-child(3), .metric:nth-child(4) { border-bottom: 0; }
+        .metric:nth-child(3) { padding-left: 0; }
+        .section { padding: 82px 0; }
+        .section-header { margin-bottom: 42px; }
+        .section-title { font-size: clamp(38px, 11vw, 54px); }
+        .system-layers { grid-template-columns: 1fr; }
+        .layer { min-height: 190px; }
+        .layer h3 { margin-top: 34px; }
+        .architecture-caption { display: block; }
+        .architecture-caption span:last-child { display: block; margin-top: 8px; }
+        .gate-item { grid-template-columns: 1fr; gap: 8px; }
+        .domain-item { grid-template-columns: 38px 1fr auto; }
+        .output-primary { min-height: 460px; padding: 24px; }
+        .report-preview { margin-top: 32px; }
+        .phase { grid-template-columns: 54px 1fr; }
+        .phase p { grid-column: 2; }
+        .cta-panel { min-height: 390px; padding: 38px 22px; }
+        .footer-grid { grid-template-columns: 1fr; }
+        .footer-links { flex-wrap: wrap; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition-duration: .01ms !important; }
+        .reveal { opacity: 1; transform: none; }
+      }
     </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Operator Intelligence",
+        "description": "A governed business growth systems assessment for contractor and local-service businesses.",
+        "brand": { "@type": "Brand", "name": "Operator Intelligence" },
+        "url": "https://dburt-proex.github.io/operator-intelligence/governance-platform/"
+      }
+    </script>
   </head>
   <body>
-    <main>
-      <header>
-        <div>
-          <div class="context">Operator Intelligence / Governance Platform</div>
-          <h1>Unified Governance Platform Architecture</h1>
-          <p class="intro">Operator Intelligence is the commercial entry point: diagnose the gap, prioritize the control, enforce change with DiffWall, govern live execution with CASA, and preserve proof in the shared ledger.</p>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" id="site-header">
+      <div class="shell nav">
+        <a class="brand" href="#top" aria-label="Operator Intelligence home">
+          <span class="brand-mark">OI</span>
+          <span>Operator Intelligence</span>
+        </a>
+        <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-nav">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+        <nav class="nav-links" id="primary-nav" aria-label="Primary navigation">
+          <a href="#system">System</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#controls">Controls</a>
+          <a href="#outputs">Outputs</a>
+          <a class="nav-cta" href="https://github.com/dburt-proex/operator-intelligence">View repository</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="shell hero-grid">
+          <div class="reveal">
+            <h1>Evidence becomes <span>governed execution.</span></h1>
+            <p class="hero-copy">Operator Intelligence is a repeatable Business Growth Systems Assessment for contractor and local-service businesses. It turns observable evidence into defensible scores, findings, recommendations, roadmaps, and controlled implementation decisions.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#system">Explore the system
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              <a class="button button-secondary" href="mailto:drewburt4@gmail.com?subject=Operator%20Intelligence%20Assessment">Discuss an assessment</a>
+            </div>
+            <p class="hero-note mono">Commercial v1.0 · release-gated methodology · separate implementation authorization</p>
+          </div>
+
+          <div class="control-window reveal" aria-label="Operator Intelligence governed assessment flow">
+            <div class="control-inner">
+              <div class="window-head">
+                <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                <span class="window-state mono">Decision trace active</span>
+              </div>
+              <div class="signal-stack">
+                <div class="signal">
+                  <span class="signal-index mono">01</span>
+                  <div><strong>Evidence admitted</strong><small>Source, scope, date, authority</small></div>
+                  <span class="signal-value good mono">VERIFIED</span>
+                </div>
+                <div class="signal">
+                  <span class="signal-index mono">02</span>
+                  <div><strong>Criterion evaluated</strong><small>Score, confidence, coverage</small></div>
+                  <span class="signal-value mono">SCORABLE</span>
+                </div>
+                <div class="signal">
+                  <span class="signal-index mono">03</span>
+                  <div><strong>Finding resolved</strong><small>Impact, priority, uncertainty</small></div>
+                  <span class="signal-value mono">ROUTED</span>
+                </div>
+                <div class="signal">
+                  <span class="signal-index mono">04</span>
+                  <div><strong>Decision recorded</strong><small>Package, phase, owner, next gate</small></div>
+                  <span class="signal-value good mono">LEDGERED</span>
+                </div>
+              </div>
+              <div class="decision-row" aria-label="Governance outcomes">
+                <div class="decision allow"><b>ALLOW</b><span>Advance the bounded decision.</span></div>
+                <div class="decision review"><b>REVIEW</b><span>Validate before advancing.</span></div>
+                <div class="decision halt"><b>HALT</b><span>Stop on a control boundary.</span></div>
+              </div>
+              <div class="ledger-line mono">Evidence → score → finding → recommendation → package → roadmap → DecisionLedger</div>
+            </div>
+          </div>
         </div>
-        <a class="repo" href="https://github.com/dburt-proex/operator-intelligence">View source repository</a>
-      </header>
-      <section class="hierarchy" aria-label="Governance platform hierarchy">
-        <div class="layer"><strong>Operator Intelligence</strong><span>Assess and prioritize</span></div>
-        <div class="layer"><strong>DiffWall</strong><span>Enforce change safety</span></div>
-        <div class="layer"><strong>CASA</strong><span>Govern runtime execution</span></div>
-        <div class="layer"><strong>Shared Decision Ledger</strong><span>Evidence and replay</span></div>
       </section>
-      <img class="diagram" src="architecture.svg" alt="Unified Governance Platform Architecture: Operator Intelligence defines controls, DiffWall enforces safe changes, and CASA governs runtime actions with a shared evidence and audit layer." />
-      <footer>
-        <span>Release: v0.2.0 · 14 July 2026 · CASA + DiffWall ecosystem architecture</span>
-        <a href="RELEASE.md">Release manifest and evidence status</a>
-      </footer>
+
+      <section class="metrics" aria-label="Commercial v1 inventory">
+        <div class="shell metrics-grid reveal">
+          <div class="metric"><strong>140</strong><span>unique scoring criteria</span></div>
+          <div class="metric"><strong>217</strong><span>registered finding patterns</span></div>
+          <div class="metric"><strong>11</strong><span>weighted assessment categories</span></div>
+          <div class="metric"><strong>15</strong><span>commercial engagement artifacts</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="system">
+        <div class="shell">
+          <div class="section-header reveal">
+            <div class="section-kicker">The decision engine</div>
+            <div>
+              <h2 class="section-title">A controlled chain from observation to action.</h2>
+              <p class="section-intro">Every material recommendation must remain traceable to admitted evidence, an evaluated criterion, a governed finding, a business-impact interpretation, a confidence state, and a separately authorized implementation path.</p>
+            </div>
+          </div>
+          <div class="engine reveal" aria-label="Operator Intelligence decision chain">
+            <div class="engine-step"><span>01</span><strong>Evidence</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="engine-step"><span>02</span><strong>Criterion</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="engine-step"><span>03</span><strong>Operator Score</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="engine-step"><span>04</span><strong>Finding</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="engine-step"><span>05</span><strong>Recommendation</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="engine-step"><span>06</span><strong>Package</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="engine-step"><span>07</span><strong>Roadmap</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="engine-step"><span>08</span><strong>DecisionLedger</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="architecture">
+        <div class="shell">
+          <div class="section-header reveal">
+            <div class="section-kicker">Unified governance architecture</div>
+            <div>
+              <h2 class="section-title">Assess the system. Gate the change. Govern the action. Preserve the proof.</h2>
+              <p class="section-intro">Operator Intelligence diagnoses and prioritizes. DiffWall enforces change-time safety. CASA governs live execution. The shared DecisionLedger connects every policy, verdict, approval, and outcome.</p>
+            </div>
+          </div>
+
+          <div class="architecture-wrap reveal">
+            <figure class="architecture-frame">
+              <img src="architecture.svg" alt="Architecture diagram showing DiffWall change-time controls, CASA runtime governance, versioned policy, ALLOW REVIEW HALT verdicts, and a shared decision ledger." loading="lazy" />
+              <figcaption class="architecture-caption">
+                <span>Governed execution platform architecture</span>
+                <span class="mono">Change-time + runtime + evidence</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="system-layers reveal">
+            <article class="layer"><span class="layer-number">01 / ASSESS</span><h3>Operator Intelligence</h3><p>Maps evidence, scores business systems, resolves findings, and prioritizes controlled improvement.</p></article>
+            <article class="layer"><span class="layer-number">02 / ENFORCE</span><h3>DiffWall</h3><p>Evaluates proposed code, configuration, and deployment changes before merge or release.</p></article>
+            <article class="layer"><span class="layer-number">03 / GOVERN</span><h3>CASA</h3><p>Evaluates live agent and system actions before they reach tools, APIs, or mutable state.</p></article>
+            <article class="layer"><span class="layer-number">04 / PROVE</span><h3>DecisionLedger</h3><p>Preserves evidence, policy versions, verdicts, approvals, completion records, and replay history.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="controls">
+        <div class="shell">
+          <div class="section-header reveal">
+            <div class="section-kicker">Governance controls</div>
+            <div>
+              <h2 class="section-title">Uncertainty is preserved. Authority is explicit. Boundaries remain enforceable.</h2>
+              <p class="section-intro">The system distinguishes performance from confidence, evidence coverage from observed maturity, publication from implementation, and unknown data from negative evidence.</p>
+            </div>
+          </div>
+          <div class="control-grid reveal">
+            <article class="gate-panel">
+              <h3>Decision gates</h3>
+              <div class="gate-list">
+                <div class="gate-item"><span class="gate-label allow">ALLOW</span><p>The bounded artifact or action has sufficient evidence, authority, and control to advance to the next separate decision.</p></div>
+                <div class="gate-item"><span class="gate-label review">REVIEW</span><p>Qualified judgment, validation, correction, accepted limitation, or explicit approval is required.</p></div>
+                <div class="gate-item"><span class="gate-label halt">HALT</span><p>Evidence, authority, safety, privacy, scope, dependency, publication, or traceability prevents advancement.</p></div>
+              </div>
+            </article>
+            <article class="boundary-panel">
+              <h3>Non-negotiable boundaries</h3>
+              <ul class="boundary-list">
+                <li>Unknown is never scored as zero.</li>
+                <li>Confidence never modifies performance or priority.</li>
+                <li>Package eligibility precedes package assignment.</li>
+                <li>Publication and implementation are separate authorizations.</li>
+                <li>Unsupported ROI, revenue, ranking, conversion, and timeline claims are prohibited.</li>
+                <li>Published records are superseded, never silently overwritten.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell domain-layout">
+          <div class="domain-copy reveal">
+            <div class="section-kicker">Assessment coverage</div>
+            <h2>One operating view across the full growth system.</h2>
+            <p>Operator Intelligence evaluates the surfaces that shape discovery, trust, conversion, follow-up, decision quality, and implementation readiness without collapsing them into a generic website audit.</p>
+          </div>
+          <div class="domain-list reveal" aria-label="Assessment domains">
+            <div class="domain-item"><span>01</span><strong>Website structure and UX</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>02</span><strong>Messaging and offer clarity</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>03</span><strong>Conversion infrastructure</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>04</span><strong>Local SEO</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>05</span><strong>Google Business Profile</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>06</span><strong>Reputation and trust</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>07</span><strong>Social presence</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>08</span><strong>Automation maturity</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>09</span><strong>AI readiness</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>10</span><strong>Analytics and reporting</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <div class="domain-item"><span>11</span><strong>Competitive position</strong><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7"/></svg></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="outputs">
+        <div class="shell">
+          <div class="section-header reveal">
+            <div class="section-kicker">Commercial outputs</div>
+            <div>
+              <h2 class="section-title">Built for an executive decision, not a folder of disconnected observations.</h2>
+              <p class="section-intro">The engagement produces controlled records that connect what was observed, what it means, what should happen next, what remains uncertain, and what requires separate approval.</p>
+            </div>
+          </div>
+          <div class="outputs reveal">
+            <article class="output-primary">
+              <div><h3>Executive assessment report</h3><p>A decision-ready synthesis of score, evidence coverage, uncertainty, material findings, priorities, roadmap phases, and next gates.</p></div>
+              <div class="report-preview" aria-label="Illustrative report preview">
+                <div class="report-top"><span>OPERATOR INTELLIGENCE</span><span>ASSESSMENT REPORT</span></div>
+                <h3>Business Growth Systems Assessment</h3>
+                <div class="report-score"><div><span>OPERATOR SCORE</span><strong>—</strong></div><span>Published only when evidence and confidence gates pass.</span></div>
+              </div>
+            </article>
+            <div class="output-secondary">
+              <article class="output-card"><span>01 / EVIDENCE</span><h4>Evidence and finding ledger</h4><p>Source-level proof, criterion state, interpretation, confidence, impact, and supersession history.</p></article>
+              <article class="output-card"><span>02 / ACTION</span><h4>Prioritized roadmap</h4><p>Phase 0 validation and phases 1–5 implementation sequencing with dependencies, gates, and ownership.</p></article>
+              <article class="output-card"><span>03 / DELIVERY</span><h4>Bounded package route</h4><p>Exactly one primary implementation package only when evidence, eligibility, priority, and phase alignment justify it.</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell">
+          <div class="section-header reveal">
+            <div class="section-kicker">Engagement sequence</div>
+            <div>
+              <h2 class="section-title">A repeatable assessment with explicit exit gates.</h2>
+              <p class="section-intro">Each stage advances only when the required evidence, decisions, owners, approvals, and outputs pass the relevant control gate.</p>
+            </div>
+          </div>
+          <div class="phases reveal">
+            <article class="phase"><h3>Qualify and bound</h3><p>Define the business decision, scope, exclusions, access, data rules, authority, and testing limits.</p></article>
+            <article class="phase"><h3>Collect and admit evidence</h3><p>Map public and authorized internal surfaces, capture sources, and preserve unknown or blocked states.</p></article>
+            <article class="phase"><h3>Score and resolve findings</h3><p>Evaluate criteria, calculate coverage and uncertainty, resolve governed findings, and prevent duplicate signals.</p></article>
+            <article class="phase"><h3>Route recommendations</h3><p>Apply risk, opportunity, effort, confidence, priority, package eligibility, and roadmap-phase logic.</p></article>
+            <article class="phase"><h3>Publish, decide, and authorize</h3><p>Run quality control, issue the assessment, record client decisions, and obtain separate implementation authority.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta">
+        <div class="shell">
+          <div class="cta-panel reveal">
+            <div class="cta-content">
+              <h2>Make the next business decision traceable.</h2>
+              <p>Use Operator Intelligence to replace disconnected audits and unsupported recommendations with an evidence-backed assessment, a governed roadmap, and an explicit next gate.</p>
+              <div class="cta-actions">
+                <a class="button button-primary" href="mailto:drewburt4@gmail.com?subject=Operator%20Intelligence%20Assessment">Start a conversation</a>
+                <a class="button button-secondary" href="https://github.com/dburt-proex/operator-intelligence">Inspect the repository</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer>
+      <div class="shell footer-grid">
+        <div>© 2026 Drew Burt · Operator Intelligence™ · Commercial v1.0</div>
+        <div class="footer-links">
+          <a href="https://github.com/dburt-proex/operator-intelligence">Repository</a>
+          <a href="https://github.com/dburt-proex/operator-intelligence/blob/main/README.md">Methodology overview</a>
+          <a href="https://github.com/dburt-proex/operator-intelligence/blob/main/COMMERCIAL_V1_COMPLETION.md">Release gate</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const header = document.getElementById('site-header');
+      const menuButton = document.querySelector('.menu-button');
+      const nav = document.getElementById('primary-nav');
+
+      const updateHeader = () => header.classList.toggle('scrolled', window.scrollY > 18);
+      updateHeader();
+      window.addEventListener('scroll', updateHeader, { passive: true });
+
+      menuButton.addEventListener('click', () => {
+        const open = nav.classList.toggle('open');
+        menuButton.setAttribute('aria-expanded', String(open));
+        menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+      });
+
+      nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.setAttribute('aria-label', 'Open navigation');
+      }));
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+
+      if (window.matchMedia('(pointer: fine)').matches) {
+        window.addEventListener('pointermove', (event) => {
+          document.body.style.setProperty('--glow-x', `${event.clientX}px`);
+          document.body.style.setProperty('--glow-y', `${event.clientY}px`);
+        }, { passive: true });
+      }
+    </script>
   </body>
 </html>
