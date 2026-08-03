@@ -60,6 +60,31 @@ class AdvisoryMVPTests(unittest.TestCase):
         self.assertEqual(result["suppressed_opportunities"], [{"duplicate_id": "LE-OPP-2026-0021", "canonical_id": "LE-OPP-2026-0020"}])
         self.assertEqual(result["selection"]["directive"]["selected_opportunity_id"], "LE-OPP-2026-0020")
 
+    def test_graph_edges_are_auditable(self):
+        result = self.execute_fixture("daily-run-valid")
+        required = {"from", "to", "type", "provenance", "created_at", "creator", "confidence"}
+        self.assertTrue(result["graph_edges"])
+        for edge in result["graph_edges"]:
+            self.assertEqual(set(edge), required)
+            self.assertIn(result["run_id"], edge["provenance"])
+
+    def test_exact_top_score_tie_routes_to_review(self):
+        fixture = load_json(self.fixture("daily-run-valid"))
+        first, second = fixture["opportunities"][:2]
+        second["score_inputs"] = first["score_inputs"]
+        second["confidence"] = first["confidence"]
+        second["evidence_quality"] = first["evidence_quality"]
+        second["urgency_bonus"] = first["urgency_bonus"]
+        second["verified_deadline"] = first["verified_deadline"]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "run.json"
+            path.write_text(json.dumps(fixture), encoding="utf-8")
+            result = run_fixture(path)
+        self.assertEqual(result["selection"]["result"], "NO_ACTION")
+        self.assertEqual(result["tie_candidates"], ["LE-OPP-2026-0001", "LE-OPP-2026-0002"])
+        tied = [item for item in result["ranking"] if item["opportunity_id"] in result["tie_candidates"]]
+        self.assertTrue(all("LE-GATE-MATERIAL-TIE" in item["gate_reasons"] for item in tied))
+
     def test_stale_repository_invalidates_selection(self):
         result = self.execute_fixture("stale-repository")
         self.assertEqual(result["selection"]["result"], "NO_ACTION")

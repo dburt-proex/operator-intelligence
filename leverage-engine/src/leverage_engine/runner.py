@@ -93,7 +93,18 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
 
     ranked = sorted(scored, key=_rank_key)
     selectable = [item for item in ranked if item["gate_result"] == "ALLOW" and item["state"] != "duplicate"]
-    selected = selectable[0] if selectable else None
+    tie_candidates: list[str] = []
+    if len(selectable) > 1:
+        delta = abs(selectable[0]["leverage_index"] - selectable[1]["leverage_index"])
+        if delta <= controls["policy"]["tie_tolerance"]:
+            top_score = selectable[0]["leverage_index"]
+            tied = [item for item in selectable if abs(item["leverage_index"] - top_score) <= controls["policy"]["tie_tolerance"]]
+            tie_candidates = [item["opportunity_id"] for item in tied]
+            for item in tied:
+                item["gate_result"] = "REVIEW"
+                item["gate_reasons"] = sorted(set(item["gate_reasons"] + ["LE-GATE-MATERIAL-TIE"]))
+            ranked = sorted(scored, key=_rank_key)
+    selected = None if tie_candidates else (selectable[0] if selectable else None)
     if selected:
         selected["state"] = "selected"
         directive = build_directive(fixture, selected)
@@ -106,7 +117,11 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         selected_id = selected["opportunity_id"]
     else:
         selection = {"result": "NO_ACTION", "directive": None}
-        decision_rationale = "No candidate cleared evidence, confidence, freshness, duplication, and authority gates."
+        decision_rationale = (
+            f"Top candidates {', '.join(tie_candidates)} are tied and require human review."
+            if tie_candidates
+            else "No candidate cleared evidence, confidence, freshness, duplication, and authority gates."
+        )
         selected_id = None
 
     ranking = [
@@ -158,7 +173,8 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         },
         "duplicate_signal_groups": group_duplicate_signals(signals),
         "suppressed_opportunities": suppressed,
-        "graph_edges": build_run_edges(scored),
+        "graph_edges": build_run_edges(scored, fixture["run_id"], fixture["run_timestamp"]),
+        "tie_candidates": tie_candidates,
         "ranking": ranking,
         "selection": selection,
         "rationale": decision_rationale,
