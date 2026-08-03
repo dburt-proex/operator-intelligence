@@ -1,0 +1,41 @@
+{
+  "fixture_version": "0.1.0",
+  "run_id": "LE-RUN-2026-0001",
+  "run_timestamp": "2026-08-03T15:00:00Z",
+  "target_system": "Operator Intelligence",
+  "review_owner": "Drew Burt",
+  "partial_coverage": false,
+  "assumptions": ["Static fixtures represent the approved source set for this proof."],
+  "evidence_refs": ["LE-REP-2026-0001", "LE-SIG-2026-0001"],
+  "proposed_actions": {
+    "LE-OPP-2026-0001": "Prepare the bounded Leverage Engine advisory MVP implementation for human review.",
+    "LE-OPP-2026-0002": "Prepare a commercial packaging evidence checklist for human review.",
+    "LE-OPP-2026-0003": "Prepare a repository documentation reconciliation note for human review."
+  },
+  "signals": [
+    {"signal_id":"LE-SIG-2026-0001","source_id":"fixture-manual","source_type":"user_directive","observed_at":"2026-08-03T14:30:00Z","retrieved_at":"2026-08-03T14:31:00Z","title":"Approved Leverage Engine build","summary":"The decision owner approved an advisory-only deterministic build.","evidence_refs":["directive:2026-08-03"],"affected_assets":["leverage-engine"],"freshness_state":"current","evidence_quality":100,"confidence":"high","validation_state":"validated"},
+    {"signal_id":"LE-SIG-2026-0002","source_id":"fixture-repository","source_type":"repository","observed_at":"2026-08-03T14:00:00Z","retrieved_at":"2026-08-03T14:05:00Z","title":"Build specification exists","summary":"The approved specification is present on the feature branch.","evidence_refs":["commit:a206fa0"],"affected_assets":["leverage-engine"],"freshness_state":"current","evidence_quality":100,"confidence":"high","validation_state":"validated"},
+    {"signal_id":"LE-SIG-2026-0003","source_id":"fixture-repository","source_type":"repository","observed_at":"2026-08-03T14:00:00Z","retrieved_at":"2026-08-03T14:06:00Z","title":"Commercial assessment content complete","summary":"Operator Intelligence commercial v1 content is release-gated.","evidence_refs":["README:e46bb11"],"affected_assets":["operator-intelligence-commercial-v1"],"freshness_state":"current","evidence_quality":75,"confidence":"medium","validation_state":"validated"}
+  ],
+  "repository_states": [
+    {"snapshot_id":"LE-REP-2026-0001","repository_id":"operator-intelligence","canonical_ref":"agent/leverage-engine-foundation","commit_sha":"a206fa0df2c394b2f79feedded0a2fd8bef0cccb","captured_at":"2026-08-03T14:40:00Z","inspection_scope":["leverage-engine/**"],"unfinished_items":["advisory-mvp"],"blocked_items":[],"duplicate_candidates":[],"stale_candidates":[],"evidence_gaps":[],"commercial_assets":["leverage-engine"],"routing_restrictions":["read-only"]},
+    {"snapshot_id":"LE-REP-2026-0002","repository_id":"operator-intelligence","canonical_ref":"main","commit_sha":"3b3f9bfe87008aab1d08d09ecfc89e1e78dc42ea","captured_at":"2026-08-03T14:35:00Z","inspection_scope":["README.md","COMMERCIAL_V1_COMPLETION.md"],"unfinished_items":[],"blocked_items":[],"duplicate_candidates":[],"stale_candidates":[],"evidence_gaps":[],"commercial_assets":["operator-intelligence-commercial-v1"],"routing_restrictions":["read-only"]}
+  ],
+  "opportunities": [
+    {
+      "opportunity_id":"LE-OPP-2026-0001","objective":"Complete the advisory Leverage Engine MVP","opportunity_type":"product","supporting_signals":["LE-SIG-2026-0001","LE-SIG-2026-0002"],"target_assets":["leverage-engine"],"dependencies":[],"duplicates":[],"expected_outcome":"A deterministic reviewable prioritization proof passes all governed fixtures.","success_evidence":["passing acceptance tests","deterministic replay receipt"],
+      "score_inputs":{"value":{"revenue_proximity":50,"existing_asset_leverage":100,"evidence_backed_demand":75,"strategic_alignment":100,"time_to_value":75,"compounding_value":100,"career_market_signal":75},"friction":{"effort":50,"technical_complexity":50,"external_dependencies":0,"maintenance_burden":25},"risk":{"authority_external_impact":0,"data_security_privacy":0,"financial_legal_exposure":0,"irreversibility":0}},
+      "raw_value_score":0,"friction_score":0,"risk_score":0,"confidence":"high","confidence_factor":0,"evidence_quality":100,"urgency_bonus":5,"verified_deadline":"2026-08-04T15:00:00Z","leverage_index":0,"boundary_flags":[],"gate_result":"REVIEW","gate_reasons":[],"state":"discovered","assumptions":["The specification remains the approved baseline."]
+    },
+    {
+      "opportunity_id":"LE-OPP-2026-0002","objective":"Package an existing assessment service","opportunity_type":"revenue","supporting_signals":["LE-SIG-2026-0003"],"target_assets":["operator-intelligence-commercial-v1"],"dependencies":["buyer-evidence"],"duplicates":[],"expected_outcome":"A reviewable package decision supported by current buyer evidence.","success_evidence":["approved package brief"],
+      "score_inputs":{"value":{"revenue_proximity":75,"existing_asset_leverage":100,"evidence_backed_demand":50,"strategic_alignment":75,"time_to_value":75,"compounding_value":50,"career_market_signal":50},"friction":{"effort":25,"technical_complexity":0,"external_dependencies":50,"maintenance_burden":25},"risk":{"authority_external_impact":25,"data_security_privacy":0,"financial_legal_exposure":25,"irreversibility":0}},
+      "raw_value_score":0,"friction_score":0,"risk_score":0,"confidence":"medium","confidence_factor":0,"evidence_quality":75,"urgency_bonus":0,"verified_deadline":null,"leverage_index":0,"boundary_flags":[],"gate_result":"REVIEW","gate_reasons":[],"state":"discovered","assumptions":["Buyer evidence requires validation before publication."]
+    },
+    {
+      "opportunity_id":"LE-OPP-2026-0003","objective":"Reconcile repository documentation","opportunity_type":"maintenance","supporting_signals":["LE-SIG-2026-0002"],"target_assets":["leverage-engine"],"dependencies":[],"duplicates":[],"expected_outcome":"Documentation matches the implemented advisory boundary.","success_evidence":["reviewed documentation diff"],
+      "score_inputs":{"value":{"revenue_proximity":0,"existing_asset_leverage":50,"evidence_backed_demand":25,"strategic_alignment":75,"time_to_value":100,"compounding_value":50,"career_market_signal":25},"friction":{"effort":25,"technical_complexity":0,"external_dependencies":0,"maintenance_burden":0},"risk":{"authority_external_impact":0,"data_security_privacy":0,"financial_legal_exposure":0,"irreversibility":0}},
+      "raw_value_score":0,"friction_score":0,"risk_score":0,"confidence":"high","confidence_factor":0,"evidence_quality":100,"urgency_bonus":0,"verified_deadline":null,"leverage_index":0,"boundary_flags":[],"gate_result":"REVIEW","gate_reasons":[],"state":"discovered","assumptions":[]
+    }
+  ]
+}
