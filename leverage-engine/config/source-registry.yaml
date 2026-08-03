@@ -1,0 +1,29 @@
+{
+  "registry_id": "LE-SRC-REG-0.1.0",
+  "version": "0.1.0",
+  "stage": "advisory_mvp",
+  "sources": [
+    {
+      "source_id": "fixture-manual",
+      "source_type": "user_directive",
+      "access_mode": "static_fixture",
+      "enabled": true,
+      "retention": "metadata_and_evidence_refs",
+      "freshness_hours": 168
+    },
+    {
+      "source_id": "fixture-repository",
+      "source_type": "repository",
+      "access_mode": "static_fixture",
+      "enabled": true,
+      "retention": "snapshot_metadata_only",
+      "freshness_hours": 24
+    }
+  ],
+  "governance": {
+    "unregistered_source_result": "HALT",
+    "network_access": false,
+    "sensitive_data": false,
+    "full_content_retention": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "profile_id": "LE-POLICY-0.1.0",
+  "version": "0.1.0",
+  "stage": "advisory_mvp",
+  "maximum_repository_snapshot_age_hours": 24,
+  "minimum_selectable_confidence": "medium",
+  "risk_review_threshold": 70,
+  "tie_tolerance": 0.0,
+  "g4_rules": [
+    "G4_UNAUTHORIZED_EXTERNAL_ACTION",
+    "G4_REPOSITORY_MUTATION",
+    "G4_SECRET_OR_SENSITIVE_DATA",
+    "G4_DESTRUCTIVE_OR_IRREVERSIBLE",
+    "G4_FINANCIAL_OR_LEGAL_COMMITMENT",
+    "G4_SELF_MODIFICATION"
+  ],
+  "mvp": {
+    "human_approval_required": true,
+    "dispatch_enabled": false,
+    "network_enabled": false,
+    "repository_writes_enabled": false,
+    "external_actions_enabled": false
+  },
+  "governance": {
+    "allow_meaning": "eligible_for_human_review",
+    "gate_precedence": ["HALT", "REVIEW", "ALLOW"],
+    "profile_change_requires_human_approval": true
+  }
+}
