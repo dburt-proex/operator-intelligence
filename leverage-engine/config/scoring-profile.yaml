@@ -1,0 +1,48 @@
+{
+  "profile_id": "LE-SCORE-0.1.0",
+  "version": "0.1.0",
+  "stage": "calibration_baseline",
+  "allowed_anchors": [0, 25, 50, 75, 100],
+  "value_weights": {
+    "revenue_proximity": 25,
+    "existing_asset_leverage": 20,
+    "evidence_backed_demand": 15,
+    "strategic_alignment": 15,
+    "time_to_value": 10,
+    "compounding_value": 10,
+    "career_market_signal": 5
+  },
+  "friction_weights": {
+    "effort": 35,
+    "technical_complexity": 25,
+    "external_dependencies": 20,
+    "maintenance_burden": 20
+  },
+  "risk_weights": {
+    "authority_external_impact": 30,
+    "data_security_privacy": 25,
+    "financial_legal_exposure": 25,
+    "irreversibility": 20
+  },
+  "confidence_factors": {
+    "high": 1.0,
+    "medium": 0.75,
+    "low": 0.5,
+    "unknown": 0.0
+  },
+  "penalties": {
+    "friction": 0.2,
+    "risk": 0.2
+  },
+  "urgency": {
+    "minimum": 0,
+    "maximum": 10,
+    "verified_deadline_required": true
+  },
+  "formula": "clamp((raw_value*confidence_factor)-(friction*0.20)-(risk*0.20)+urgency_bonus,0,100)",
+  "governance": {
+    "self_adjustment": false,
+    "interpolation": false,
+    "operator_score_independent": true
+  }
+}

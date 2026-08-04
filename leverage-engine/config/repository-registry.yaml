@@ -1,0 +1,21 @@
+{
+  "registry_id": "LE-REP-REG-0.1.0",
+  "version": "0.1.0",
+  "stage": "advisory_mvp",
+  "repositories": [
+    {
+      "repository_id": "operator-intelligence",
+      "canonical_name": "dburt-proex/operator-intelligence",
+      "role": "assessment_and_prioritization_parent",
+      "access_mode": "static_snapshot",
+      "allowed_paths": ["leverage-engine/**", "README.md", "ROADMAP.md", "COMMERCIAL_V1_COMPLETION.md"],
+      "prohibited_actions": ["write", "commit", "push", "pull_request", "dispatch"]
+    }
+  ],
+  "excluded_until_approved": ["CASA"],
+  "governance": {
+    "unregistered_repository_result": "HALT",
+    "commit_sha_required": true,
+    "live_adapter_enabled": false
+  }
+}
