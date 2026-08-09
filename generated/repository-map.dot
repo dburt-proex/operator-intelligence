@@ -39,7 +39,7 @@ digraph OperatorIntelligence {
   registry -> artifact2;
   artifact3 [label="COMMERCIAL_V1_COMPLETION.md\ncanonical", shape=note];
   registry -> artifact3;
-  artifact4 [label="LICENSE.md\ncanonical", shape=note];
+  artifact4 [label="LICENSE\ncanonical", shape=note];
   registry -> artifact4;
   artifact5 [label="README.md\ncanonical", shape=note];
   registry -> artifact5;
