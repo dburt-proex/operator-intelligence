@@ -222,4 +222,4 @@ See `COMMERCIAL_V1_COMPLETION.md` for the final release decision, known boundari
 
 ## License and commercial use
 
-Repository ownership, licensing, client confidentiality, trademark use, and distribution terms must be defined and applied before public commercial distribution. The methodology does not grant permission to use client or third-party data, marks, credentials, testimonials, or confidential records.
+This repository is licensed under the [PolyForm Shield License 1.0.0](LICENSE). Repository ownership, client confidentiality, trademark use, and distribution terms remain subject to the license. The methodology does not grant permission to use client or third-party data, marks, credentials, testimonials, or confidential records.
