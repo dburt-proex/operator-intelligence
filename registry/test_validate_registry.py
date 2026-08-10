@@ -76,6 +76,19 @@ class TrackedPathRegressionTests(unittest.TestCase):
         )
         self.assertEqual([], errors)
 
+    def test_license_artifact_matches_tracked_license_file(self) -> None:
+        data = validate_registry.load_registry()
+        license_artifact = next(
+            (
+                artifact
+                for artifact in data["artifacts"]
+                if artifact["artifact_id"] == "OI-ART-0033"
+            ),
+            None,
+        )
+        self.assertIsNotNone(license_artifact)
+        self.assertEqual("LICENSE", license_artifact["path"])
+
 
 class WorkflowTriggerRegressionTests(unittest.TestCase):
     def test_conformance_workflow_has_no_path_filter(self) -> None:
