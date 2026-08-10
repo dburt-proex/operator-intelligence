@@ -16,7 +16,7 @@ This document describes the three-way split and the exact commands required to c
 
 | PR | Branch | Files | Lines | DiffWall Risk |
 |----|--------|-------|-------|---------------|
-| **PR A** (this PR) | `copilot/split-pr-15-changes` | `.github/workflows/validate-registry-and-map.yml` | +4 | Workflow change — merge last |
+| **PR A** (this PR) | `copilot/split-pr-15-changes` | `.github/workflows/validate-registry-and-map.yml` | +6 | Workflow change — merge last |
 | **PR B** | `split/pr-15-dependencies` | `assessment-evidence-graph/pyproject.toml` | +19 | Dependency manifest only |
 | **PR C** | `split/pr-15-application` | 21 files — all application source, tests, fixtures, registry, generated maps | +3124 | Application code — merge first |
 
@@ -29,11 +29,13 @@ This document describes the three-way split and the exact commands required to c
 **Branch:** `copilot/split-pr-15-changes`  
 **Merge order:** Last — depends on PR C code being in `main` first.
 
-**Change:** Adds two CI steps to validate the assessment evidence graph:
+**Change:** Adds two CI steps (with a `hashFiles` guard so they are skipped if the package is not yet in `main`) to validate the assessment evidence graph:
 ```yaml
 - name: Install assessment evidence graph
+  if: hashFiles('assessment-evidence-graph/pyproject.toml') != ''
   run: python -m pip install --disable-pip-version-check -e ./assessment-evidence-graph
 - name: Run assessment evidence graph replay and adversarial tests
+  if: hashFiles('assessment-evidence-graph/pyproject.toml') != ''
   run: python -m unittest discover -s assessment-evidence-graph/tests -v
 ```
 
