@@ -249,8 +249,12 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
 
     contradiction_edges = [edge for edge in fixture.edges if edge.edge_type == EdgeType.CONTRADICTS]
     for edge in contradiction_edges:
-        left = claims[edge.from_id]
-        right = claims[edge.to_id]
+        left = claims.get(edge.from_id)
+        right = claims.get(edge.to_id)
+        if left is None or right is None:
+            evidence_gate = Gate.HALT
+            evidence_reasons.add("OI-GRAPH-EDGE-001")
+            continue
         if left.subject_key != right.subject_key or left.stance == right.stance:
             evidence_gate = Gate.HALT
             evidence_reasons.add("OI-GRAPH-CONFLICT-MALFORMED")
