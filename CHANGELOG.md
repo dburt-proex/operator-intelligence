@@ -6,6 +6,7 @@ All notable Operator Intelligence changes are documented here.
 
 ### Added
 
+- GE-2026-08-08-001 assessment evidence graph vertical slice with strict typed contracts, SQLite canonical state, deterministic publication gates, contradictory-evidence preservation, idempotent Shared Decision Ledger-compatible receipts, and final-state replay tests.
 - Vendor-neutral readiness protocol inheriting the seven-domain Agentic AI Governance Readiness model.
 - Assessment questionnaire and minimum evidence requirements.
 - Control map separating governance, change-time, runtime, and assurance controls.
