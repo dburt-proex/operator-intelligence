@@ -2,99 +2,105 @@ flowchart LR
   registry["Artifact Registry"]
   root1[".github/\ncanonical"]
   registry --> root1
-  root2["assets/\ncanonical"]
+  root2["assessment-evidence-graph/\napproved_extension"]
   registry --> root2
-  root3["docs/\ncanonical"]
+  root3["assets/\ncanonical"]
   registry --> root3
-  root4["examples/\ncanonical"]
+  root4["docs/\ncanonical"]
   registry --> root4
-  root5["framework/\ncanonical"]
+  root5["examples/\ncanonical"]
   registry --> root5
-  root6["generated/\ngenerated"]
+  root6["framework/\ncanonical"]
   registry --> root6
-  root7["governance-platform/\napproved_extension"]
+  root7["generated/\ngenerated"]
   registry --> root7
-  root8["leverage-engine/\napproved_extension"]
+  root8["governance-platform/\napproved_extension"]
   registry --> root8
-  root9["playbooks/\ncanonical"]
+  root9["leverage-engine/\napproved_extension"]
   registry --> root9
-  root10["registry/\napproved_extension"]
+  root10["playbooks/\ncanonical"]
   registry --> root10
-  root11["reliability/\napproved_extension"]
+  root11["registry/\napproved_extension"]
   registry --> root11
-  root12["research/\ncanonical"]
+  root12["reliability/\napproved_extension"]
   registry --> root12
-  root13["scoring/\ncanonical"]
+  root13["research/\ncanonical"]
   registry --> root13
-  root14["standards/\ncanonical"]
+  root14["scoring/\ncanonical"]
   registry --> root14
-  root15["templates/\ncanonical"]
+  root15["standards/\ncanonical"]
   registry --> root15
-  root16["tools/\napproved_extension"]
+  root16["templates/\ncanonical"]
   registry --> root16
+  root17["tools/\napproved_extension"]
+  registry --> root17
   artifact1[".github/workflows/validate-registry-and-map.yml\napproved_extension"]
   root1 --> artifact1
-  artifact2["CHANGELOG.md\ncanonical"]
+  artifact2[".gitignore\napproved_extension"]
   registry --> artifact2
-  artifact3["COMMERCIAL_V1_COMPLETION.md\ncanonical"]
+  artifact3["CHANGELOG.md\ncanonical"]
   registry --> artifact3
-  artifact4["LICENSE\ncanonical"]
+  artifact4["COMMERCIAL_V1_COMPLETION.md\ncanonical"]
   registry --> artifact4
-  artifact5["README.md\ncanonical"]
+  artifact5["LICENSE\ncanonical"]
   registry --> artifact5
-  artifact6["RELEASE_NOTES_v1.0.0.md\ncanonical"]
+  artifact6["README.md\ncanonical"]
   registry --> artifact6
-  artifact7["ROADMAP.md\ncanonical"]
+  artifact7["RELEASE_NOTES_v1.0.0.md\ncanonical"]
   registry --> artifact7
-  artifact8["examples/scenario-fixtures/index.md\napproved_extension"]
-  root4 --> artifact8
-  artifact9["generated/repository-map.dot\ngenerated"]
-  root6 --> artifact9
-  artifact10["generated/repository-map.json\ngenerated"]
-  root6 --> artifact10
-  artifact11["generated/repository-map.md\ngenerated"]
-  root6 --> artifact11
-  artifact12["generated/repository-map.mmd\ngenerated"]
-  root6 --> artifact12
-  artifact13["playbooks/agentic-ai-governance-readiness-assessment.md\nproposed"]
-  root9 --> artifact13
-  artifact14["playbooks/agentic-control-platform-readiness/README.md\napproved_extension"]
-  root9 --> artifact14
-  artifact15["playbooks/agentic-control-platform-readiness/assessment-questionnaire.md\napproved_extension"]
-  root9 --> artifact15
-  artifact16["playbooks/agentic-control-platform-readiness/control-mapping.md\napproved_extension"]
-  root9 --> artifact16
-  artifact17["playbooks/agentic-control-platform-readiness/diffwall-demonstration.md\napproved_extension"]
-  root9 --> artifact17
-  artifact18["playbooks/agentic-control-platform-readiness/evidence-requirements.md\napproved_extension"]
-  root9 --> artifact18
-  artifact19["playbooks/agentic-control-platform-readiness/executive-decision-brief.md\napproved_extension"]
-  root9 --> artifact19
-  artifact20["playbooks/agentic-control-platform-readiness/export-schema.json\napproved_extension"]
-  root9 --> artifact20
-  artifact21["playbooks/agentic-control-platform-readiness/fixtures/valid-ready.json\napproved_extension"]
-  root9 --> artifact21
-  artifact22["playbooks/agentic-control-platform-readiness/gap-register.md\napproved_extension"]
-  root9 --> artifact22
-  artifact23["playbooks/agentic-control-platform-readiness/prioritized-roadmap.md\napproved_extension"]
-  root9 --> artifact23
-  artifact24["playbooks/agentic-control-platform-readiness/readiness-protocol.md\napproved_extension"]
-  root9 --> artifact24
-  artifact25["playbooks/agentic-control-platform-readiness/scoring-profile.md\napproved_extension"]
-  root9 --> artifact25
-  artifact26["playbooks/agentic-control-platform-readiness/validate_package.py\napproved_extension"]
-  root9 --> artifact26
-  artifact27["registry/artifacts.yaml\napproved_extension"]
+  artifact8["ROADMAP.md\ncanonical"]
+  registry --> artifact8
+  artifact9["assessment-evidence-graph/agentic-graph-blueprint.json\napproved_extension"]
+  root2 --> artifact9
+  artifact10["examples/scenario-fixtures/index.md\napproved_extension"]
+  root5 --> artifact10
+  artifact11["generated/repository-map.dot\ngenerated"]
+  root7 --> artifact11
+  artifact12["generated/repository-map.json\ngenerated"]
+  root7 --> artifact12
+  artifact13["generated/repository-map.md\ngenerated"]
+  root7 --> artifact13
+  artifact14["generated/repository-map.mmd\ngenerated"]
+  root7 --> artifact14
+  artifact15["playbooks/agentic-ai-governance-readiness-assessment.md\nproposed"]
+  root10 --> artifact15
+  artifact16["playbooks/agentic-control-platform-readiness/README.md\napproved_extension"]
+  root10 --> artifact16
+  artifact17["playbooks/agentic-control-platform-readiness/assessment-questionnaire.md\napproved_extension"]
+  root10 --> artifact17
+  artifact18["playbooks/agentic-control-platform-readiness/control-mapping.md\napproved_extension"]
+  root10 --> artifact18
+  artifact19["playbooks/agentic-control-platform-readiness/diffwall-demonstration.md\napproved_extension"]
+  root10 --> artifact19
+  artifact20["playbooks/agentic-control-platform-readiness/evidence-requirements.md\napproved_extension"]
+  root10 --> artifact20
+  artifact21["playbooks/agentic-control-platform-readiness/executive-decision-brief.md\napproved_extension"]
+  root10 --> artifact21
+  artifact22["playbooks/agentic-control-platform-readiness/export-schema.json\napproved_extension"]
+  root10 --> artifact22
+  artifact23["playbooks/agentic-control-platform-readiness/fixtures/valid-ready.json\napproved_extension"]
+  root10 --> artifact23
+  artifact24["playbooks/agentic-control-platform-readiness/gap-register.md\napproved_extension"]
+  root10 --> artifact24
+  artifact25["playbooks/agentic-control-platform-readiness/prioritized-roadmap.md\napproved_extension"]
+  root10 --> artifact25
+  artifact26["playbooks/agentic-control-platform-readiness/readiness-protocol.md\napproved_extension"]
+  root10 --> artifact26
+  artifact27["playbooks/agentic-control-platform-readiness/scoring-profile.md\napproved_extension"]
   root10 --> artifact27
-  artifact28["registry/registry-schema.json\napproved_extension"]
+  artifact28["playbooks/agentic-control-platform-readiness/validate_package.py\napproved_extension"]
   root10 --> artifact28
-  artifact29["registry/test_validate_registry.py\napproved_extension"]
-  root10 --> artifact29
-  artifact30["registry/validate_registry.py\napproved_extension"]
-  root10 --> artifact30
-  artifact31["reliability/field_reliability_validator.py\napproved_extension"]
+  artifact29["registry/artifacts.yaml\napproved_extension"]
+  root11 --> artifact29
+  artifact30["registry/registry-schema.json\napproved_extension"]
+  root11 --> artifact30
+  artifact31["registry/test_validate_registry.py\napproved_extension"]
   root11 --> artifact31
-  artifact32["templates/realized-value-register.md\napproved_extension"]
-  root15 --> artifact32
-  artifact33["tools/generate_repository_map.py\napproved_extension"]
-  root16 --> artifact33
+  artifact32["registry/validate_registry.py\napproved_extension"]
+  root11 --> artifact32
+  artifact33["reliability/field_reliability_validator.py\napproved_extension"]
+  root12 --> artifact33
+  artifact34["templates/realized-value-register.md\napproved_extension"]
+  root16 --> artifact34
+  artifact35["tools/generate_repository_map.py\napproved_extension"]
+  root17 --> artifact35

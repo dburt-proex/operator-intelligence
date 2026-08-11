@@ -1,0 +1,484 @@
+{
+  "system_id": "operator-intelligence-assessment-evidence-graph",
+  "version": "0.1.0",
+  "purpose": "Replay one bounded Operator Intelligence assessment from evidence through a publication decision while emitting a ledger-compatible receipt without transferring domain-state ownership.",
+  "scope": {
+    "in_scope": [
+      "typed assessment evidence graph",
+      "deterministic publication control",
+      "transactional SQLite canonical writes",
+      "ledger-compatible receipt outbox",
+      "independent final-state verification"
+    ],
+    "out_of_scope": [
+      "implementation authorization",
+      "production enforcement",
+      "cross-repository mutation",
+      "certification claims",
+      "unbounded graph aggregation"
+    ],
+    "authority": "assessment-and-review-only",
+    "data_classification": "internal-synthetic-fixture",
+    "tenant_boundary": "tenant_id plus assessment_id",
+    "external_effects": []
+  },
+  "actors": [
+    {
+      "actor_id": "assessment-operator",
+      "type": "human",
+      "responsibilities": [
+        "authorize assessment scope",
+        "provide independent publication approval where required"
+      ]
+    },
+    {
+      "actor_id": "assessment-write-broker",
+      "type": "deterministic-service",
+      "responsibilities": [
+        "validate proposed graph state",
+        "commit canonical state transactionally",
+        "verify final state"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "name": "assessment_fixture",
+      "schema_ref": "AssessmentFixtureV1",
+      "trust": "untrusted-until-validated",
+      "classification": "internal"
+    },
+    {
+      "name": "publication_policy",
+      "schema_ref": "PublicationPolicyV1",
+      "trust": "pinned-local-policy",
+      "classification": "internal"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "publication_decision",
+      "schema_ref": "PublicationDecisionV1",
+      "classification": "internal"
+    },
+    {
+      "name": "ledger_receipt",
+      "schema_ref": "LedgerReceiptV1",
+      "classification": "internal-reference-only"
+    }
+  ],
+  "graph_planes": {
+    "knowledge": {
+      "purpose": "Represent assessment entities, claims, evidence, sources, findings, contradictions, and bounded interpretations.",
+      "node_types": [
+        "Entity",
+        "Claim",
+        "Evidence",
+        "Source",
+        "Engagement",
+        "Scope",
+        "EvidenceRequirement",
+        "Finding",
+        "ControlGap"
+      ],
+      "edge_types": [
+        "HAS_SCOPE",
+        "REQUIRES_EVIDENCE",
+        "SATISFIES",
+        "SUPPORTS",
+        "CONTRADICTS",
+        "SUPPORTS_FINDING",
+        "SUPPORTED_BY",
+        "IDENTIFIES"
+      ],
+      "invariants": [
+        "every material finding resolves to admitted evidence",
+        "competing claims and their evidence remain visible",
+        "all references remain inside one tenant and assessment boundary"
+      ],
+      "owner": "operator-intelligence",
+      "writers": [
+        "assessment-write-broker"
+      ]
+    },
+    "task": {
+      "purpose": "Represent the bounded validation and publication-evaluation sequence without executing remediation.",
+      "node_types": [
+        "EvidenceCheck",
+        "PolicyCheck",
+        "Verification",
+        "PublicationDecision",
+        "TerminalState"
+      ],
+      "edge_types": [
+        "DEPENDS_ON",
+        "INFORMS",
+        "COMPLETES",
+        "HALTS_ON"
+      ],
+      "invariants": [
+        "HALT proposals do not mutate canonical state",
+        "REVIEW does not authorize implementation",
+        "every run reaches a governed terminal state"
+      ],
+      "owner": "operator-intelligence",
+      "writers": [
+        "assessment-write-broker"
+      ]
+    },
+    "communication": {
+      "purpose": "Constrain information exchange to typed fixture input, policy evaluation, broker commit, and receipt output.",
+      "node_types": [
+        "Operator",
+        "Evaluator",
+        "WriteBroker",
+        "LedgerOutbox"
+      ],
+      "edge_types": [
+        "MAY_PROPOSE",
+        "MAY_VALIDATE",
+        "MAY_COMMIT",
+        "MAY_EMIT_RECEIPT"
+      ],
+      "invariants": [
+        "no runtime network dispatch",
+        "no direct cross-repository write",
+        "receipt contains references and hashes rather than domain-state ownership"
+      ],
+      "owner": "operator-intelligence-governance",
+      "writers": [
+        "assessment-write-broker"
+      ]
+    },
+    "control": {
+      "purpose": "Represent evidence, authorization, idempotency, version, publication, and separation-of-duty controls.",
+      "node_types": [
+        "Policy",
+        "EvidenceGate",
+        "PublicationAuthorityGate",
+        "IdempotencyKey",
+        "CanonicalVersion"
+      ],
+      "edge_types": [
+        "REQUIRES",
+        "EVALUATES",
+        "BLOCKS",
+        "ROUTES_TO_REVIEW"
+      ],
+      "invariants": [
+        "evidence sufficiency never grants implementation authority",
+        "publication approval remains separate from implementation authorization",
+        "same idempotency key with different content halts"
+      ],
+      "owner": "operator-intelligence-governance",
+      "writers": [
+        "assessment-write-broker"
+      ]
+    },
+    "provenance": {
+      "purpose": "Link source versions, evidence hashes, policy versions, canonical versions, decisions, and ledger receipts for replay.",
+      "node_types": [
+        "Run",
+        "EvidenceSnapshot",
+        "PolicyVersion",
+        "Mutation",
+        "Decision",
+        "LedgerReceipt"
+      ],
+      "edge_types": [
+        "USED",
+        "DERIVED_FROM",
+        "AUTHORIZED_BY",
+        "EMITS"
+      ],
+      "invariants": [
+        "every receipt identifies exact evaluated evidence and versions",
+        "every committed run records before and after canonical versions",
+        "final state is hashed and independently read back"
+      ],
+      "owner": "operator-intelligence-audit",
+      "writers": [
+        "assessment-write-broker"
+      ]
+    }
+  },
+  "identifiers": {
+    "strategy": "existing Operator Intelligence IDs plus deterministic OI-EDGE and OI-EVT hashes",
+    "tenant_scoped": true,
+    "schema_versioned": true,
+    "idempotency_required": true
+  },
+  "data_flow": [
+    {
+      "step": 1,
+      "component": "typed-contract-loader",
+      "input": "assessment_fixture",
+      "output": "validated_assessment_proposal",
+      "mutation": false
+    },
+    {
+      "step": 2,
+      "component": "publication-policy-evaluator",
+      "input": "validated_assessment_proposal",
+      "output": "ALLOW_REVIEW_or_HALT",
+      "mutation": false
+    },
+    {
+      "step": 3,
+      "component": "assessment-write-broker",
+      "input": "reviewable_or_allowed_proposal",
+      "output": "canonical_version_and_outbox_event",
+      "mutation": true
+    },
+    {
+      "step": 4,
+      "component": "final-state-verifier",
+      "input": "canonical_version_and_outbox_event",
+      "output": "verified_ledger_receipt",
+      "mutation": false
+    }
+  ],
+  "agents": [
+    {
+      "agent_id": "assessment-proposer",
+      "role": "proposal-only assessment worker",
+      "objective": "Prepare typed evidence-backed assessment proposals without canonical writes or execution authority.",
+      "allowed_actions": [
+        "read authorized assessment inputs",
+        "propose typed graph records"
+      ],
+      "prohibited_actions": [
+        "write canonical SQLite state",
+        "approve publication",
+        "authorize implementation",
+        "dispatch external effects"
+      ],
+      "tools": [
+        "read-only evidence lookup",
+        "typed proposal builder"
+      ],
+      "communication_edges": [
+        "assessment-write-broker",
+        "assessment-operator"
+      ],
+      "escalation_conditions": [
+        "missing material evidence",
+        "conflicting evidence",
+        "scope or authority ambiguity"
+      ],
+      "termination_conditions": [
+        "validated proposal emitted",
+        "HALT reason emitted"
+      ]
+    }
+  ],
+  "control": {
+    "authority_gates": {
+      "ALLOW": "The bounded assessment state is evidence-backed and separately authorized for the requested publication action.",
+      "REVIEW": "Material evidence conflict, verification limitation, or publication approval condition requires qualified review.",
+      "HALT": "Schema, identity, provenance, integrity, tenant, certification, implementation-authority, stale-version, or idempotency control failed."
+    },
+    "mutation_broker": {
+      "required": true,
+      "direct_agent_writes_prohibited": true,
+      "checks": [
+        "schema_validation",
+        "identity_validation",
+        "tenant_validation",
+        "provenance_validation",
+        "temporal_conflict_check",
+        "policy_evaluation",
+        "approval_check",
+        "version_assignment",
+        "idempotency_check",
+        "audit_record",
+        "post_mutation_state_verification"
+      ]
+    },
+    "separation_of_duties": [
+      "assessment evaluation cannot authorize remediation execution",
+      "publication approval cannot set implementation_authorized",
+      "Shared Decision Ledger receives receipts without owning Operator Intelligence domain state"
+    ],
+    "budgets": {
+      "max_retries_after_partial_effect": 0,
+      "max_cross_repository_writes": 0,
+      "max_external_network_calls": 0,
+      "max_fixture_assessments_per_run": 1
+    },
+    "approval_conditions": [
+      "publication approval remains named and separate",
+      "conflicting material evidence routes to human REVIEW",
+      "implementation requires an entirely separate authorization decision"
+    ]
+  },
+  "storage": {
+    "canonical_graph": {
+      "technology": "SQLite",
+      "role": "tenant-scoped Operator Intelligence entity and adjacency truth"
+    },
+    "evidence_store": {
+      "technology": "SQLite immutable evidence rows with content hashes and source versions",
+      "immutable": true
+    },
+    "derived_indexes": [
+      {
+        "kind": "typed-specialized-tables",
+        "canonical": false,
+        "versioned": true,
+        "rebuildable": true
+      }
+    ]
+  },
+  "retrieval": {
+    "modes": [
+      "lookup_by_id",
+      "assessment_state_dump",
+      "typed_adjacency"
+    ],
+    "evidence_packet_required": true,
+    "unrestricted_query_generation": false,
+    "tenant_filter_required": true,
+    "canonical_version_in_response": true
+  },
+  "observability": {
+    "trace_fields": [
+      "run_id",
+      "trace_id",
+      "tenant_id",
+      "assessment_id",
+      "idempotency_key",
+      "policy_version",
+      "evidence_snapshot_sha256",
+      "before_canonical_version",
+      "after_canonical_version",
+      "final_publication_gate",
+      "reason_codes",
+      "canonical_state_sha256"
+    ],
+    "decision_ledger": true,
+    "trace_completion_required": true
+  },
+  "evaluation": {
+    "graph_correctness": {
+      "metrics": [
+        "required path closure",
+        "material finding evidence resolution",
+        "contradiction preservation",
+        "cross-tenant violation rate"
+      ]
+    },
+    "retrieval_quality": {
+      "metrics": [
+        "evidence reference resolution",
+        "exact source-version recovery",
+        "canonical-version recovery"
+      ]
+    },
+    "workflow_success": {
+      "metrics": [
+        "deterministic gate replay",
+        "idempotent duplicate replay",
+        "fresh-store reconstruction equality"
+      ]
+    },
+    "operational_performance": {
+      "metrics": [
+        "transaction completion",
+        "zero partial commits",
+        "local replay latency"
+      ]
+    },
+    "security": {
+      "metrics": [
+        "unauthorized implementation rate",
+        "cross-tenant access rate",
+        "hostile evidence instruction containment",
+        "external-effect count"
+      ]
+    },
+    "end_state_checks": [
+      "expected canonical nodes and edges exist",
+      "conflicting evidence remains present",
+      "implementation_authorized remains false",
+      "receipt hash resolves to the final canonical state"
+    ],
+    "repeated_trial_policy": "Replay the representative fixture twice in one store and once in a fresh store; require identical canonical state and receipt hashes."
+  },
+  "failure_recovery": [
+    {
+      "failure": "duplicate event",
+      "detection": "idempotency key and request hash already committed",
+      "response": "return the prior receipt without a second mutation",
+      "evidence": "unchanged canonical version and one ledger envelope"
+    },
+    {
+      "failure": "idempotency collision",
+      "detection": "same idempotency key with a different request hash",
+      "response": "HALT without overwrite",
+      "evidence": "prior canonical state and receipt remain unchanged"
+    },
+    {
+      "failure": "transaction failure",
+      "detection": "exception before SQLite commit",
+      "response": "rollback the complete mutation",
+      "evidence": "zero entities edges versions and outbox rows committed"
+    },
+    {
+      "failure": "final-state mismatch",
+      "detection": "read-back canonical hash differs from receipt hash",
+      "response": "HALT and reject the completion receipt",
+      "evidence": "FinalStateVerificationError"
+    }
+  ],
+  "implementation": {
+    "current_state": "GE-001 bounded vertical slice implemented on a review branch",
+    "target_state": "one replayable assessment evidence graph with versioned Shared Decision Ledger receipt",
+    "increments": [
+      {
+        "increment_id": "GE-2026-08-08-001",
+        "objective": "Replay Engagement through PublicationDecision and LedgerReceipt using deterministic controls.",
+        "dependencies": [
+          "Operator Intelligence evidence standard",
+          "Operator Intelligence publication standard",
+          "Operator Intelligence DecisionLedger standard"
+        ],
+        "deliverables": [
+          "typed contracts",
+          "SQLite write broker",
+          "representative conflict fixture",
+          "versioned ledger envelope",
+          "replay and final-state tests"
+        ],
+        "acceptance_criteria": [
+          "one fixture replays through publication decision",
+          "all material findings resolve to evidence",
+          "conflicting evidence remains visible",
+          "publication gate and reasons reproduce",
+          "receipt resolves exact evaluated versions and evidence"
+        ]
+      }
+    ],
+    "acceptance_criteria": [
+      "all GE-001 tests pass",
+      "repository conformance remains green",
+      "no cross-repository write occurs",
+      "release remains REVIEW pending human merge decision"
+    ]
+  },
+  "decision": {
+    "gate": "REVIEW",
+    "evidence_level": "deterministic-local-replay",
+    "reason_codes": [
+      "GE001_RELEASE_REQUIRES_REVIEW",
+      "SHARED_LEDGER_CONSUMER_NOT_MUTATED"
+    ],
+    "assumptions": [
+      "The first increment is limited to one synthetic assessment and one local SQLite canonical store."
+    ],
+    "risks": [
+      "The external Shared Decision Ledger consumer contract has not been used for a cross-repository write by design."
+    ],
+    "next_gate": "Pass the representative replay, receipt replay, blueprint validation, repository conformance, and CI checks before GE-002 begins."
+  }
+}
