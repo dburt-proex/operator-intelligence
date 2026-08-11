@@ -21,6 +21,7 @@ from .models import (
     GateEvaluation,
     PublicationState,
     Remediation,
+    Scope,
     StrictModel,
     Verification,
 )
@@ -130,6 +131,7 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
     }
     claims = {node.node_id: node for node in fixture.nodes if isinstance(node, Claim)}
     findings = {node.node_id: node for node in fixture.nodes if isinstance(node, Finding)}
+    scopes = {node.node_id: node for node in fixture.nodes if isinstance(node, Scope)}
     gaps = {node.node_id: node for node in fixture.nodes if isinstance(node, ControlGap)}
     remediations = {
         node.node_id: node for node in fixture.nodes if isinstance(node, Remediation)
@@ -157,6 +159,8 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
     supporting_evidence_by_claim: dict[str, set[str]] = {}
     supporting_claims_by_finding: dict[str, set[str]] = {}
     supporting_evidence_by_finding: dict[str, set[str]] = {}
+    scopes_by_requirement: dict[str, set[str]] = {}
+    requirements_by_evidence: dict[str, set[str]] = {}
     for edge in fixture.edges:
         if edge.edge_type == EdgeType.SUPPORTS:
             supporting_evidence_by_claim.setdefault(edge.to_id, set()).add(edge.from_id)
@@ -164,15 +168,31 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
             supporting_claims_by_finding.setdefault(edge.to_id, set()).add(edge.from_id)
         elif edge.edge_type == EdgeType.SUPPORTED_BY:
             supporting_evidence_by_finding.setdefault(edge.from_id, set()).add(edge.to_id)
+        elif edge.edge_type == EdgeType.REQUIRES_EVIDENCE:
+            scopes_by_requirement.setdefault(edge.to_id, set()).add(edge.from_id)
+        elif edge.edge_type == EdgeType.SATISFIES:
+            requirements_by_evidence.setdefault(edge.from_id, set()).add(edge.to_id)
 
     for artifact in evidence.values():
         expected_hash = sha256_json(evidence_content_payload(artifact))
         if artifact.content_sha256 != expected_hash:
             evidence_gate = Gate.HALT
             evidence_reasons.update({"EVID-INTEG-001", "DL-INTEGRITY-001"})
-        if artifact.source_type == "safe_test" and not artifact.authorization_ref:
-            evidence_gate = Gate.HALT
-            evidence_reasons.update({"EVID-AUTH-001", "EVID-TEST-001"})
+        if artifact.source_type == "safe_test":
+            applicable_scope_ids = {
+                scope_id
+                for requirement_id in requirements_by_evidence.get(artifact.node_id, set())
+                for scope_id in scopes_by_requirement.get(requirement_id, set())
+            }
+            authorization_is_valid = bool(artifact.authorization_ref) and bool(
+                applicable_scope_ids
+            ) and all(
+                artifact.authorization_ref in scopes[scope_id].authorization_refs
+                for scope_id in applicable_scope_ids
+            )
+            if not authorization_is_valid:
+                evidence_gate = Gate.HALT
+                evidence_reasons.update({"EVID-AUTH-001", "EVID-TEST-001"})
         if artifact.review_state in {"rejected", "superseded"}:
             continue
         if artifact.review_state == "limited" or artifact.evidence_strength == "insufficient":
@@ -258,6 +278,9 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
         if left.subject_key != right.subject_key or left.stance == right.stance:
             evidence_gate = Gate.HALT
             evidence_reasons.add("OI-GRAPH-CONFLICT-MALFORMED")
+        else:
+            evidence_gate = _max_gate(evidence_gate, Gate.REVIEW)
+            evidence_reasons.add("OI-GRAPH-CONFLICT-001")
 
     claim_stances_by_subject: dict[str, set[str]] = {}
     for claim in claims.values():

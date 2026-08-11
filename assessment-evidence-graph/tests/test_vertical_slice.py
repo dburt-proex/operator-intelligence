@@ -261,6 +261,22 @@ class AssessmentEvidenceGraphTests(unittest.TestCase):
         self.assertIn("EVID-AUTH-001", caught.exception.evaluation.reason_codes)
         self.assertIn("EVID-TEST-001", caught.exception.evaluation.reason_codes)
 
+    def test_safe_test_authorization_must_resolve_to_applicable_scope(self):
+        data = self.fixture_data()
+        artifact = next(
+            item
+            for item in data["nodes"]
+            if item["node_type"] == "EvidenceArtifact" and item["source_type"] == "safe_test"
+        )
+        artifact["authorization_ref"] = "OI-AUTH-FABRICATED-999"
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            fixture = self.write_fixture(directory, data)
+            with self.assertRaises(GovernanceHalt) as caught:
+                self.execute(directory, fixture_path=fixture)
+        self.assertIn("EVID-AUTH-001", caught.exception.evaluation.reason_codes)
+        self.assertIn("EVID-TEST-001", caught.exception.evaluation.reason_codes)
+
     def test_certification_claim_halts(self):
         data = self.fixture_data()
         data["publication_request"]["claims_certification"] = True
@@ -331,6 +347,24 @@ class AssessmentEvidenceGraphTests(unittest.TestCase):
             directory = Path(raw)
             fixture = self.write_fixture(directory, data)
             result = self.execute(directory, fixture_path=fixture)
+        self.assertEqual(result.decision.gate, "REVIEW")
+        self.assertIn("OI-GRAPH-CONFLICT-001", result.decision.reason_codes)
+
+    def test_declared_unknown_stance_contradiction_routes_to_review(self):
+        data = self.fixture_data()
+        refuting_claim = next(
+            item
+            for item in data["nodes"]
+            if item["node_type"] == "Claim" and item["stance"] == "refutes"
+        )
+        refuting_claim["stance"] = "unknown"
+        policy_data = json.loads(POLICY.read_text(encoding="utf-8"))
+        policy_data["release_gate"] = "ALLOW"
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            fixture = self.write_fixture(directory, data)
+            policy = self.write_fixture(directory, policy_data, "policy.json")
+            result = self.execute(directory, fixture_path=fixture, policy_path=policy)
         self.assertEqual(result.decision.gate, "REVIEW")
         self.assertIn("OI-GRAPH-CONFLICT-001", result.decision.reason_codes)
 
