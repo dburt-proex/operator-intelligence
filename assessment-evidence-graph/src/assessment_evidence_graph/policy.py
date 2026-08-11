@@ -154,11 +154,25 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
             evidence_gate = Gate.HALT
             evidence_reasons.add("OI-GRAPH-EDGE-001")
 
+    supporting_evidence_by_claim: dict[str, set[str]] = {}
+    supporting_claims_by_finding: dict[str, set[str]] = {}
+    supporting_evidence_by_finding: dict[str, set[str]] = {}
+    for edge in fixture.edges:
+        if edge.edge_type == EdgeType.SUPPORTS:
+            supporting_evidence_by_claim.setdefault(edge.to_id, set()).add(edge.from_id)
+        elif edge.edge_type == EdgeType.SUPPORTS_FINDING:
+            supporting_claims_by_finding.setdefault(edge.to_id, set()).add(edge.from_id)
+        elif edge.edge_type == EdgeType.SUPPORTED_BY:
+            supporting_evidence_by_finding.setdefault(edge.from_id, set()).add(edge.to_id)
+
     for artifact in evidence.values():
         expected_hash = sha256_json(evidence_content_payload(artifact))
         if artifact.content_sha256 != expected_hash:
             evidence_gate = Gate.HALT
             evidence_reasons.update({"EVID-INTEG-001", "DL-INTEGRITY-001"})
+        if artifact.source_type == "safe_test" and not artifact.authorization_ref:
+            evidence_gate = Gate.HALT
+            evidence_reasons.update({"EVID-AUTH-001", "EVID-TEST-001"})
         if artifact.review_state in {"rejected", "superseded"}:
             continue
         if artifact.review_state == "limited" or artifact.evidence_strength == "insufficient":
@@ -173,6 +187,9 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
         if missing:
             evidence_gate = Gate.HALT
             evidence_reasons.update({"EVID-TRACE-001", "DL-TRACE-001"})
+        if set(claim.evidence_refs) != supporting_evidence_by_claim.get(claim.node_id, set()):
+            evidence_gate = Gate.HALT
+            evidence_reasons.update({"EVID-TRACE-001", "DL-TRACE-001"})
 
     for finding in findings.values():
         missing_evidence = sorted(set(finding.evidence_refs) - set(evidence))
@@ -185,6 +202,14 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
         if missing_claims:
             evidence_gate = Gate.HALT
             evidence_reasons.add("DL-TRACE-001")
+        if set(finding.claim_refs) != supporting_claims_by_finding.get(finding.node_id, set()):
+            evidence_gate = Gate.HALT
+            evidence_reasons.add("DL-TRACE-001")
+        if set(finding.evidence_refs) != supporting_evidence_by_finding.get(
+            finding.node_id, set()
+        ):
+            evidence_gate = Gate.HALT
+            evidence_reasons.update({"EVID-TRACE-001", "DL-TRACE-001"})
         admitted = [
             evidence[ref]
             for ref in finding.evidence_refs
@@ -222,18 +247,27 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
             evidence_gate = _max_gate(evidence_gate, Gate.REVIEW)
             evidence_reasons.add("OI-VERIFICATION-INCOMPLETE")
 
-    contradiction_edges = [
-        edge for edge in fixture.edges if edge.edge_type == EdgeType.CONTRADICTS
-    ]
+    contradiction_edges = [edge for edge in fixture.edges if edge.edge_type == EdgeType.CONTRADICTS]
     for edge in contradiction_edges:
-        left = claims[edge.from_id]
-        right = claims[edge.to_id]
+        left = claims.get(edge.from_id)
+        right = claims.get(edge.to_id)
+        if left is None or right is None:
+            evidence_gate = Gate.HALT
+            evidence_reasons.add("OI-GRAPH-EDGE-001")
+            continue
         if left.subject_key != right.subject_key or left.stance == right.stance:
             evidence_gate = Gate.HALT
             evidence_reasons.add("OI-GRAPH-CONFLICT-MALFORMED")
-        else:
-            evidence_gate = _max_gate(evidence_gate, Gate.REVIEW)
-            evidence_reasons.add("OI-GRAPH-CONFLICT-001")
+
+    claim_stances_by_subject: dict[str, set[str]] = {}
+    for claim in claims.values():
+        claim_stances_by_subject.setdefault(claim.subject_key, set()).add(claim.stance)
+    if any(
+        {"supports", "refutes"} <= stances
+        for stances in claim_stances_by_subject.values()
+    ):
+        evidence_gate = _max_gate(evidence_gate, Gate.REVIEW)
+        evidence_reasons.add("OI-GRAPH-CONFLICT-001")
 
     request = fixture.publication_request
     if request.implementation_authorized:
@@ -248,6 +282,10 @@ def evaluate_publication(fixture: AssessmentFixture, policy: PublicationPolicy) 
     if not request.publication_approver:
         authority_gate = _max_gate(authority_gate, Gate.REVIEW)
         authority_reasons.add("DL-APPROVAL-001")
+
+    if policy.release_gate != Gate.ALLOW:
+        authority_gate = _max_gate(authority_gate, policy.release_gate)
+        authority_reasons.add("PUB-POLICY-GATE-001")
 
     final_gate = _max_gate(evidence_gate, authority_gate)
     if final_gate == Gate.HALT:

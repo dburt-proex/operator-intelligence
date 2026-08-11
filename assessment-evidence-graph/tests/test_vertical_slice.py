@@ -57,6 +57,7 @@ class AssessmentEvidenceGraphTests(unittest.TestCase):
         self.assertTrue(result.final_state_verified)
         self.assertIn("OI-GRAPH-CONFLICT-001", result.decision.reason_codes)
         self.assertIn("OI-VERIFICATION-INCOMPLETE", result.decision.reason_codes)
+        self.assertIn("PUB-POLICY-GATE-001", result.decision.reason_codes)
         edge_types = {edge.edge_type for edge in result.graph_edges}
         self.assertEqual(
             edge_types,
@@ -185,6 +186,41 @@ class AssessmentEvidenceGraphTests(unittest.TestCase):
         self.assertIn("EVID-TRACE-001", caught.exception.evaluation.reason_codes)
         self.assertIn("DL-TRACE-001", caught.exception.evaluation.reason_codes)
 
+    def test_claim_references_must_match_supporting_edges(self):
+        data = self.fixture_data()
+        edge = next(item for item in data["edges"] if item["edge_type"] == "SUPPORTS")
+        edge["from_id"] = "OI-EV-2026-002"
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            fixture = self.write_fixture(directory, data)
+            with self.assertRaises(GovernanceHalt) as caught:
+                self.execute(directory, fixture_path=fixture)
+        self.assertIn("EVID-TRACE-001", caught.exception.evaluation.reason_codes)
+        self.assertIn("DL-TRACE-001", caught.exception.evaluation.reason_codes)
+
+    def test_finding_references_must_match_supporting_edges(self):
+        data = self.fixture_data()
+        edge = next(item for item in data["edges"] if item["edge_type"] == "SUPPORTED_BY")
+        edge["to_id"] = "OI-EV-2026-002"
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            fixture = self.write_fixture(directory, data)
+            with self.assertRaises(GovernanceHalt) as caught:
+                self.execute(directory, fixture_path=fixture)
+        self.assertIn("EVID-TRACE-001", caught.exception.evaluation.reason_codes)
+        self.assertIn("DL-TRACE-001", caught.exception.evaluation.reason_codes)
+
+    def test_finding_claim_references_must_match_supporting_edges(self):
+        data = self.fixture_data()
+        finding = next(item for item in data["nodes"] if item["node_type"] == "Finding")
+        finding["claim_refs"] = ["OI-CLAIM-2026-001"]
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            fixture = self.write_fixture(directory, data)
+            with self.assertRaises(GovernanceHalt) as caught:
+                self.execute(directory, fixture_path=fixture)
+        self.assertIn("DL-TRACE-001", caught.exception.evaluation.reason_codes)
+
     def test_rejected_evidence_cannot_support_material_finding(self):
         data = self.fixture_data()
         for item in data["nodes"]:
@@ -208,6 +244,22 @@ class AssessmentEvidenceGraphTests(unittest.TestCase):
                 self.execute(directory, fixture_path=fixture)
         self.assertIn("EVID-INTEG-001", caught.exception.evaluation.reason_codes)
         self.assertIn("DL-INTEGRITY-001", caught.exception.evaluation.reason_codes)
+
+    def test_unauthorized_safe_test_evidence_halts(self):
+        data = self.fixture_data()
+        artifact = next(
+            item
+            for item in data["nodes"]
+            if item["node_type"] == "EvidenceArtifact" and item["source_type"] == "safe_test"
+        )
+        artifact["authorization_ref"] = None
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            fixture = self.write_fixture(directory, data)
+            with self.assertRaises(GovernanceHalt) as caught:
+                self.execute(directory, fixture_path=fixture)
+        self.assertIn("EVID-AUTH-001", caught.exception.evaluation.reason_codes)
+        self.assertIn("EVID-TEST-001", caught.exception.evaluation.reason_codes)
 
     def test_certification_claim_halts(self):
         data = self.fixture_data()
@@ -269,6 +321,29 @@ class AssessmentEvidenceGraphTests(unittest.TestCase):
             with self.assertRaises(GovernanceHalt) as caught:
                 self.execute(directory, fixture_path=fixture)
         self.assertIn("OI-GRAPH-PATH-001", caught.exception.evaluation.reason_codes)
+
+    def test_conflicting_claims_route_to_review_without_declared_edge(self):
+        data = self.fixture_data()
+        data["edges"] = [
+            edge for edge in data["edges"] if edge["edge_type"] != "CONTRADICTS"
+        ]
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            fixture = self.write_fixture(directory, data)
+            result = self.execute(directory, fixture_path=fixture)
+        self.assertEqual(result.decision.gate, "REVIEW")
+        self.assertIn("OI-GRAPH-CONFLICT-001", result.decision.reason_codes)
+
+    def test_policy_release_halt_is_applied_to_final_gate(self):
+        policy_data = json.loads(POLICY.read_text(encoding="utf-8"))
+        policy_data["release_gate"] = "HALT"
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            policy = self.write_fixture(directory, policy_data, "policy.json")
+            with self.assertRaises(GovernanceHalt) as caught:
+                self.execute(directory, policy_path=policy)
+        self.assertEqual(caught.exception.evaluation.final_publication_gate, "HALT")
+        self.assertIn("PUB-POLICY-GATE-001", caught.exception.evaluation.reason_codes)
 
     def test_idempotency_collision_halts_without_overwrite(self):
         with tempfile.TemporaryDirectory() as raw:
