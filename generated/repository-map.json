@@ -8,7 +8,7 @@
     {"artifact_id":"OI-ART-0001","artifact_type":"root-authority","authority_state":"canonical","path":"README.md","release_scope":"commercial-v1","status":"approved"},
     {"artifact_id":"OI-ART-0031","artifact_type":"release-notes","authority_state":"canonical","path":"RELEASE_NOTES_v1.0.0.md","release_scope":"commercial-v1","status":"approved"},
     {"artifact_id":"OI-ART-0002","artifact_type":"root-authority","authority_state":"canonical","path":"ROADMAP.md","release_scope":"commercial-v1-and-post-v1","status":"approved"},
-    {"artifact_id":"OI-ART-0034","artifact_type":"graph-blueprint","authority_state":"approved_extension","path":"assessment-evidence-graph/agentic-graph-blueprint.json","release_scope":"post-v1","status":"review"},
+    {"artifact_id":"OI-ART-0034","artifact_type":"graph-blueprint","authority_state":"approved_extension","path":"assessment-evidence-graph/agentic-graph-blueprint.json","release_scope":"post-v1","status":"merged-closeout"},
     {"artifact_id":"OI-ART-0005","artifact_type":"fixture-registry","authority_state":"approved_extension","path":"examples/scenario-fixtures/index.md","release_scope":"post-v1","status":"governed-working"},
     {"artifact_id":"OI-ART-0015","artifact_type":"generated-map","authority_state":"generated","path":"generated/repository-map.dot","release_scope":"post-v1","status":"generated"},
     {"artifact_id":"OI-ART-0013","artifact_type":"generated-map","authority_state":"generated","path":"generated/repository-map.json","release_scope":"post-v1","status":"generated"},
