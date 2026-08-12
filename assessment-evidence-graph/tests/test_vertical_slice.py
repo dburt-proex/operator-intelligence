@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import shutil
 import sqlite3
 import tempfile
 import unittest
@@ -20,7 +21,8 @@ from assessment_evidence_graph.runner import GovernanceHalt, replay_fixture
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "fixtures" / "representative-assessment" / "run.json"
-POLICY = ROOT / "config" / "publication-policy.json"
+POLICY = ROOT / "src" / "assessment_evidence_graph" / "config" / "publication-policy.json"
+REPOSITORY_ROOT = ROOT.parent
 
 
 class AssessmentEvidenceGraphTests(unittest.TestCase):
@@ -45,6 +47,7 @@ class AssessmentEvidenceGraphTests(unittest.TestCase):
             directory / "graph.sqlite3",
             ledger_path=directory / "ledger.jsonl",
             policy_path=policy_path,
+            standards_root=REPOSITORY_ROOT,
             before_commit_hook=hook,
         )
 
@@ -173,6 +176,41 @@ class AssessmentEvidenceGraphTests(unittest.TestCase):
             self.assertFalse((directory / "graph.sqlite3").exists())
         self.assertIn("DL-EVID-001", caught.exception.evaluation.reason_codes)
         self.assertIn("PUB-EVID-001", caught.exception.evaluation.reason_codes)
+
+    def test_missing_standards_root_fails_closed_before_mutation(self):
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            with self.assertRaises(PolicyError) as caught:
+                replay_fixture(
+                    FIXTURE,
+                    directory / "graph.sqlite3",
+                    policy_path=POLICY,
+                )
+            self.assertFalse((directory / "graph.sqlite3").exists())
+        self.assertIn("standards root is required", str(caught.exception))
+
+    def test_drifted_external_policy_source_fails_closed_before_mutation(self):
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            standards_root = directory / "standards-root"
+            shutil.copytree(REPOSITORY_ROOT / "standards", standards_root / "standards")
+            (standards_root / "framework").mkdir()
+            shutil.copy2(
+                REPOSITORY_ROOT / "framework" / "governance-gate-index.md",
+                standards_root / "framework" / "governance-gate-index.md",
+            )
+            (standards_root / "standards" / "evidence-standard.md").write_text(
+                "drifted standard", encoding="utf-8"
+            )
+            with self.assertRaises(PolicyError) as caught:
+                replay_fixture(
+                    FIXTURE,
+                    directory / "graph.sqlite3",
+                    policy_path=POLICY,
+                    standards_root=standards_root,
+                )
+            self.assertFalse((directory / "graph.sqlite3").exists())
+        self.assertIn("policy source drift: standards/evidence-standard.md", str(caught.exception))
 
     def test_dangling_claim_evidence_reference_halts(self):
         data = self.fixture_data()

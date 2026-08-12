@@ -38,12 +38,18 @@ The local JSONL ledger option is an outbox/replay surface only. It is not a clai
 ## Run the slice
 
 ```bash
-python -m pip install -e ./assessment-evidence-graph
+python -m pip install ./assessment-evidence-graph
 oi-assessment-evidence-graph \
   assessment-evidence-graph/fixtures/representative-assessment/run.json \
   --database /tmp/oi-assessment-graph.sqlite3 \
-  --ledger-outbox /tmp/oi-assessment-ledger.jsonl
+  --ledger-outbox /tmp/oi-assessment-ledger.jsonl \
+  --standards-root "$PWD"
 ```
+
+The package bundles its publication policy. Standards remain an explicit external
+input: `--standards-root` must point to the exact Operator Intelligence repository
+baseline named by the policy. Missing or drifted policy sources fail closed before
+canonical-state mutation.
 
 ## Verify
 

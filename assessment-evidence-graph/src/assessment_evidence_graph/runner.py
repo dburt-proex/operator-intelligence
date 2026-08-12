@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from importlib.resources import files
 from pathlib import Path
 from typing import Callable
 
@@ -15,6 +16,7 @@ from .models import (
     ReplayResult,
 )
 from .policy import (
+    PolicyError,
     PublicationPolicy,
     evaluate_publication,
     load_policy,
@@ -22,9 +24,13 @@ from .policy import (
 )
 
 
-SUBSYSTEM_ROOT = Path(__file__).resolve().parents[2]
-REPOSITORY_ROOT = SUBSYSTEM_ROOT.parent
-DEFAULT_POLICY = SUBSYSTEM_ROOT / "config" / "publication-policy.json"
+DEFAULT_POLICY = Path(
+    str(
+        files("assessment_evidence_graph").joinpath(
+            "config", "publication-policy.json"
+        )
+    )
+)
 
 
 class GovernanceHalt(RuntimeError):
@@ -72,12 +78,18 @@ def replay_fixture(
     database_path: Path,
     *,
     ledger_path: Path | None = None,
-    policy_path: Path = DEFAULT_POLICY,
+    policy_path: Path | None = None,
+    standards_root: Path | None = None,
     before_commit_hook: Callable[[], None] | None = None,
 ) -> ReplayResult:
+    if standards_root is None:
+        raise PolicyError(
+            "standards root is required; policy source integrity is verified "
+            "against an explicit external standards directory"
+        )
     fixture = load_fixture(fixture_path)
-    policy: PublicationPolicy = load_policy(policy_path)
-    verify_policy_sources(policy, REPOSITORY_ROOT)
+    policy: PublicationPolicy = load_policy(policy_path or DEFAULT_POLICY)
+    verify_policy_sources(policy, standards_root)
     evaluation = evaluate_publication(fixture, policy)
     if evaluation.final_publication_gate == Gate.HALT:
         raise GovernanceHalt(evaluation)
