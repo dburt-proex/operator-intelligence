@@ -25,6 +25,20 @@ jobs:
         run: python tools/generate_repository_map.py --check
       - name: Run field reliability self-test
         run: python reliability/field_reliability_validator.py --self-test
+      - name: Run field reliability contract tests
+        run: python -m unittest reliability/test_field_reliability_validator.py -v
+      - name: Validate synthetic field reliability contract fixture
+        run: |
+          set +e
+          python reliability/field_reliability_validator.py \
+            reliability/fixtures/field-reliability-contract-valid.csv \
+            --study-manifest reliability/fixtures/field-reliability-contract-valid.manifest.json \
+            > /tmp/field-reliability-contract-result.json
+          status=$?
+          set -e
+          test "$status" -eq 1
+          grep -q '"decision": "REVIEW"' /tmp/field-reliability-contract-result.json
+          grep -q 'synthetic contract fixture' /tmp/field-reliability-contract-result.json
       - name: Validate agentic control platform readiness package
         run: python playbooks/agentic-control-platform-readiness/validate_package.py --self-test
       - name: Build assessment evidence graph wheel
