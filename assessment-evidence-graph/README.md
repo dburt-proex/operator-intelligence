@@ -1,6 +1,6 @@
 # Assessment Evidence Graph
 
-Status: `REVIEW`
+Status: `MERGED CLOSEOUT — bounded GE-001 package scope`
 Directive: `GE-2026-08-08-001`
 Owner: Operator Intelligence domain state
 
@@ -61,4 +61,14 @@ python registry/validate_registry.py
 python tools/generate_repository_map.py --check
 ```
 
-The release gate remains `REVIEW` even when deterministic tests pass. GE-002 must not begin until the representative fixture and receipt replay pass and the reviewable branch state is verified.
+## GE-001 merged closeout
+
+The bounded GE-001 package closeout merged through PR #24 at
+`ed5b430e1d86d4264ed877bfa6292cc90059ae15`. Post-merge conformance workflow
+run `31618320770` completed successfully, including the non-editable wheel
+smoke test and the assessment-evidence-graph replay and adversarial tests.
+
+This records only the local synthetic-fixture, SQLite, and JSONL-outbox scope
+described above. It does not establish a Shared Decision Ledger consumer, live
+client ingestion, remediation authority, production enforcement, or authority
+for any later graph increment.

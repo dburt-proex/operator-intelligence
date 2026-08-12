@@ -432,7 +432,7 @@
     }
   ],
   "implementation": {
-    "current_state": "GE-001 bounded vertical slice implemented on a review branch",
+    "current_state": "GE-001 bounded local-synthetic-fixture, SQLite, and ledger-compatible JSONL-outbox vertical slice with wheel-package closeout merged to main at ed5b430e1d86d4264ed877bfa6292cc90059ae15.",
     "target_state": "one replayable assessment evidence graph with versioned Shared Decision Ledger receipt",
     "increments": [
       {
@@ -463,7 +463,7 @@
       "all GE-001 tests pass",
       "repository conformance remains green",
       "no cross-repository write occurs",
-      "release remains REVIEW pending human merge decision"
+      "bounded package closeout merged through PR #24 at ed5b430e1d86d4264ed877bfa6292cc90059ae15; post-merge conformance workflow run 31618320770 completed successfully, including the non-editable wheel smoke test and assessment-evidence-graph replay and adversarial tests"
     ]
   },
   "decision": {
