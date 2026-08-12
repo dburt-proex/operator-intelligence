@@ -1,0 +1,34 @@
+{
+  "schema_version": "oi-field-reliability-study-v1",
+  "study_id": "OI-FR-2026-001",
+  "record_class": "synthetic_contract_fixture",
+  "protocol_version": "field-reliability-v1.0",
+  "methodology_version": "commercial-v1.0",
+  "criteria_version": "criteria-library-v0.2",
+  "calculator_version": "calculator-spec-v0.2",
+  "weight_profile": "commercial-v1.0",
+  "scope_ref": "SYNTHETIC-CONTRACT-SCOPE-ONLY",
+  "evidence_snapshot_ref": "SYNTHETIC-CONTRACT-SNAPSHOT-ONLY",
+  "evidence_snapshot_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "ratings_sha256": "32c8b6370321a90a370ca4b6fa2fe637cfbb745d3cf38cb2cb5b10f6068829b8",
+  "blinding_status": "blinded",
+  "evaluator_count": 2,
+  "evaluator_ids": ["EV-001", "EV-002"],
+  "independence_attestation_ref": "SYNTHETIC-CONTRACT-NO-HUMAN-ATTESTATION",
+  "authority_ref": "SYNTHETIC-CONTRACT-NO-EXTERNAL-AUTHORITY",
+  "retention_class": "synthetic_test_data",
+  "retention_rule_ref": "SYNTHETIC-FIXTURE-REPOSITORY-RETENTION",
+  "threshold_profile": {
+    "profile_id": "SYNTHETIC-CONTRACT-PROFILE",
+    "version": "1.0",
+    "approved_by": "synthetic-fixture-only",
+    "decision_authority": "synthetic-fixture-only",
+    "metrics": {
+      "exact_agreement": 1.0,
+      "state_agreement": 1.0
+    }
+  },
+  "reviewer_id": "SYNTHETIC-FIXTURE-ONLY",
+  "decision_authority": "SYNTHETIC-FIXTURE-ONLY",
+  "created_at": "2026-08-12T00:00:00Z"
+}

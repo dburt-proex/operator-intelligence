@@ -1,0 +1,9 @@
+criterion_id,category,evaluator_id,state,score
+OI-WEB-001,website,EV-001,scored,75
+OI-WEB-001,website,EV-002,scored,75
+OI-MSG-001,messaging_and_offer,EV-001,scored,50
+OI-MSG-001,messaging_and_offer,EV-002,scored,75
+OI-SOC-001,social,EV-001,unknown,
+OI-SOC-001,social,EV-002,unknown,
+OI-AI-001,ai_readiness,EV-001,blocked,
+OI-AI-001,ai_readiness,EV-002,blocked,
