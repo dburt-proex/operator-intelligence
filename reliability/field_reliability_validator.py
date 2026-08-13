@@ -37,7 +37,7 @@ MANIFEST_FIELDS = {
 THRESHOLD_PROFILE_FIELDS = {"profile_id", "version", "approved_by", "decision_authority", "metrics"}
 RECORD_CLASSES = {"synthetic_contract_fixture", "human_field_study"}
 CATEGORY_BY_PREFIX = {
-    "WEB": "website", "MSG": "messaging_and_offer", "OFFER": "messaging_and_offer",
+    "WEB": "website", "MSG": "messaging_offer", "OFFER": "messaging_offer",
     "CONV": "conversion", "SEO": "seo", "GBP": "gbp", "TRUST": "trust", "SOC": "social",
     "AUTO": "automation", "AI": "ai_readiness", "AN": "analytics", "COMP": "competitive",
 }
@@ -154,7 +154,7 @@ def load_manifest(path: Path, ratings_path: Path, ratings: list[Rating]) -> dict
     study_id = _require_string(data, "study_id")
     if not STUDY_ID_RE.fullmatch(study_id):
         raise ValidationError("manifest: study_id must match OI-FR-YYYY-NNN")
-    record_class = data["record_class"]
+    record_class = _require_string(data, "record_class")
     if record_class not in RECORD_CLASSES:
         raise ValidationError("manifest: record_class is unsupported")
     for key in ("protocol_version", "methodology_version", "criteria_version", "calculator_version", "weight_profile", "scope_ref", "evidence_snapshot_ref", "independence_attestation_ref", "authority_ref", "retention_class", "retention_rule_ref", "reviewer_id", "decision_authority"):

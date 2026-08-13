@@ -1,6 +1,6 @@
 # Field Reliability Protocol
 
-Version: `field-reliability-v1.0`  
+Version: `field-reliability-v1.0.1`
 Stage alignment: v1.1 — Field Reliability Program  
 Folder alignment: `reliability/`  
 Status: FR-001 governed protocol and input contract
@@ -46,7 +46,7 @@ criterion_id,category,evaluator_id,state,score
 | Field | Rule |
 |---|---|
 | `criterion_id` | Existing canonical ID from `scoring/criteria-library.md`. |
-| `category` | Canonical category matching the criterion prefix. `OI-MSG-*` and `OI-OFFER-*` both use `messaging_and_offer`. |
+| `category` | Canonical category matching the criterion prefix. `OI-MSG-*` and `OI-OFFER-*` both use `messaging_offer`. |
 | `evaluator_id` | Opaque pseudonymous ID listed exactly once in the manifest. |
 | `state` | `scored`, `unknown`, `blocked`, or `not_applicable`. |
 | `score` | Blank unless `state=scored`; then exactly `0`, `25`, `50`, `75`, or `100`. |
@@ -62,7 +62,7 @@ The manifest is strict JSON with `schema_version: oi-field-reliability-study-v1`
   "schema_version": "oi-field-reliability-study-v1",
   "study_id": "OI-FR-YYYY-NNN",
   "record_class": "synthetic_contract_fixture | human_field_study",
-  "protocol_version": "field-reliability-v1.0",
+  "protocol_version": "field-reliability-v1.0.1",
   "methodology_version": "",
   "criteria_version": "",
   "calculator_version": "",

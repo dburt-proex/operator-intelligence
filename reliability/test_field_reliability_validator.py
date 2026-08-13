@@ -2,11 +2,15 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import shutil
+import sys
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
+from unittest.mock import patch
 
 from reliability import field_reliability_validator as validator
 
@@ -33,6 +37,44 @@ class FieldReliabilityContractTests(unittest.TestCase):
         self.assertEqual(result["decision"], "REVIEW")
         self.assertEqual(result["metrics"]["exact_agreement"], 0.5)
         self.assertIn("synthetic contract fixture", result["decision_reason"])
+
+    def test_messaging_and_offer_criteria_use_canonical_category_key(self) -> None:
+        rows = [
+            {"criterion_id": criterion_id, "category": "messaging_offer", "evaluator_id": evaluator_id, "state": "scored", "score": "50"}
+            for criterion_id in ("OI-MSG-001", "OI-OFFER-001")
+            for evaluator_id in ("EV-001", "EV-002")
+        ]
+        ratings = validator.read_ratings(rows)
+        self.assertEqual({rating.category for rating in ratings}, {"messaging_offer"})
+
+        for row in rows:
+            row["category"] = "messaging_and_offer"
+        with self.assertRaisesRegex(validator.ValidationError, "does not match"):
+            validator.read_ratings(rows)
+
+    def test_non_string_record_class_returns_structured_halt(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            data = self.manifest()
+            data["record_class"] = []
+            manifest_path = self.write_manifest(directory, data)
+            output = io.StringIO()
+            argv = [
+                "field_reliability_validator.py",
+                str(VALID_CSV),
+                "--study-manifest",
+                str(manifest_path),
+            ]
+            with patch.object(sys, "argv", argv), redirect_stdout(output):
+                exit_code = validator.main()
+
+            result = json.loads(output.getvalue())
+            self.assertEqual(exit_code, 2)
+            self.assertEqual(result["decision"], "HALT")
+            self.assertEqual(
+                result["validation_errors"],
+                ["manifest: record_class must be a non-empty string"],
+            )
 
     def test_unknown_with_numeric_score_halts(self) -> None:
         with self.assertRaisesRegex(validator.ValidationError, "must not carry a numeric score"):
