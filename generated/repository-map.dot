@@ -101,10 +101,12 @@ digraph OperatorIntelligence {
   root11 -> artifact32;
   artifact33 [label="reliability/field-reliability-protocol.md\napproved_extension", shape=note];
   root12 -> artifact33;
-  artifact34 [label="reliability/field_reliability_validator.py\napproved_extension", shape=note];
+  artifact34 [label="reliability/field-reliability-study-initiation.md\napproved_extension", shape=note];
   root12 -> artifact34;
-  artifact35 [label="templates/realized-value-register.md\napproved_extension", shape=note];
-  root16 -> artifact35;
-  artifact36 [label="tools/generate_repository_map.py\napproved_extension", shape=note];
-  root17 -> artifact36;
+  artifact35 [label="reliability/field_reliability_validator.py\napproved_extension", shape=note];
+  root12 -> artifact35;
+  artifact36 [label="templates/realized-value-register.md\napproved_extension", shape=note];
+  root16 -> artifact36;
+  artifact37 [label="tools/generate_repository_map.py\napproved_extension", shape=note];
+  root17 -> artifact37;
 }
