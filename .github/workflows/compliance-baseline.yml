@@ -2,10 +2,10 @@ name: Compliance baseline
 
 on:
   pull_request:
-    paths: ['COMPLIANCE.yaml','docs/COMPLIANCE-READINESS.md','.github/workflows/compliance-baseline.yml']
+    paths: ['docs/COMPLIANCE.yaml','docs/COMPLIANCE-READINESS.md','.github/workflows/compliance-baseline.yml']
   push:
     branches: [main]
-    paths: ['COMPLIANCE.yaml','docs/COMPLIANCE-READINESS.md']
+    paths: ['docs/COMPLIANCE.yaml','docs/COMPLIANCE-READINESS.md']
 
 permissions:
   contents: read
@@ -19,7 +19,7 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
-          m = Path('COMPLIANCE.yaml'); r = Path('docs/COMPLIANCE-READINESS.md')
+          m = Path('docs/COMPLIANCE.yaml'); r = Path('docs/COMPLIANCE-READINESS.md')
           assert m.exists() and r.exists()
           text = m.read_text(encoding='utf-8')
           required = ['canonical_registry:','claim_boundary: no_certification_or_attestation_claim_without_independent_assurance','controls:','remediation:','external_assurance_gate:']
