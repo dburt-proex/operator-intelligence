@@ -2,13 +2,12 @@
 """Deterministic pre-pilot tests for the governed AR-001 harness."""
 from __future__ import annotations
 
-import copy
 import json
 import tempfile
 import unittest
 from pathlib import Path
 
-from agent_reliability_ar_001_harness import (
+from reliability.agent_reliability_ar_001_harness import (
     CONFIGURATION_ID,
     EXPERIMENT_ID,
     INPUT_SHA256,
