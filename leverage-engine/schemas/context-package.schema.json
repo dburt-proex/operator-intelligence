@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "context-package.schema.json",
+  "title": "Leverage Engine Context Package",
+  "description": "Deterministic authority-neutral execution context compiled from validated retained experience under explicit relevance, freshness, relation, and budget controls.",
+  "type": "object",
+  "required": [
+    "context_id",
+    "run_timestamp",
+    "project_id",
+    "reuse_scope",
+    "budget",
+    "included",
+    "excluded",
+    "source_receipts",
+    "authority_neutral"
+  ],
+  "properties": {
+    "context_id": {"type": "string", "pattern": "^LE-CTX-[a-f0-9]{16}$"},
+    "run_timestamp": {"type": "string", "format": "date-time"},
+    "project_id": {"type": "string", "minLength": 1},
+    "reuse_scope": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "budget": {
+      "type": "object",
+      "required": ["max_items", "max_chars", "max_age_days", "used_items", "used_chars"],
+      "properties": {
+        "max_items": {"type": "integer", "minimum": 0},
+        "max_chars": {"type": "integer", "minimum": 0},
+        "max_age_days": {"type": "integer", "minimum": 0},
+        "used_items": {"type": "integer", "minimum": 0},
+        "used_chars": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "included": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/contextItem"}
+    },
+    "excluded": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item_id", "source_execution_id", "reason"],
+        "properties": {
+          "item_id": {"type": "string", "minLength": 1},
+          "source_execution_id": {"type": "string", "minLength": 1},
+          "reason": {
+            "enum": [
+              "future",
+              "stale",
+              "unrelated",
+              "superseded",
+              "invalidated",
+              "unresolved_contradiction",
+              "item_budget",
+              "character_budget"
+            ]
+          },
+          "related_item_id": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "source_receipts": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "authority_neutral": {"type": "boolean"}
+  },
+  "$defs": {
+    "contextItem": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "source_execution_id",
+        "source_directive_id",
+        "source_recorded_at",
+        "source_project_id",
+        "kind",
+        "statement",
+        "evidence_refs",
+        "matched_scope",
+        "cost_chars"
+      ],
+      "properties": {
+        "item_id": {"type": "string", "minLength": 1},
+        "source_execution_id": {"type": "string", "minLength": 1},
+        "source_directive_id": {"type": "string", "minLength": 1},
+        "source_recorded_at": {"type": "string", "format": "date-time"},
+        "source_project_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["learning", "next_improvement"]},
+        "statement": {"type": "string", "minLength": 1},
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "matched_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "cost_chars": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
