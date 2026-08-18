@@ -1,8 +1,8 @@
 name: AR-001 authorized two-run pilot
 
 on:
-  push:
-    branches: [main]
+  pull_request:
+    types: [opened]
     paths:
       - 'reliability/authorizations/ar-001-pilot-v1.json'
       - '.github/workflows/ar-001-pilot.yml'
