@@ -1,27 +1,26 @@
 # AR-001 — Supplier & Model Review
 
 **Experiment:** AR-001 — Controlled Clone Reproducibility  
-**Review version:** 0.1  
-**Status:** TECHNICAL REVIEW COMPLETE — OWNER APPROVAL REQUIRED  
-**Provider candidate:** OpenAI API Platform  
-**Model candidate:** `gpt-5.6-sol`  
+**Review version:** 0.2  
+**Status:** OWNER APPROVED — FROZEN FOR HARNESS IMPLEMENTATION  
+**Provider:** OpenAI API Platform  
+**Model:** `gpt-5.6-terra`  
+**Reasoning effort:** `high`  
 **Endpoint:** `/v1/responses`
 
 ## Purpose
 
-Resolve the technical supplier/model selection for AR-001 while preserving the owner-controlled approved-use gate. This review is evidence for `SUP-001` and `AI-001`; it is not itself the human/operator approval.
+Freeze the approved supplier/model selection for AR-001 and provide evidence for `SUP-001` and `AI-001`. This review supersedes v0.1, which proposed `gpt-5.6-sol` at medium reasoning before the operator selected and approved the Terra/high configuration.
 
-## Technical selection
+## Approved technical selection
 
-Recommended frozen configuration:
-
-| Field | Selected value |
+| Field | Frozen value |
 |---|---|
 | provider | OpenAI API Platform |
 | API | Responses API |
-| model ID | `gpt-5.6-sol` |
-| alias intentionally avoided | `gpt-5.6` |
-| reasoning effort | `medium` |
+| model ID | `gpt-5.6-terra` |
+| reasoning effort | `high` |
+| reasoning mode | standard |
 | tools | none |
 | web search | disabled |
 | file search | disabled |
@@ -32,50 +31,49 @@ Recommended frozen configuration:
 | input class | synthetic experiment evidence only |
 | client/production data | prohibited |
 
-OpenAI's current model documentation identifies `gpt-5.6-sol` as the GPT-5.6 Sol model ID, states that the `gpt-5.6` alias routes to Sol, supports structured outputs and the Responses API, and supports configurable reasoning including `medium`.
+OpenAI's current GPT-5.6 model documentation identifies `gpt-5.6-terra` as the Terra model ID, describes Terra as the balance-of-intelligence-and-cost tier, supports the Responses API and structured outputs, and supports reasoning effort values including `high`.
 
-## Why this model
+## Selection rationale
 
-AR-001 is intended to establish a commercially relevant baseline for current agent operation, not benchmark a legacy model. GPT-5.6 Sol is the current flagship tier for complex professional work, while `medium` reasoning is the provider default and gives a bounded baseline before later model/effort perturbation work.
+AR-001 measures governed reproducibility rather than maximum frontier capability. Terra/high is selected as the commercially representative baseline because it preserves substantial reasoning capacity while reducing inference cost relative to Sol. The experimental question is whether equivalent governed inputs produce materially equivalent governed outcomes under a fixed configuration.
 
-AR-006 remains the correct place to compare alternate model families or providers.
+The selection is not a claim that Terra/high is universally more capable than Sol/medium. It is a workload-specific experimental design choice. Cross-model and cross-effort comparisons remain out of scope for AR-001 and belong in AR-006 or a separately frozen perturbation study.
 
-## Snapshot limitation and compensating control
+## Model identity and drift limitation
 
-The current GPT-5.6 Sol model page exposes `gpt-5.6-sol` as the model identifier but does not expose a distinct dated snapshot identifier in the reviewed documentation. Therefore AR-001 cannot claim that provider-side model internals are pinned more narrowly than the documented model ID.
+The reviewed model catalog exposes `gpt-5.6-terra` as the model identifier. AR-001 does not claim stronger provider-side pinning than the identifier and metadata actually returned by the API.
 
 Compensating controls:
 
-1. use `gpt-5.6-sol`, never the broader `gpt-5.6` alias;
-2. record the returned model identifier and provider request ID for every run;
-3. record any provider-exposed backend/system fingerprint when available;
-4. execute pilot/cohort only after a single configuration freeze and without changing model ID;
-5. HALT the active stage if returned model identity/fingerprint changes across equivalent runs;
-6. treat provider-side unobservable drift as residual risk in the final reliability report;
-7. do not represent AR-001 as proof of cross-version reproducibility.
+1. use exactly `gpt-5.6-terra`;
+2. set `reasoning.effort` to exactly `high`;
+3. record returned model identifier and provider request ID for every run;
+4. record any provider-exposed fingerprint/version metadata when available;
+5. do not change model ID or reasoning effort inside a pilot or cohort;
+6. HALT the active stage on observable model-identity/fingerprint drift;
+7. disclose unobservable provider-side drift as a residual limitation;
+8. do not represent AR-001 as proof of cross-version or cross-model reproducibility.
 
-## Data-use review
+## Data-use boundary
 
-The admitted packet is synthetic and contains no permitted client, production, credential, secret, or personal data.
+The admitted packet is synthetic and may not contain client, production, credential, secret, regulated, or personal data.
 
-Current OpenAI API documentation states that API inputs/outputs are not used to train OpenAI models by default unless the customer explicitly opts in. It also states that abuse-monitoring logs may be retained for up to 30 days by default. The Responses API supports `store: false`; AR-001 requires it.
-
-Zero Data Retention is not assumed. If the operator's project is ZDR-enabled, the harness may use that existing control without changing the experiment. AR-001 does not require ZDR because the admitted packet is intentionally synthetic, but it must not silently expand to sensitive data.
+AR-001 requires `store: false`. Zero Data Retention is not asserted or required for this synthetic-only experiment. If a stronger account-level retention control is already active, it may be used without broadening scope.
 
 ## Supplier risk register
 
 | Risk | Treatment | Residual |
 |---|---|---|
-| provider model behavior changes behind model ID | identity/fingerprint capture; stage HALT on observable drift; report limitation | medium |
-| provider outage/rate limit | mark run incomplete; no semantic retry; rerun only under governed new run ID | low |
-| provider retention | synthetic-only packet; `store:false`; no secrets/client data | low |
-| provider tool/network expansion | no tools supplied to evaluated agent | low |
-| pricing/availability change | freeze model ID before cohort; HALT if unavailable rather than substitute | low |
-| unobservable provider-side change | disclose as residual limitation; AR-006/model-change testing later | medium |
+| provider behavior changes behind model ID | identity/fingerprint capture; stage HALT on observable drift; report limitation | medium |
+| provider outage/rate limit | mark run incomplete; no semantic retry; repeat only with governed new run ID | low |
+| provider retention/monitoring | synthetic-only packet; `store:false`; prohibit secrets/client data | low |
+| provider tool/network expansion | expose zero tools to evaluated agent | low |
+| pricing/availability change | freeze model ID; HALT rather than silently substitute | low |
+| unobservable provider-side change | disclose limitation; evaluate substitution separately | medium |
 
-## Execution budget recommendation
+## Frozen execution budget
 
-Freeze the following for the initial AR-001 configuration:
+The AR-001 harness must enforce identical ceilings across equivalent runs:
 
 - maximum assembled input: `32,000` tokens;
 - maximum output: `8,000` tokens;
@@ -84,47 +82,49 @@ Freeze the following for the initial AR-001 configuration:
 - wall-clock request timeout: `180 seconds`;
 - automatic semantic retries: `0`;
 - automatic provider/inference retries after request acceptance: `0`;
-- incomplete/timeout run disposition: `REVIEW` and new governed run ID if repeated;
-- temperature/top-p: omit unless the selected model/API explicitly requires or supports a frozen value; do not introduce unsupported sampling controls.
+- incomplete/timeout disposition: `REVIEW`; any repeat receives a new governed run ID;
+- sampling controls: omit temperature/top-p unless the API requires a supported fixed value; any required value must be frozen before pilot authorization.
 
-The actual assembled input must be byte-identical across equivalent runs; the maximum is a safety ceiling, not permission to vary context.
+The assembled experiment context must be identical across equivalent runs. These maxima are safety ceilings, not permission to vary context.
 
 ## Provider dependency boundary
 
-OpenAI receives only the frozen instruction/context necessary to perform the synthetic assessment. The evaluated agent receives no general network capability. API transport belongs to the harness/provider boundary and is not an agent tool.
+OpenAI receives only the frozen synthetic input packet and frozen instruction/context required for the assessment. API transport is a harness dependency, not an evaluated-agent tool.
 
-No third-party MCP, search, file service, code interpreter, hosted shell, or external data connector is permitted in AR-001 v1.
+No MCP, search, file service, code interpreter, hosted shell, computer use, or external data connector is permitted in AR-001 v1.
 
 ## Disable/replacement path
 
-If `gpt-5.6-sol` becomes unavailable or materially changes before the cohort is complete:
+If `gpt-5.6-terra` becomes unavailable or materially changes before a governed stage completes:
 
-- HALT the active AR-001 stage;
+- HALT the active stage;
 - preserve completed run receipts;
-- do not silently substitute another model;
-- supersede the configuration/experiment version or route model substitution to AR-006;
-- restart the affected reliability cohort if equivalence can no longer be established.
+- do not silently substitute another model or reasoning effort;
+- supersede the configuration/experiment version or route substitution to AR-006;
+- restart the affected cohort if equivalence can no longer be established.
 
 ## Evidence sources reviewed
 
-Reviewed on 2026-08-17:
+Reviewed 2026-08-17 against current official OpenAI model documentation and model guidance. The documentation identifies Terra as `gpt-5.6-terra`, supports the Responses API and structured outputs, and lists `high` among supported GPT-5.6 reasoning-effort settings.
 
-- OpenAI GPT-5.6 Sol model documentation;
-- OpenAI GPT-5.6 model guidance/model catalog;
-- OpenAI API data-controls documentation;
-- OpenAI enterprise-privacy documentation.
+## Owner approval record
 
-## Recommendation
+On 2026-08-17, the operator explicitly approved proceeding after selecting the revised `gpt-5.6-terra` / `high` configuration in place of the earlier Sol/medium proposal.
 
-**RECOMMEND ALLOW — SYNTHETIC AR-001 ONLY**, subject to explicit owner/operator approval of:
+Approval scope:
 
-- OpenAI as the provider;
-- `gpt-5.6-sol` with `medium` reasoning;
-- the documented provider-drift residual risk;
-- the bounded synthetic-data transfer described above.
+- OpenAI API Platform as provider;
+- `gpt-5.6-terra` at `high` reasoning;
+- synthetic-only data transfer;
+- `store:false`;
+- zero evaluated-agent tools;
+- documented bounded provider/model residual risks;
+- harness implementation only, subject to the separate governed pre-code receipt.
 
-No provider approval is inferred or self-issued by this review.
+This approval does not authorize the 2-run pilot or 30-run cohort.
 
-## Next gate
+## Decision
 
-After owner approval, bind this review, the instruction digest, input digest, execution budget, retention rule, risk treatment, and repository commit into the superseding `ALLOW_TO_WRITE_HARNESS` decision receipt.
+**ALLOW FOR HARNESS CONFIGURATION.**
+
+The supplier/model technical and owner-approval fields required for the pre-code gate are now satisfied for the bounded AR-001 configuration. Pilot execution remains separately gated.
