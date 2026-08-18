@@ -1,0 +1,109 @@
+{
+  "fixture_version": "0.2.0",
+  "run_id": "LE-RUN-2026-0042",
+  "run_timestamp": "2026-08-18T14:20:00Z",
+  "target_system": "Operator Intelligence",
+  "review_owner": "Drew Burt",
+  "partial_coverage": false,
+  "experience_project_id": "dburt-proex/operator-intelligence:leverage-engine",
+  "experience_scope": ["graph-engineering-os", "leverage-engine", "repository-engineering"],
+  "assumptions": ["Phase 1 merge commit bebc8639 is the approved baseline for the N+1 proof."],
+  "evidence_refs": [
+    "github:issue:dburt-proex/operator-intelligence#42",
+    "github:commit:bebc8639bd1e80bb7ff18cfe6e1fa2925beab4b9"
+  ],
+  "proposed_actions": {
+    "LE-OPP-2026-0042": "Extend the existing Leverage Engine run and validation spine to reuse validated prior execution experience; do not create a parallel memory, validator, or authority system."
+  },
+  "signals": [
+    {
+      "signal_id": "LE-SIG-2026-0042",
+      "source_id": "fixture-manual",
+      "source_type": "user_directive",
+      "observed_at": "2026-08-18T14:16:00Z",
+      "retrieved_at": "2026-08-18T14:17:00Z",
+      "title": "Operator approved N+1 experience reuse proof",
+      "summary": "The operator approved continuation after Phase 1 merge and the retained execution receipt identifies cross-run reuse as the next high-leverage improvement.",
+      "evidence_refs": [
+        "github:issue:dburt-proex/operator-intelligence#42",
+        "experience:LE-EXEC-2026-0001"
+      ],
+      "affected_assets": ["leverage-engine"],
+      "freshness_state": "current",
+      "evidence_quality": 100,
+      "confidence": "high",
+      "validation_state": "validated"
+    }
+  ],
+  "repository_states": [
+    {
+      "snapshot_id": "LE-REP-2026-0042",
+      "repository_id": "operator-intelligence",
+      "canonical_ref": "main",
+      "commit_sha": "bebc8639bd1e80bb7ff18cfe6e1fa2925beab4b9",
+      "captured_at": "2026-08-18T14:17:00Z",
+      "inspection_scope": ["leverage-engine/**"],
+      "unfinished_items": ["run-n-plus-one-experience-reuse"],
+      "blocked_items": [],
+      "duplicate_candidates": [],
+      "stale_candidates": [],
+      "evidence_gaps": [],
+      "commercial_assets": ["leverage-engine"],
+      "routing_restrictions": ["read-only"]
+    }
+  ],
+  "opportunities": [
+    {
+      "opportunity_id": "LE-OPP-2026-0042",
+      "objective": "Prove Run N+1 experience reuse",
+      "opportunity_type": "product",
+      "supporting_signals": ["LE-SIG-2026-0042"],
+      "target_assets": ["leverage-engine"],
+      "dependencies": ["LE-EXEC-2026-0001"],
+      "duplicates": [],
+      "expected_outcome": "A deterministic repository run consumes retained prior experience and exposes exactly what was reused without expanding authority.",
+      "success_evidence": [
+        "experience:LE-EXEC-2026-0001 present in run and directive evidence",
+        "reused_experience projection contains evidence-backed Phase 1 learning",
+        "full regression suite passes"
+      ],
+      "score_inputs": {
+        "value": {
+          "revenue_proximity": 25,
+          "existing_asset_leverage": 100,
+          "evidence_backed_demand": 100,
+          "strategic_alignment": 100,
+          "time_to_value": 100,
+          "compounding_value": 100,
+          "career_market_signal": 50
+        },
+        "friction": {
+          "effort": 25,
+          "technical_complexity": 25,
+          "external_dependencies": 0,
+          "maintenance_burden": 25
+        },
+        "risk": {
+          "authority_external_impact": 0,
+          "data_security_privacy": 0,
+          "financial_legal_exposure": 0,
+          "irreversibility": 0
+        }
+      },
+      "raw_value_score": 0,
+      "friction_score": 0,
+      "risk_score": 0,
+      "confidence": "high",
+      "confidence_factor": 0,
+      "evidence_quality": 100,
+      "urgency_bonus": 0,
+      "verified_deadline": null,
+      "leverage_index": 0,
+      "boundary_flags": [],
+      "gate_result": "REVIEW",
+      "gate_reasons": [],
+      "state": "discovered",
+      "assumptions": ["Retained Phase 1 experience remains relevant to the Leverage Engine implementation boundary."]
+    }
+  ]
+}
