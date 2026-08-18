@@ -1,0 +1,61 @@
+name: AR-001 reliability harness
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'reliability/**'
+      - '.github/workflows/ar-001-reliability.yml'
+  pull_request:
+    paths:
+      - 'reliability/**'
+      - '.github/workflows/ar-001-reliability.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  pre-pilot-verification:
+    name: Pre-pilot deterministic verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Compile reliability modules
+        run: python3 -m compileall -q reliability
+
+      - name: Run reliability regression suite
+        run: python3 -m unittest discover -s reliability -p 'test_*.py' -v
+
+      - name: Verify AR-001 dry-run request construction
+        run: |
+          python3 reliability/agent_reliability_ar_001_harness.py \
+            --run-id AR001-CI-DRYRUN-001 \
+            --trace-id AR001-CI-TRACE-001 \
+            --print-request > /tmp/ar001-request.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          request = json.loads(Path('/tmp/ar001-request.json').read_text(encoding='utf-8'))
+          assert request['model'] == 'gpt-5.6-terra'
+          assert request['reasoning'] == {'effort': 'high', 'context': 'current_turn'}
+          assert request['store'] is False
+          assert 'tools' not in request
+          assert request['max_output_tokens'] == 8000
+          assert request['text']['format']['type'] == 'json_schema'
+          assert request['text']['format']['strict'] is True
+          print('AR-001 dry-run request contract: PASS')
+          PY
+
+      - name: Confirm execution remains separately gated
+        run: |
+          set +e
+          python3 reliability/agent_reliability_ar_001_harness.py \
+            --run-id AR001-CI-BLOCKED-001 \
+            --trace-id AR001-CI-BLOCKED-TRACE-001 \
+            --execute > /tmp/ar001-blocked.out 2> /tmp/ar001-blocked.err
+          status=$?
+          set -e
+          test "$status" -eq 3
+          grep -q -- '--execute requires --pilot-authorization' /tmp/ar001-blocked.err
+          echo 'AR-001 unauthorized execution gate: PASS'
