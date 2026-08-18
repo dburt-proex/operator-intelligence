@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "execution-receipt.schema.json",
   "title": "Leverage Engine Execution Receipt",
-  "description": "Machine-readable experience record linking an approved directive to actual execution, validation, friction, learning, and the next improvement proposal.",
+  "description": "Machine-readable experience record linking an approved directive to actual execution, validation, friction, learning, prior-experience reuse, and the next improvement proposal.",
   "type": "object",
   "required": [
     "execution_id",
@@ -144,6 +144,22 @@
             "items": {"type": "string", "minLength": 1},
             "uniqueItems": true
           }
+        },
+        "additionalProperties": false
+      }
+    },
+    "reused_experience": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_execution_id", "kind", "statement", "application", "observed_effect", "evidence_refs"],
+        "properties": {
+          "source_execution_id": {"type": "string", "pattern": "^LE-EXEC-[0-9]{4}-[0-9]{4}$"},
+          "kind": {"enum": ["learning", "next_improvement"]},
+          "statement": {"type": "string", "minLength": 1},
+          "application": {"type": "string", "minLength": 1},
+          "observed_effect": {"type": "string", "minLength": 1},
+          "evidence_refs": {"$ref": "#/$defs/nonEmptyRefArray"}
         },
         "additionalProperties": false
       }

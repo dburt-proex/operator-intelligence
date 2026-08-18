@@ -4,6 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG_DIR = ROOT / "config"
 SCHEMA_DIR = ROOT / "schemas"
+RECEIPT_DIR = ROOT / "receipts"
 
 
 def resolve_fixture(value: str) -> Path:
