@@ -1,11 +1,14 @@
 import json
+import tempfile
 import unittest
 from copy import deepcopy
+from pathlib import Path
 
 from leverage_engine.executor_routing import build_executor_profiles, route_executor
 from leverage_engine.experience import load_validated_receipts
 from leverage_engine.io import load_json
 from leverage_engine.paths import ROOT, SCHEMA_DIR
+from leverage_engine.runner import run_fixture
 from leverage_engine.schema_validation import load_and_validate, validate_schema_document
 
 
@@ -135,6 +138,24 @@ class ExecutorRoutingTests(unittest.TestCase):
         agents = {profile["agent"] for profile in profiles}
         self.assertNotIn("sample-agent-future", agents)
         self.assertNotIn("sample-agent-halt", agents)
+
+    def test_runner_exposes_routing_recommendation_without_execution_authority(self):
+        fixture = load_json(ROOT / "fixtures" / "experience-reuse-valid" / "run.json")
+        fixture["run_id"] = "LE-RUN-2026-0048"
+        fixture["run_timestamp"] = "2026-08-18T15:05:00Z"
+        fixture["executor_routing"] = {
+            "enabled": True,
+            "min_samples": 3,
+            "tie_tolerance": 0.02
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "run.json"
+            path.write_text(json.dumps(fixture), encoding="utf-8")
+            result = run_fixture(path)
+        self.assertIsNotNone(result["routing_decision"])
+        self.assertIn(result["routing_decision"]["decision"], {"REVIEW", "NO_EVIDENCE"})
+        self.assertFalse(result["routing_decision"]["execution_authorized"])
+        self.assertFalse(result["execution_authorized"])
 
 
 if __name__ == "__main__":
