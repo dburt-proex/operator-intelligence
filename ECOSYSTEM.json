@@ -1,0 +1,8 @@
+{
+  "registry": "dburt-proex/operator-intelligence:ecosystem/registry.json",
+  "registry_version": "1.0.0",
+  "repository": "dburt-proex/operator-intelligence",
+  "classification": "CORE",
+  "authority_for": ["assessment_and_implementation_routing"],
+  "may_define_new_primitives": true
+}
