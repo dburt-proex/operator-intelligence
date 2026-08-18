@@ -1,0 +1,43 @@
+name: GEOS Phase 1 Contract
+
+on:
+  pull_request:
+    paths:
+      - 'leverage-engine/schemas/execution-receipt.schema.json'
+      - 'leverage-engine/scripts/validate_execution_receipt.py'
+      - 'leverage-engine/fixtures/execution-receipt-*/**'
+      - 'leverage-engine/architecture/closed-loop-execution-v0.1.md'
+      - '.github/workflows/geos-phase1-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate JSON syntax
+        run: |
+          python -m json.tool leverage-engine/schemas/execution-receipt.schema.json >/dev/null
+          python -m json.tool leverage-engine/fixtures/execution-receipt-valid/receipt.json >/dev/null
+          python -m json.tool leverage-engine/fixtures/execution-receipt-invalid-missing-evidence/receipt.json >/dev/null
+
+      - name: Accept valid execution receipt
+        run: |
+          python leverage-engine/scripts/validate_execution_receipt.py \
+            leverage-engine/fixtures/execution-receipt-valid/receipt.json
+
+      - name: Reject false completion without evidence
+        run: |
+          python leverage-engine/scripts/validate_execution_receipt.py \
+            --expect-invalid \
+            leverage-engine/fixtures/execution-receipt-invalid-missing-evidence/receipt.json
