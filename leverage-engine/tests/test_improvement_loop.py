@@ -5,7 +5,7 @@ from copy import deepcopy
 from leverage_engine.experience import load_validated_receipts
 from leverage_engine.improvement import generate_improvement_analysis, load_improvement_patterns
 from leverage_engine.io import load_json
-from leverage_engine.paths import SCHEMA_DIR
+from leverage_engine.paths import ROOT, SCHEMA_DIR
 from leverage_engine.schema_validation import load_and_validate, validate_schema_document
 
 
@@ -57,6 +57,15 @@ class ImprovementLoopTests(unittest.TestCase):
         self.assertTrue(proposal["source_execution_ids"])
         self.assertTrue(proposal["evidence_refs"])
         self.assertEqual(proposal["pattern_id"], "IMP-CONTEXT-RELEVANCE")
+
+    def test_retained_live_analysis_is_exactly_reproducible(self):
+        retained = load_json(ROOT / "analyses" / "LE-IMPROVEMENT-2026-0001.json")
+        generated = self.real_analysis()
+        self.assertEqual(
+            json.dumps(retained, sort_keys=True, separators=(",", ":")),
+            json.dumps(generated, sort_keys=True, separators=(",", ":")),
+        )
+        load_and_validate(retained, SCHEMA_DIR / "improvement-analysis.schema.json")
 
     def test_analysis_is_deterministic_even_if_receipt_order_changes(self):
         receipts = load_validated_receipts()
