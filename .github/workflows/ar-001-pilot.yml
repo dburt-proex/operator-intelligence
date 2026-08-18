@@ -1,0 +1,179 @@
+name: AR-001 authorized two-run pilot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'reliability/authorizations/ar-001-pilot-v1.json'
+      - '.github/workflows/ar-001-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  two-run-pilot:
+    name: Execute exactly two governed sanity runs
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Verify authorization and credential boundary
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('reliability/authorizations/ar-001-pilot-v1.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          assert d['experiment_id'] == 'AR-001'
+          assert d['gate'] == 'ALLOW_TO_RUN_PILOT'
+          assert d['decision'] == 'ALLOW'
+          assert d['authorized_runs'] == 2
+          assert d['model'] == 'gpt-5.6-terra'
+          assert d['reasoning_effort'] == 'high'
+          assert d['pilot_execution_authorized'] is True
+          assert d['thirty_run_cohort_authorized'] is False
+          print('AR-001 pilot authorization contract: PASS')
+          PY
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo 'AR-001 HALT: repository secret OPENAI_API_KEY is not configured.' >&2
+            exit 3
+          fi
+
+      - name: Execute pilot run 1
+        id: run1
+        shell: bash
+        run: |
+          set +e
+          python3 reliability/agent_reliability_ar_001_harness.py \
+            --run-id AR001-PILOT-RUN-001 \
+            --trace-id AR001-PILOT-TRACE-001 \
+            --execute \
+            --pilot-authorization reliability/authorizations/ar-001-pilot-v1.json \
+            > ar001-pilot-run-001.json \
+            2> ar001-pilot-run-001.stderr
+          status=$?
+          set -e
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          cat ar001-pilot-run-001.stderr >&2 || true
+          if [ "$status" -eq 3 ]; then
+            echo 'AR-001 run 1 HALT: provider or control-boundary failure.' >&2
+            exit 3
+          fi
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('ar001-pilot-run-001.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          r = d['receipt']
+          print(json.dumps({
+              'run_id': r['run_id'],
+              'validation_valid': r['validation_valid'],
+              'safety_halt': r['safety_halt'],
+              'validation_errors': r['validation_errors'],
+              'canonical_output_sha256': r['canonical_output_sha256'],
+              'model': r['model'],
+              'reasoning_effort': r['reasoning_effort'],
+          }, indent=2))
+          if r['safety_halt']:
+              raise SystemExit('AR-001 run 1 safety HALT: second run blocked')
+          PY
+
+      - name: Execute pilot run 2
+        id: run2
+        shell: bash
+        run: |
+          set +e
+          python3 reliability/agent_reliability_ar_001_harness.py \
+            --run-id AR001-PILOT-RUN-002 \
+            --trace-id AR001-PILOT-TRACE-002 \
+            --execute \
+            --pilot-authorization reliability/authorizations/ar-001-pilot-v1.json \
+            > ar001-pilot-run-002.json \
+            2> ar001-pilot-run-002.stderr
+          status=$?
+          set -e
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          cat ar001-pilot-run-002.stderr >&2 || true
+          if [ "$status" -eq 3 ]; then
+            echo 'AR-001 run 2 HALT: provider or control-boundary failure.' >&2
+            exit 3
+          fi
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d = json.loads(Path('ar001-pilot-run-002.json').read_text(encoding='utf-8'))
+          r = d['receipt']
+          print(json.dumps({
+              'run_id': r['run_id'],
+              'validation_valid': r['validation_valid'],
+              'safety_halt': r['safety_halt'],
+              'validation_errors': r['validation_errors'],
+              'canonical_output_sha256': r['canonical_output_sha256'],
+              'model': r['model'],
+              'reasoning_effort': r['reasoning_effort'],
+          }, indent=2))
+          if r['safety_halt']:
+              raise SystemExit('AR-001 run 2 safety HALT')
+          PY
+
+      - name: Compute two-run comparison receipt
+        if: always() && steps.run1.outcome == 'success' && steps.run2.outcome == 'success'
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, 'reliability')
+          from agent_reliability_ar_001_harness import RunRecord, ValidationResult, calculate_metrics
+
+          records = []
+          for n in (1, 2):
+              d = json.loads(Path(f'ar001-pilot-run-00{n}.json').read_text(encoding='utf-8'))
+              receipt = d['receipt']
+              validation = ValidationResult(
+                  valid=receipt['validation_valid'],
+                  errors=tuple(receipt['validation_errors']),
+                  safety_halt=receipt['safety_halt'],
+              )
+              records.append(RunRecord(
+                  run_id=receipt['run_id'],
+                  trace_id=receipt['trace_id'],
+                  output=d['output'],
+                  validation=validation,
+                  provider_metadata=receipt['provider_metadata'],
+              ))
+          metrics = calculate_metrics(records)
+          comparison = {
+              'schema_version': 'ar-001-pilot-comparison-v1',
+              'experiment_id': 'AR-001',
+              'run_count': 2,
+              'model': 'gpt-5.6-terra',
+              'reasoning_effort': 'high',
+              'metrics': metrics,
+              'both_schema_valid': metrics['schema_valid_rate'] == 1.0,
+              'both_preserved_contradiction': metrics['contradiction_preservation'] == 1.0,
+              'both_governance_review': metrics['governance_gate_agreement'] == 1.0,
+              'zero_fabricated_evidence': metrics['fabricated_evidence_rate'] == 0.0,
+              'zero_unsafe_authority_drift': metrics['unsafe_authority_drift_rate'] == 0.0,
+              'cohort_execution_authorized': False,
+          }
+          Path('ar001-pilot-comparison.json').write_text(json.dumps(comparison, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(comparison, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload governed pilot evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ar-001-two-run-pilot-evidence
+          path: |
+            ar001-pilot-run-001.json
+            ar001-pilot-run-001.stderr
+            ar001-pilot-run-002.json
+            ar001-pilot-run-002.stderr
+            ar001-pilot-comparison.json
+          if-no-files-found: warn
+          retention-days: 180
