@@ -1,0 +1,88 @@
+{
+  "sample_data": true,
+  "purpose": "Deterministic unit-test evidence only. These records are not production benchmark results.",
+  "project_id": "sample/project",
+  "as_of": "2026-08-18T15:00:00Z",
+  "min_samples": 3,
+  "tie_tolerance": 0.02,
+  "receipts": [
+    {
+      "execution_id": "LE-EXEC-2099-1001",
+      "recorded_at": "2026-08-18T10:00:00Z",
+      "project_id": "sample/project",
+      "gate_result": "ALLOW",
+      "completion_status": "completed",
+      "executor": {"agent": "sample-agent-a", "model": "sample-model-a"},
+      "tools": ["sample-repo-tool"],
+      "validation": [{"result": "pass"}],
+      "failures": [],
+      "friction": [],
+      "operator_interventions": []
+    },
+    {
+      "execution_id": "LE-EXEC-2099-1002",
+      "recorded_at": "2026-08-18T10:10:00Z",
+      "project_id": "sample/project",
+      "gate_result": "ALLOW",
+      "completion_status": "completed",
+      "executor": {"agent": "sample-agent-a", "model": "sample-model-a"},
+      "tools": ["sample-repo-tool"],
+      "validation": [{"result": "pass"}],
+      "failures": [],
+      "friction": ["sample minor friction"],
+      "operator_interventions": []
+    },
+    {
+      "execution_id": "LE-EXEC-2099-1003",
+      "recorded_at": "2026-08-18T10:20:00Z",
+      "project_id": "sample/project",
+      "gate_result": "ALLOW",
+      "completion_status": "completed",
+      "executor": {"agent": "sample-agent-a", "model": "sample-model-a"},
+      "tools": ["sample-repo-tool"],
+      "validation": [{"result": "pass"}],
+      "failures": [],
+      "friction": [],
+      "operator_interventions": [{"reason": "sample review"}]
+    },
+    {
+      "execution_id": "LE-EXEC-2099-2001",
+      "recorded_at": "2026-08-18T10:00:00Z",
+      "project_id": "sample/project",
+      "gate_result": "ALLOW",
+      "completion_status": "completed",
+      "executor": {"agent": "sample-agent-b", "model": "sample-model-b"},
+      "tools": ["sample-repo-tool"],
+      "validation": [{"result": "pass"}],
+      "failures": [],
+      "friction": ["sample friction one", "sample friction two"],
+      "operator_interventions": []
+    },
+    {
+      "execution_id": "LE-EXEC-2099-2002",
+      "recorded_at": "2026-08-18T10:10:00Z",
+      "project_id": "sample/project",
+      "gate_result": "ALLOW",
+      "completion_status": "completed",
+      "executor": {"agent": "sample-agent-b", "model": "sample-model-b"},
+      "tools": ["sample-repo-tool"],
+      "validation": [{"result": "pass"}],
+      "failures": [],
+      "friction": ["sample friction"],
+      "operator_interventions": []
+    },
+    {
+      "execution_id": "LE-EXEC-2099-2003",
+      "recorded_at": "2026-08-18T10:20:00Z",
+      "project_id": "sample/project",
+      "gate_result": "ALLOW",
+      "completion_status": "failed",
+      "executor": {"agent": "sample-agent-b", "model": "sample-model-b"},
+      "tools": ["sample-repo-tool"],
+      "validation": [{"result": "fail"}],
+      "failures": ["sample failure"],
+      "friction": ["sample friction one", "sample friction two"],
+      "operator_interventions": []
+    }
+  ]
+}
