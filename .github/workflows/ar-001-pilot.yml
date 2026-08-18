@@ -6,6 +6,11 @@ on:
     paths:
       - 'reliability/authorizations/ar-001-pilot-v1.json'
       - '.github/workflows/ar-001-pilot.yml'
+  pull_request:
+    types: [opened]
+    paths:
+      - 'reliability/authorizations/ar-001-pilot-v1.json'
+      - '.github/workflows/ar-001-pilot.yml'
   workflow_dispatch:
 
 permissions:
