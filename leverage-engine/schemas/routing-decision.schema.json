@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "routing-decision.schema.json",
+  "title": "Leverage Engine Executor Routing Decision",
+  "description": "Evidence-backed deterministic recommendation over observed agent/model/tool execution history. Routing never grants execution authority.",
+  "type": "object",
+  "required": [
+    "routing_id",
+    "as_of",
+    "project_id",
+    "min_samples",
+    "tie_tolerance",
+    "decision",
+    "selected_candidate_id",
+    "reason",
+    "profiles",
+    "evidence_refs",
+    "execution_authorized"
+  ],
+  "properties": {
+    "routing_id": {"type": "string", "pattern": "^LE-ROUTE-[a-f0-9]{16}$"},
+    "as_of": {"type": "string", "format": "date-time"},
+    "project_id": {"type": "string", "minLength": 1},
+    "min_samples": {"type": "integer", "minimum": 1},
+    "tie_tolerance": {"type": "number", "minimum": 0, "maximum": 1},
+    "decision": {"enum": ["ROUTE", "REVIEW", "NO_EVIDENCE"]},
+    "selected_candidate_id": {"type": ["string", "null"]},
+    "reason": {"type": "string", "minLength": 1},
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "candidate_id",
+          "agent",
+          "model",
+          "tools",
+          "sample_count",
+          "completed_count",
+          "partial_count",
+          "failed_count",
+          "completion_rate",
+          "validation_pass_rate",
+          "failure_event_rate",
+          "friction_events_per_execution",
+          "operator_intervention_count",
+          "source_execution_ids",
+          "eligible"
+        ],
+        "properties": {
+          "candidate_id": {"type": "string", "pattern": "^LE-EXECUTOR-[a-f0-9]{16}$"},
+          "agent": {"type": "string", "minLength": 1},
+          "model": {"type": "string", "minLength": 1},
+          "tools": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          },
+          "sample_count": {"type": "integer", "minimum": 1},
+          "completed_count": {"type": "integer", "minimum": 0},
+          "partial_count": {"type": "integer", "minimum": 0},
+          "failed_count": {"type": "integer", "minimum": 0},
+          "completion_rate": {"type": "number", "minimum": 0, "maximum": 1},
+          "validation_pass_rate": {"type": "number", "minimum": 0, "maximum": 1},
+          "failure_event_rate": {"type": "number", "minimum": 0},
+          "friction_events_per_execution": {"type": "number", "minimum": 0},
+          "operator_intervention_count": {"type": "integer", "minimum": 0},
+          "source_execution_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          },
+          "eligible": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "execution_authorized": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

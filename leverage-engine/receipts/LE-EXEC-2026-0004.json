@@ -1,0 +1,263 @@
+{
+  "execution_id": "LE-EXEC-2026-0004",
+  "directive_id": "LD-2026-08-18-048",
+  "project_id": "dburt-proex/operator-intelligence:leverage-engine",
+  "started_at": "2026-08-18T15:04:07Z",
+  "ended_at": "2026-08-18T15:10:00Z",
+  "executor": {
+    "actor_type": "hybrid",
+    "actor_id": "chatgpt-session-with-operator-workahead-authorization",
+    "agent": "VIN execution lead",
+    "model": "GPT-5.6 Sol"
+  },
+  "context_refs": [
+    "experience:LE-EXEC-2026-0003",
+    "github:commit:98c0fe2f6f70f09ce795f217d1aa655c8934438d",
+    "github:issue:dburt-proex/operator-intelligence#48",
+    "repo:leverage-engine/src/leverage_engine/context.py"
+  ],
+  "evidence_refs": [
+    "experience:LE-EXEC-2026-0003",
+    "github:issue:dburt-proex/operator-intelligence#48",
+    "github:pr:dburt-proex/operator-intelligence#49",
+    "github:workflow-run:32152636701",
+    "github:workflow-run:32152636652",
+    "github:workflow-run:32152636853"
+  ],
+  "decision_refs": [
+    "operator:2026-08-18:approve-merge-and-workahead-through-final-phase",
+    "github:issue:dburt-proex/operator-intelligence#48:ALLOW"
+  ],
+  "tools": [
+    "GitHub connector",
+    "GitHub Actions",
+    "DiffWall PR Firewall"
+  ],
+  "actions": [
+    {
+      "sequence": 1,
+      "action": "Consume the Phase 3 learning that agent context and downstream decisions must be evidence-backed, bounded, deterministic, and capable of abstaining.",
+      "result": "completed",
+      "evidence_refs": ["experience:LE-EXEC-2026-0003"]
+    },
+    {
+      "sequence": 2,
+      "action": "Add a canonical routing-decision contract that separates executor recommendation from execution authority and retains raw profile metrics with source execution IDs.",
+      "result": "completed",
+      "evidence_refs": ["github:commit:5d2d8bbce309e0241265f1d00c262ec8a50dac55"]
+    },
+    {
+      "sequence": 3,
+      "action": "Implement deterministic agent/model/toolset performance profiling and routing with minimum-sample, tie, future-state, and HALT exclusion controls.",
+      "result": "completed",
+      "evidence_refs": ["github:commit:95f844bcdd0b45bf31af94904c572aeb90df990f"]
+    },
+    {
+      "sequence": 4,
+      "action": "Add clearly marked synthetic comparison data for unit testing without representing it as a real benchmark or production result.",
+      "result": "completed",
+      "evidence_refs": ["github:commit:8b2b4bf08cd4eba87da404811be265b721a7d4d5"]
+    },
+    {
+      "sequence": 5,
+      "action": "Add positive and negative routing tests for deterministic selection, minimum samples, material ties, future/HALT exclusion, evidence traceability, and live-history abstention.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:commit:744c59bd3e15c0e39471dde2cabf7fee8ea0f456",
+        "github:commit:642e373efdef6995ef6793e867c521fe9161b7cf"
+      ]
+    },
+    {
+      "sequence": 6,
+      "action": "Integrate optional routing into the existing runner without changing directive authority or execution_authorized=false.",
+      "result": "completed",
+      "evidence_refs": ["github:commit:56d0c4cb937e1b662942631bbbad2bc9ce1300b2"]
+    },
+    {
+      "sequence": 7,
+      "action": "Run the generalized Leverage Engine regression gate, DiffWall, and repository-map validation on PR #49.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:workflow-run:32152636701",
+        "github:workflow-run:32152636652",
+        "github:workflow-run:32152636853"
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/executor_routing.py",
+      "change_summary": "Added deterministic evidence-backed executor profiling and routing.",
+      "version_ref": "github:commit:95f844bcdd0b45bf31af94904c572aeb90df990f"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/schemas/routing-decision.schema.json",
+      "change_summary": "Added canonical authority-neutral routing recommendation contract.",
+      "version_ref": "github:commit:5d2d8bbce309e0241265f1d00c262ec8a50dac55"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/tests/test_executor_routing.py",
+      "change_summary": "Added routing selection and abstention coverage including live-history behavior.",
+      "version_ref": "github:commit:642e373efdef6995ef6793e867c521fe9161b7cf"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/fixtures/performance-routing-sample/receipts.json",
+      "change_summary": "Added test-only synthetic executor histories explicitly marked as non-benchmark sample data.",
+      "version_ref": "github:commit:8b2b4bf08cd4eba87da404811be265b721a7d4d5"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/runner.py",
+      "change_summary": "Added opt-in routing decision output while preserving execution_authorized=false.",
+      "version_ref": "github:commit:56d0c4cb937e1b662942631bbbad2bc9ce1300b2"
+    }
+  ],
+  "validation": [
+    {
+      "validator": "Leverage Engine Regression",
+      "scope": "routing schema, sample selection, live abstention, context compiler, receipts, and full engine regression suite",
+      "result": "pass",
+      "evidence_refs": ["github:workflow-run:32152636701"]
+    },
+    {
+      "validator": "DiffWall PR Firewall",
+      "scope": "Phase 4 repository change-time risk",
+      "result": "pass",
+      "evidence_refs": [
+        "github:workflow-run:32152636652",
+        "github:pr:dburt-proex/operator-intelligence#49:DiffWall-ALLOW-15-of-100"
+      ]
+    },
+    {
+      "validator": "Validate registry and repository map",
+      "scope": "Operator Intelligence registry and generated map integrity",
+      "result": "pass",
+      "evidence_refs": ["github:workflow-run:32152636853"]
+    }
+  ],
+  "operator_interventions": [
+    {
+      "actor": "Drew Burt",
+      "reason": "Pre-authorized bounded workahead and merges through the final planned phase.",
+      "effect": "Phase 4 may merge after acceptance validation; routing itself remains recommendation-only and cannot dispatch agents or expand authority."
+    }
+  ],
+  "review_events": [
+    {
+      "gate": "Phase 4 bounded implementation and merge",
+      "decision": "ALLOW",
+      "owner": "Drew Burt",
+      "rationale": "Operator pre-authorized planned workahead; Phase 4 regression, DiffWall, and repository-map validation all pass.",
+      "recorded_at": "2026-08-18T15:10:00Z"
+    }
+  ],
+  "failures": [],
+  "friction": [
+    "Current real execution history is insufficient to meet the three-sample threshold for any single agent+model+toolset profile, so live routing correctly abstains.",
+    "Treating the complete receipt tools list as executor identity can fragment history when validation or observability tooling changes even if the underlying agent/model remains the same."
+  ],
+  "reusable_learnings": [
+    {
+      "learning": "Performance-aware routing should abstain until a declared minimum evidence threshold is met and must remain a recommendation separate from execution authority.",
+      "evidence_refs": [
+        "github:commit:95f844bcdd0b45bf31af94904c572aeb90df990f",
+        "github:commit:642e373efdef6995ef6793e867c521fe9161b7cf",
+        "github:workflow-run:32152636701"
+      ],
+      "reuse_scope": [
+        "graph-engineering-os",
+        "leverage-engine",
+        "agent-routing",
+        "evaluation"
+      ]
+    },
+    {
+      "learning": "Executor identity needs an explicit stable capability toolset distinct from incidental validation and observability tools; otherwise performance history fragments across operationally equivalent runs.",
+      "evidence_refs": [
+        "repo:leverage-engine/receipts/LE-EXEC-2026-0001.json",
+        "repo:leverage-engine/receipts/LE-EXEC-2026-0002.json",
+        "repo:leverage-engine/receipts/LE-EXEC-2026-0003.json",
+        "github:workflow-run:32152636701"
+      ],
+      "reuse_scope": [
+        "graph-engineering-os",
+        "leverage-engine",
+        "agent-routing",
+        "execution-telemetry"
+      ]
+    },
+    {
+      "learning": "Synthetic routing fixtures are useful for proving deterministic selection logic only when they are explicitly quarantined from production benchmark claims and live decisions remain grounded in real retained receipts.",
+      "evidence_refs": [
+        "github:commit:8b2b4bf08cd4eba87da404811be265b721a7d4d5",
+        "github:commit:744c59bd3e15c0e39471dde2cabf7fee8ea0f456"
+      ],
+      "reuse_scope": [
+        "leverage-engine",
+        "evaluation",
+        "testing"
+      ]
+    }
+  ],
+  "reused_experience": [
+    {
+      "source_execution_id": "LE-EXEC-2026-0003",
+      "kind": "learning",
+      "statement": "Governed context compilation should be refusal-first: admission requires explicit relevance, freshness, relation consistency, and budget fit, with every exclusion carrying a deterministic reason.",
+      "application": "Phase 4 applies the same refusal-first posture to executor selection: minimum samples and material ties produce REVIEW instead of a guessed winner.",
+      "observed_effect": "The live-history unit test passes only when current insufficient evidence abstains rather than selecting an executor.",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0003",
+        "github:commit:642e373efdef6995ef6793e867c521fe9161b7cf",
+        "github:workflow-run:32152636701"
+      ]
+    },
+    {
+      "source_execution_id": "LE-EXEC-2026-0003",
+      "kind": "learning",
+      "statement": "Regression infrastructure should trigger on the subsystem boundary rather than on phase-specific files; otherwise later compounding increments can silently escape the validation spine.",
+      "application": "Phase 4 required no new CI work; the generalized Leverage Engine regression workflow automatically executed the new routing tests and the complete existing suite.",
+      "observed_effect": "A five-file Phase 4 increment received full subsystem regression coverage without another protected workflow change.",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0003",
+        "github:workflow-run:32152636701"
+      ]
+    }
+  ],
+  "residual_risks": [
+    "Real routing history is still too small for an evidence-backed executor selection at the configured production threshold.",
+    "Executor identity currently uses the entire receipt tool list rather than a separately declared stable capability toolset.",
+    "No duration, token, compute-cost, or artifact-quality metric is yet normalized into routing profiles.",
+    "Routing is recommendation-only and is not yet consumed by a governed execution packet or dispatcher."
+  ],
+  "completion_status": "completed",
+  "completion_evidence": [
+    "github:pr:dburt-proex/operator-intelligence#49",
+    "github:workflow-run:32152636701",
+    "github:workflow-run:32152636652",
+    "github:workflow-run:32152636853"
+  ],
+  "gate_result": "ALLOW",
+  "gate_reasons": [
+    "full Leverage Engine regression suite passes",
+    "DiffWall routes Phase 4 ALLOW at 15/100",
+    "repository registry/map validation passes",
+    "operator pre-authorized bounded workahead and merges through the final planned phase"
+  ],
+  "next_improvement": {
+    "objective": "Build the Phase 5 environment-improvement loop that mines retained friction, failures, exclusions, routing abstentions, and reusable learning for recurring structural bottlenecks, produces an evidence-backed improvement proposal, and never self-authorizes the resulting change.",
+    "rationale": "The system can now retain experience, compile context, and evaluate executor evidence. The final planned phase should turn recurring operational friction into bounded infrastructure-improvement proposals so the environment can systematically improve itself.",
+    "evidence_refs": [
+      "github:issue:dburt-proex/operator-intelligence#48",
+      "github:workflow-run:32152636701",
+      "repo:leverage-engine/receipts/LE-EXEC-2026-0004.json"
+    ],
+    "expected_leverage": "high",
+    "requires_review": false
+  },
+  "recorded_at": "2026-08-18T15:10:00Z"
+}

@@ -5,6 +5,7 @@ from typing import Any
 from .context import compile_context_package, load_context_relations
 from .deduplicate import group_duplicate_signals, suppress_duplicate_opportunities
 from .directive import build_directive, ledger_record_id
+from .executor_routing import route_executor
 from .experience import load_validated_receipts
 from .graph import build_run_edges
 from .io import load_json
@@ -40,6 +41,7 @@ def _validate_canonical_schemas() -> None:
         "execution-receipt",
         "context-package",
         "context-relations",
+        "routing-decision",
     ):
         path = SCHEMA_DIR / f"{name}.schema.json"
         validate_schema_document(load_json(path), str(path))
@@ -76,9 +78,13 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
 
     reuse_scope = fixture.get("experience_scope", [])
     experience_project_id = fixture.get("experience_project_id") or fixture.get("target_system", "unspecified")
+    routing_config = fixture.get("executor_routing", {})
+    routing_enabled = bool(routing_config.get("enabled", False))
+    retained_receipts = load_validated_receipts() if (reuse_scope or routing_enabled) else []
+
     context_budget = fixture.get("context_budget", {})
     compiled_context = compile_context_package(
-        load_validated_receipts() if reuse_scope else [],
+        retained_receipts if reuse_scope else [],
         run_timestamp=fixture["run_timestamp"],
         project_id=experience_project_id,
         reuse_scope=reuse_scope,
@@ -93,6 +99,16 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
     effective_fixture["evidence_refs"] = sorted(
         set(fixture.get("evidence_refs", []) + experience_refs)
     )
+
+    routing_decision = None
+    if routing_enabled:
+        routing_decision = route_executor(
+            retained_receipts,
+            as_of=fixture["run_timestamp"],
+            project_id=experience_project_id,
+            min_samples=int(routing_config.get("min_samples", 3)),
+            tie_tolerance=float(routing_config.get("tie_tolerance", 0.02)),
+        )
 
     signals = [normalize_signal(item) for item in deepcopy(fixture["signals"])]
     for signal in signals:
@@ -182,6 +198,7 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         "selection_result": selection["result"],
         "selected_opportunity_id": selected_id,
         "context_id": compiled_context["context_id"],
+        "routing_id": routing_decision["routing_id"] if routing_decision else None,
         "experience_refs": experience_refs,
         "ranking": ranking,
         "rationale": decision_rationale,
@@ -215,6 +232,7 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         "evidence_refs": effective_fixture["evidence_refs"],
         "compiled_context": compiled_context,
         "reused_experience": reused_experience,
+        "routing_decision": routing_decision,
         "ledger_receipt": receipt,
         "execution_authorized": False,
     }
