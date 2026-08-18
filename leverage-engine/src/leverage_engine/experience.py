@@ -37,6 +37,8 @@ def compile_experience_context(
 
     The projection is deliberately authority-neutral: gate results, permissions,
     policy state, and approval state are not propagated from prior receipts.
+    Stable item IDs allow later context compilation to express supersession and
+    contradiction without mutating historical receipts.
     """
     scopes = set(reuse_scope)
     if not scopes:
@@ -49,14 +51,17 @@ def compile_experience_context(
         if _timestamp(receipt["recorded_at"]) > cutoff:
             continue
 
-        for learning in receipt.get("reusable_learnings", []):
+        for index, learning in enumerate(receipt.get("reusable_learnings", []), 1):
             matched_scope = sorted(scopes.intersection(learning["reuse_scope"]))
             if not matched_scope:
                 continue
             projected.append(
                 {
+                    "item_id": f"{receipt['execution_id']}:learning:{index}",
                     "source_execution_id": receipt["execution_id"],
                     "source_directive_id": receipt["directive_id"],
+                    "source_recorded_at": receipt["recorded_at"],
+                    "source_project_id": receipt["project_id"],
                     "kind": "learning",
                     "statement": learning["learning"],
                     "evidence_refs": sorted(set(learning["evidence_refs"])),
@@ -68,8 +73,11 @@ def compile_experience_context(
         if next_improvement and receipt["project_id"] == project_id:
             projected.append(
                 {
+                    "item_id": f"{receipt['execution_id']}:next_improvement:1",
                     "source_execution_id": receipt["execution_id"],
                     "source_directive_id": receipt["directive_id"],
+                    "source_recorded_at": receipt["recorded_at"],
+                    "source_project_id": receipt["project_id"],
                     "kind": "next_improvement",
                     "statement": next_improvement["objective"],
                     "evidence_refs": sorted(set(next_improvement["evidence_refs"])),
