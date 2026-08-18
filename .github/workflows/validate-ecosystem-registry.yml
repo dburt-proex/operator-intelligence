@@ -1,0 +1,26 @@
+name: Validate Ecosystem Registry
+
+on:
+  pull_request:
+    paths:
+      - "ecosystem/**"
+      - ".github/workflows/validate-ecosystem-registry.yml"
+  push:
+    branches: [main]
+    paths:
+      - "ecosystem/**"
+      - ".github/workflows/validate-ecosystem-registry.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate exclusive authority and lifecycle invariants
+        run: python ecosystem/validate_registry.py

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dburt-proex/operator-intelligence/ecosystem/registry.schema.json",
+  "type": "object",
+  "required": ["registry_version", "registry_host", "classifications", "primitives", "repositories"],
+  "properties": {
+    "registry_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "registry_host": {"type": "string", "const": "dburt-proex/operator-intelligence"},
+    "classifications": {
+      "type": "array",
+      "const": ["CORE", "CONSUMER", "REFERENCE", "EXPERIMENT", "LEGACY", "ARCHIVED"]
+    },
+    "primitives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "authority", "purpose"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "authority": {"type": "string", "pattern": "^dburt-proex/.+$"},
+          "purpose": {"type": "string", "minLength": 10}
+        },
+        "additionalProperties": false
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["repo", "classification", "status", "authority_for", "may_define_new_primitives"],
+        "properties": {
+          "repo": {"type": "string", "pattern": "^dburt-proex/.+$"},
+          "classification": {"enum": ["CORE", "CONSUMER", "REFERENCE", "EXPERIMENT", "LEGACY", "ARCHIVED"]},
+          "status": {"type": "string", "minLength": 1},
+          "authority_for": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "may_define_new_primitives": {"type": "boolean"},
+          "consumes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "supersedes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "superseded_by": {"type": "string"},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": true
+}
