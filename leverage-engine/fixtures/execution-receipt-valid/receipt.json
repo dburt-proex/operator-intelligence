@@ -1,0 +1,105 @@
+{
+  "execution_id": "LE-EXEC-2026-0001",
+  "directive_id": "LD-2026-08-18-099",
+  "project_id": "sample/repository-engineering",
+  "started_at": "2026-08-18T13:00:00Z",
+  "ended_at": "2026-08-18T13:12:00Z",
+  "executor": {
+    "actor_type": "agent",
+    "actor_id": "sample-agent-01",
+    "agent": "repository-engineering-agent",
+    "model": "sample-model"
+  },
+  "context_refs": [
+    "repo-snapshot:SAMPLE-SHA-001",
+    "learning:LEARN-SAMPLE-001"
+  ],
+  "evidence_refs": [
+    "directive:LD-2026-08-18-099",
+    "repo-snapshot:SAMPLE-SHA-001"
+  ],
+  "decision_refs": [
+    "decision:SAMPLE-ALLOW-001"
+  ],
+  "tools": [
+    "git",
+    "python"
+  ],
+  "actions": [
+    {
+      "sequence": 1,
+      "action": "Inspect the approved repository baseline and bounded target file.",
+      "result": "completed",
+      "evidence_refs": ["repo-snapshot:SAMPLE-SHA-001"]
+    },
+    {
+      "sequence": 2,
+      "action": "Apply the bounded change on an isolated branch.",
+      "result": "completed",
+      "evidence_refs": ["commit:SAMPLE-SHA-002"]
+    },
+    {
+      "sequence": 3,
+      "action": "Run the declared validation and record the result.",
+      "result": "completed",
+      "evidence_refs": ["validation:SAMPLE-VAL-001"]
+    }
+  ],
+  "changes": [
+    {
+      "target_type": "file",
+      "target_ref": "sample/path/control.json",
+      "change_summary": "Added a bounded validation rule required by the directive.",
+      "version_ref": "commit:SAMPLE-SHA-002"
+    }
+  ],
+  "validation": [
+    {
+      "validator": "sample-contract-check",
+      "scope": "sample/path/control.json",
+      "result": "pass",
+      "evidence_refs": ["validation:SAMPLE-VAL-001"]
+    }
+  ],
+  "operator_interventions": [],
+  "review_events": [
+    {
+      "gate": "repository mutation",
+      "decision": "ALLOW",
+      "owner": "sample-operator",
+      "rationale": "Sample fixture represents a bounded, reversible, pre-authorized repository change.",
+      "recorded_at": "2026-08-18T12:59:00Z"
+    }
+  ],
+  "failures": [],
+  "friction": [
+    "The previous run rediscovered the same repository validation command manually."
+  ],
+  "reusable_learnings": [
+    {
+      "learning": "Retain the repository validation command as context for the next execution instead of rediscovering it.",
+      "evidence_refs": ["validation:SAMPLE-VAL-001"],
+      "reuse_scope": ["repository-engineering"]
+    }
+  ],
+  "residual_risks": [
+    "The sample validates the receipt contract, not a live repository outcome."
+  ],
+  "completion_status": "completed",
+  "completion_evidence": [
+    "commit:SAMPLE-SHA-002",
+    "validation:SAMPLE-VAL-001"
+  ],
+  "gate_result": "ALLOW",
+  "gate_reasons": [
+    "sample-only bounded execution fixture"
+  ],
+  "next_improvement": {
+    "objective": "Preload the known validation command during the next repository-engineering run.",
+    "rationale": "The retained learning removes repeated discovery work and directly tests cross-run reuse.",
+    "evidence_refs": ["validation:SAMPLE-VAL-001", "learning:LEARN-SAMPLE-001"],
+    "expected_leverage": "medium",
+    "requires_review": true
+  },
+  "recorded_at": "2026-08-18T13:13:00Z"
+}
