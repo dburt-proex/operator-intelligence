@@ -57,6 +57,35 @@ class ExecutionReceiptTests(unittest.TestCase):
         with self.assertRaises(SchemaValidationError):
             load_and_validate(receipt, self.schema_path())
 
+    def test_reused_experience_extension_is_backward_compatible_and_validates(self):
+        receipt = load_json(self.fixture("execution-receipt-valid"))
+        receipt["reused_experience"] = [
+            {
+                "source_execution_id": "LE-EXEC-2026-0001",
+                "kind": "learning",
+                "statement": "Reuse the existing validation spine.",
+                "application": "Extended the existing Leverage Engine validator and run path.",
+                "observed_effect": "Avoided creating a second validator or memory subsystem.",
+                "evidence_refs": ["experience:LE-EXEC-2026-0001"],
+            }
+        ]
+        load_and_validate(receipt, self.schema_path())
+
+    def test_reused_experience_requires_supporting_evidence(self):
+        receipt = load_json(self.fixture("execution-receipt-valid"))
+        receipt["reused_experience"] = [
+            {
+                "source_execution_id": "LE-EXEC-2026-0001",
+                "kind": "learning",
+                "statement": "Reuse the existing validation spine.",
+                "application": "Extended the existing Leverage Engine validator and run path.",
+                "observed_effect": "Avoided creating a second validator or memory subsystem.",
+                "evidence_refs": [],
+            }
+        ]
+        with self.assertRaises(SchemaValidationError):
+            load_and_validate(receipt, self.schema_path())
+
 
 if __name__ == "__main__":
     unittest.main()
