@@ -1,0 +1,295 @@
+{
+  "execution_id": "LE-EXEC-2026-0005",
+  "directive_id": "LD-2026-08-18-050",
+  "project_id": "dburt-proex/operator-intelligence:leverage-engine",
+  "started_at": "2026-08-18T15:12:30Z",
+  "ended_at": "2026-08-18T15:20:00Z",
+  "executor": {
+    "actor_type": "hybrid",
+    "actor_id": "chatgpt-session-with-operator-workahead-authorization",
+    "agent": "VIN execution lead",
+    "model": "GPT-5.6 Sol"
+  },
+  "context_refs": [
+    "experience:LE-EXEC-2026-0004",
+    "github:commit:abaf144b6c4f6d756540a3c177f9761901207902",
+    "github:issue:dburt-proex/operator-intelligence#50",
+    "analysis:LE-IMPA-0daa8980f6fbbb41"
+  ],
+  "evidence_refs": [
+    "experience:LE-EXEC-2026-0004",
+    "github:issue:dburt-proex/operator-intelligence#50",
+    "github:pr:dburt-proex/operator-intelligence#51",
+    "github:workflow-run:32153813374",
+    "github:workflow-run:32153813561",
+    "github:workflow-run:32153813275",
+    "analysis:LE-IMPA-0daa8980f6fbbb41",
+    "proposal:LE-IMPROVE-dbfc7509df5b19c7"
+  ],
+  "decision_refs": [
+    "operator:2026-08-18:approve-merge-and-workahead-through-final-phase",
+    "github:issue:dburt-proex/operator-intelligence#50:ALLOW-final-planned-phase",
+    "proposal:LE-IMPROVE-dbfc7509df5b19c7:REVIEW"
+  ],
+  "tools": [
+    "GitHub connector",
+    "GitHub Actions",
+    "DiffWall PR Firewall"
+  ],
+  "actions": [
+    {
+      "sequence": 1,
+      "action": "Consume the Phase 4 next-improvement direction and inspect retained Phase 1 through Phase 4 friction, failures, and residual risks as the evidence substrate for the final planned environment-improvement loop.",
+      "result": "completed",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0004",
+        "repo:leverage-engine/receipts/LE-EXEC-2026-0001.json",
+        "repo:leverage-engine/receipts/LE-EXEC-2026-0002.json",
+        "repo:leverage-engine/receipts/LE-EXEC-2026-0003.json",
+        "repo:leverage-engine/receipts/LE-EXEC-2026-0004.json"
+      ]
+    },
+    {
+      "sequence": 2,
+      "action": "Add canonical contracts for a versioned explicit improvement-pattern registry and a governed improvement analysis/proposal with REVIEW-only proposal authority.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:commit:bc98286fbb367534cf849a8f2c7588e7b66ea337",
+        "github:commit:3ecf9afb0bb860a194dcc46a1a506585b856b8fa"
+      ]
+    },
+    {
+      "sequence": 3,
+      "action": "Add a versioned lexical pattern registry covering recurring context relevance, tracking hygiene, executor identity, graph receipt visibility, and routing evidence sparsity without enabling semantic guessing.",
+      "result": "completed",
+      "evidence_refs": ["github:commit:dc39e95c3007381ddd0aa79aa40b0a32ca673dd2"]
+    },
+    {
+      "sequence": 4,
+      "action": "Implement deterministic recurrence-first mining over explicit friction, failures, and residual risks with project/time boundaries, evidence traceability, REVIEW-required proposals, and execution_authorized=false.",
+      "result": "completed",
+      "evidence_refs": ["github:commit:3d4fb808c681171f87f6e715ee0de83adcbb133e"]
+    },
+    {
+      "sequence": 5,
+      "action": "Add a reproducible CLI and positive/negative tests for real-history proposal generation, insufficient recurrence, future leakage, unmatched text, deterministic replay, explicit-signal-only mining, and self-authorization prevention.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:commit:f29aede189807608c8b537434dcc3a0201b71b52",
+        "github:commit:1f2752f2de635cdc8d5b29ddd5d95f4a1736d9ff"
+      ]
+    },
+    {
+      "sequence": 6,
+      "action": "Generate and retain the first real improvement analysis from canonical execution receipts and add a regression assertion that the retained artifact is exactly reproducible from those receipts and the versioned registry.",
+      "result": "completed",
+      "evidence_refs": [
+        "analysis:LE-IMPA-0daa8980f6fbbb41",
+        "proposal:LE-IMPROVE-dbfc7509df5b19c7",
+        "github:commit:adcfa005d32fcb3c17ea5a03d47225d80c7a7c6c",
+        "github:commit:05ec013852488e66d8c69c07eb96ac0accaaca78"
+      ]
+    },
+    {
+      "sequence": 7,
+      "action": "Run the full Leverage Engine regression suite, DiffWall, and repository-map validation on the final Phase 5 implementation head.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:workflow-run:32153813374",
+        "github:workflow-run:32153813561",
+        "github:workflow-run:32153813275"
+      ]
+    },
+    {
+      "sequence": 8,
+      "action": "Stop at the generated improvement proposal REVIEW gate rather than implementing the next change inside the already-authorized Phase 5 scope.",
+      "result": "completed",
+      "evidence_refs": ["proposal:LE-IMPROVE-dbfc7509df5b19c7:REVIEW"]
+    }
+  ],
+  "changes": [
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/improvement.py",
+      "change_summary": "Added deterministic explicit-signal environment-improvement analysis and REVIEW-only proposal selection.",
+      "version_ref": "github:commit:3d4fb808c681171f87f6e715ee0de83adcbb133e"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/config/improvement-patterns.json",
+      "change_summary": "Added the versioned auditable v0.1 improvement pattern registry.",
+      "version_ref": "github:commit:dc39e95c3007381ddd0aa79aa40b0a32ca673dd2"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/schemas/improvement-analysis.schema.json",
+      "change_summary": "Added canonical improvement analysis and REVIEW-only proposal contract.",
+      "version_ref": "github:commit:3ecf9afb0bb860a194dcc46a1a506585b856b8fa"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/analyses/LE-IMPROVEMENT-2026-0001.json",
+      "change_summary": "Retained the first reproducible real-history infrastructure-improvement analysis.",
+      "version_ref": "analysis:LE-IMPA-0daa8980f6fbbb41"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/tests/test_improvement_loop.py",
+      "change_summary": "Added recurrence, replay, leakage, unmatched-signal, exact-artifact, and self-authorization regression coverage.",
+      "version_ref": "github:commit:05ec013852488e66d8c69c07eb96ac0accaaca78"
+    }
+  ],
+  "validation": [
+    {
+      "validator": "Leverage Engine Regression",
+      "scope": "improvement contracts, real retained analysis exact reproduction, negative improvement gates, all prior context/routing/receipt behavior, and full engine regression suite",
+      "result": "pass",
+      "evidence_refs": ["github:workflow-run:32153813374"]
+    },
+    {
+      "validator": "DiffWall PR Firewall",
+      "scope": "Phase 5 repository change-time risk",
+      "result": "pass",
+      "evidence_refs": [
+        "github:workflow-run:32153813561",
+        "github:pr:dburt-proex/operator-intelligence#51:DiffWall-ALLOW-15-of-100"
+      ]
+    },
+    {
+      "validator": "Validate registry and repository map",
+      "scope": "Operator Intelligence registry and generated map integrity",
+      "result": "pass",
+      "evidence_refs": ["github:workflow-run:32153813275"]
+    }
+  ],
+  "operator_interventions": [
+    {
+      "actor": "Drew Burt",
+      "reason": "Explicitly authorized merge and workahead through every planned phase and asked for return only when the final phase was reached.",
+      "effect": "Phase 5 implementation and merge are pre-authorized after acceptance validation, but the newly generated post-plan improvement is outside that completed phase sequence and remains at REVIEW."
+    }
+  ],
+  "review_events": [
+    {
+      "gate": "Phase 5 final planned implementation and merge",
+      "decision": "ALLOW",
+      "owner": "Drew Burt",
+      "rationale": "Operator pre-authorized the planned Phase 5 workahead and merge, and all Phase 5 acceptance validation passes.",
+      "recorded_at": "2026-08-18T15:20:00Z"
+    },
+    {
+      "gate": "Post-plan generated environment improvement",
+      "decision": "REVIEW",
+      "owner": "Drew Burt",
+      "rationale": "The system generated LE-IMPROVE-dbfc7509df5b19c7 from recurring retained evidence, but generation does not authorize execution and the planned workahead ends at Phase 5.",
+      "recorded_at": "2026-08-18T15:20:00Z"
+    }
+  ],
+  "failures": [],
+  "friction": [
+    "The execution environment used for ad hoc local verification has no outbound GitHub DNS/network access, so authoritative validation continued through the repository's GitHub Actions regression gate instead of a local clone.",
+    "The v0.1 improvement miner intentionally uses explicit lexical rules rather than semantic clustering, so registry coverage must expand through reviewed evidence rather than implicit model inference."
+  ],
+  "reusable_learnings": [
+    {
+      "learning": "A self-improving environment can be made auditable by mining only explicit retained operational signals through versioned patterns, requiring recurrence across executions, and separating proposal generation from execution authority.",
+      "evidence_refs": [
+        "analysis:LE-IMPA-0daa8980f6fbbb41",
+        "github:workflow-run:32153813374",
+        "github:workflow-run:32153813561"
+      ],
+      "reuse_scope": [
+        "graph-engineering-os",
+        "leverage-engine",
+        "environment-improvement",
+        "governance"
+      ]
+    },
+    {
+      "learning": "Retained improvement analyses should be exactly reproducible from canonical receipts and a versioned pattern registry so the operator can audit why a recommendation existed at a point in time.",
+      "evidence_refs": [
+        "analysis:LE-IMPA-0daa8980f6fbbb41",
+        "github:commit:05ec013852488e66d8c69c07eb96ac0accaaca78",
+        "github:workflow-run:32153813374"
+      ],
+      "reuse_scope": [
+        "graph-engineering-os",
+        "leverage-engine",
+        "deterministic-replay",
+        "environment-improvement"
+      ]
+    },
+    {
+      "learning": "The first recurring high-leverage bottleneck detected from real retained history is context candidate recall: improve retrieval upstream while preserving the existing deterministic Context Compiler as the admission boundary.",
+      "evidence_refs": [
+        "proposal:LE-IMPROVE-dbfc7509df5b19c7",
+        "receipt:LE-EXEC-2026-0002:residual_risks:2",
+        "receipt:LE-EXEC-2026-0003:residual_risks:1"
+      ],
+      "reuse_scope": [
+        "graph-engineering-os",
+        "leverage-engine",
+        "context-compilation"
+      ]
+    }
+  ],
+  "reused_experience": [
+    {
+      "source_execution_id": "LE-EXEC-2026-0004",
+      "kind": "next_improvement",
+      "statement": "Build the Phase 5 environment-improvement loop that mines retained friction, failures, exclusions, routing abstentions, and reusable learning for recurring structural bottlenecks, produces an evidence-backed improvement proposal, and never self-authorizes the resulting change.",
+      "application": "Phase 5 implemented an explicit-signal recurrence miner and governed REVIEW-only proposal contract over validated retained receipts.",
+      "observed_effect": "The system produced a reproducible proposal from real retained history while leaving execution_authorized false and stopping at REVIEW.",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0004",
+        "analysis:LE-IMPA-0daa8980f6fbbb41",
+        "github:workflow-run:32153813374"
+      ]
+    },
+    {
+      "source_execution_id": "LE-EXEC-2026-0004",
+      "kind": "learning",
+      "statement": "Executor identity needs an explicit stable capability toolset distinct from incidental validation and observability tools; otherwise performance history fragments across operationally equivalent runs.",
+      "application": "The Phase 5 registry includes executor identity as a candidate category, but the analyzer correctly leaves it ineligible because the signal currently recurs within only one distinct execution rather than lowering the recurrence threshold to force selection.",
+      "observed_effect": "A plausible high-leverage improvement remains unselected until additional independent execution evidence accumulates.",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0004",
+        "analysis:LE-IMPA-0daa8980f6fbbb41"
+      ]
+    }
+  ],
+  "residual_risks": [
+    "Improvement matching is lexical and registry-bound in v0.1; relevant novel failure language will produce no candidate until a reviewed pattern is added.",
+    "The analyzer measures recurrence, not whether a historical issue was subsequently remediated; future iterations need resolution/supersession status for improvement candidates to avoid resurfacing already-fixed problems.",
+    "The selected context-relevance proposal improves candidate retrieval only; no retrieval implementation has been authorized or built yet.",
+    "The Graph Engineering OS browser prototype still does not consume the canonical context, routing, or improvement records directly."
+  ],
+  "completion_status": "completed",
+  "completion_evidence": [
+    "github:pr:dburt-proex/operator-intelligence#51",
+    "github:workflow-run:32153813374",
+    "github:workflow-run:32153813561",
+    "github:workflow-run:32153813275",
+    "analysis:LE-IMPA-0daa8980f6fbbb41"
+  ],
+  "gate_result": "ALLOW",
+  "gate_reasons": [
+    "Phase 5 real-history analysis is exactly reproducible under regression test",
+    "all Phase 5 and prior Leverage Engine regression tests pass",
+    "DiffWall routes the Phase 5 implementation ALLOW at 15/100",
+    "repository registry/map validation passes",
+    "operator pre-authorized implementation and merge through this final planned phase"
+  ],
+  "next_improvement": {
+    "objective": "Improve context candidate recall without weakening deterministic admission controls.",
+    "rationale": "LE-IMPROVE-dbfc7509df5b19c7 matched two explicit retained context-relevance limitations across LE-EXEC-2026-0002 and LE-EXEC-2026-0003 and ranked first under recurrence-first deterministic ordering. This is a new post-plan proposal and remains operator REVIEW-required.",
+    "evidence_refs": [
+      "proposal:LE-IMPROVE-dbfc7509df5b19c7",
+      "receipt:LE-EXEC-2026-0002:residual_risks:2",
+      "receipt:LE-EXEC-2026-0003:residual_risks:1"
+    ],
+    "expected_leverage": "high",
+    "requires_review": true
+  },
+  "recorded_at": "2026-08-18T15:20:00Z"
+}
