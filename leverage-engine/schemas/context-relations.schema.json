@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "context-relations.schema.json",
+  "title": "Leverage Engine Context Relations",
+  "description": "Evidence-backed metadata describing supersession, contradiction, or invalidation between immutable retained experience items.",
+  "type": "object",
+  "required": ["version", "relations"],
+  "properties": {
+    "version": {"type": "string", "minLength": 1},
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["relation_id", "relation_type", "source_item_id", "target_item_id", "recorded_at", "evidence_refs"],
+        "properties": {
+          "relation_id": {"type": "string", "minLength": 1},
+          "relation_type": {"enum": ["supersedes", "contradicts", "invalidates"]},
+          "source_item_id": {"type": "string", "minLength": 1},
+          "target_item_id": {"type": "string", "minLength": 1},
+          "recorded_at": {"type": "string", "format": "date-time"},
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
