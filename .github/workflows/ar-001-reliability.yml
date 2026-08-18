@@ -1,6 +1,7 @@
 name: AR-001 reliability harness
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
