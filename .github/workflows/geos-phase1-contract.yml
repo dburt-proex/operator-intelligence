@@ -7,6 +7,7 @@ on:
       - 'leverage-engine/src/leverage_engine/schema_validation.py'
       - 'leverage-engine/tests/test_execution_receipt.py'
       - 'leverage-engine/fixtures/execution-receipt-*/**'
+      - 'leverage-engine/receipts/**'
       - 'leverage-engine/architecture/closed-loop-execution-v0.1.md'
       - '.github/workflows/geos-phase1-contract.yml'
   workflow_dispatch:
@@ -31,6 +32,9 @@ jobs:
           python -m json.tool leverage-engine/schemas/execution-receipt.schema.json >/dev/null
           python -m json.tool leverage-engine/fixtures/execution-receipt-valid/receipt.json >/dev/null
           python -m json.tool leverage-engine/fixtures/execution-receipt-invalid-missing-evidence/receipt.json >/dev/null
+          for receipt in leverage-engine/receipts/*.json; do
+            python -m json.tool "$receipt" >/dev/null
+          done
 
       - name: Install Leverage Engine locally
         run: python -m pip install -e ./leverage-engine
