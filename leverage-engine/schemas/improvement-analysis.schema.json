@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "improvement-analysis.schema.json",
+  "title": "Leverage Engine Improvement Analysis",
+  "description": "Deterministic analysis of explicit retained operational friction that may propose a REVIEW-required environment improvement but can never authorize execution.",
+  "type": "object",
+  "required": [
+    "analysis_id",
+    "generated_at",
+    "project_id",
+    "registry_version",
+    "min_distinct_executions",
+    "decision",
+    "candidates",
+    "selected_proposal",
+    "execution_authorized"
+  ],
+  "properties": {
+    "analysis_id": {"type": "string", "pattern": "^LE-IMPA-[a-f0-9]{16}$"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "project_id": {"type": "string", "minLength": 1},
+    "registry_version": {"type": "string", "minLength": 1},
+    "min_distinct_executions": {"type": "integer", "minimum": 1},
+    "decision": {"enum": ["PROPOSE", "NO_ACTION"]},
+    "candidates": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/candidate"}
+    },
+    "selected_proposal": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/proposal"}
+      ]
+    },
+    "execution_authorized": {"type": "boolean"}
+  },
+  "$defs": {
+    "candidate": {
+      "type": "object",
+      "required": [
+        "pattern_id",
+        "category",
+        "objective",
+        "proposed_action",
+        "expected_leverage",
+        "occurrence_count",
+        "distinct_execution_count",
+        "source_execution_ids",
+        "evidence_refs",
+        "scope",
+        "not_in_scope",
+        "eligible"
+      ],
+      "properties": {
+        "pattern_id": {"type": "string", "minLength": 1},
+        "category": {"type": "string", "minLength": 1},
+        "objective": {"type": "string", "minLength": 1},
+        "proposed_action": {"type": "string", "minLength": 1},
+        "expected_leverage": {"enum": ["low", "medium", "high", "unknown"]},
+        "occurrence_count": {"type": "integer", "minimum": 1},
+        "distinct_execution_count": {"type": "integer", "minimum": 1},
+        "source_execution_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "not_in_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "eligible": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "proposal": {
+      "type": "object",
+      "required": [
+        "proposal_id",
+        "pattern_id",
+        "category",
+        "objective",
+        "proposed_action",
+        "rationale",
+        "expected_leverage",
+        "occurrence_count",
+        "distinct_execution_count",
+        "source_execution_ids",
+        "evidence_refs",
+        "scope",
+        "not_in_scope",
+        "required_gate",
+        "execution_authorized"
+      ],
+      "properties": {
+        "proposal_id": {"type": "string", "pattern": "^LE-IMPROVE-[a-f0-9]{16}$"},
+        "pattern_id": {"type": "string", "minLength": 1},
+        "category": {"type": "string", "minLength": 1},
+        "objective": {"type": "string", "minLength": 1},
+        "proposed_action": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1},
+        "expected_leverage": {"enum": ["low", "medium", "high", "unknown"]},
+        "occurrence_count": {"type": "integer", "minimum": 1},
+        "distinct_execution_count": {"type": "integer", "minimum": 1},
+        "source_execution_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "not_in_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "required_gate": {"enum": ["REVIEW"]},
+        "execution_authorized": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

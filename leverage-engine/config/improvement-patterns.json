@@ -1,0 +1,115 @@
+{
+  "version": "0.1.0",
+  "patterns": [
+    {
+      "pattern_id": "IMP-CONTEXT-RELEVANCE",
+      "category": "context-relevance",
+      "match_any": [
+        "exact deterministic scope",
+        "deterministic exact scope",
+        "semantic retrieval"
+      ],
+      "objective": "Improve context candidate recall without weakening deterministic admission controls.",
+      "proposed_action": "Add a bounded candidate-retrieval stage that may propose additional relevant receipt items, then require the existing Context Compiler to apply freshness, relation, budget, provenance, and authority-neutral admission controls.",
+      "expected_leverage": "high",
+      "scope": [
+        "context-compilation",
+        "graph-engineering-os",
+        "leverage-engine"
+      ],
+      "not_in_scope": [
+        "LLM-only context admission",
+        "automatic policy changes",
+        "unbounded vector memory"
+      ]
+    },
+    {
+      "pattern_id": "IMP-TRACKING-HYGIENE",
+      "category": "tracking-hygiene",
+      "match_any": [
+        "redundant scratch issue",
+        "scratch issue",
+        "placeholder issue",
+        "canonical directive issue"
+      ],
+      "objective": "Reduce repository tracking noise and duplicate control records.",
+      "proposed_action": "Add an idempotent canonical-directive lookup before creating tracking records and require one bounded directive issue to remain the source of truth for each increment.",
+      "expected_leverage": "medium",
+      "scope": [
+        "directive-management",
+        "repository-engineering"
+      ],
+      "not_in_scope": [
+        "deleting valid historical decisions",
+        "merging unrelated directives",
+        "changing operator authority"
+      ]
+    },
+    {
+      "pattern_id": "IMP-EXECUTOR-IDENTITY",
+      "category": "executor-identity",
+      "match_any": [
+        "stable capability toolset",
+        "fragment history",
+        "fragment across operationally equivalent runs"
+      ],
+      "objective": "Keep executor performance history stable across incidental validation and observability tooling changes.",
+      "proposed_action": "Add an explicit capability_toolset field for routing identity while retaining the complete tools list as execution telemetry.",
+      "expected_leverage": "high",
+      "scope": [
+        "agent-routing",
+        "execution-telemetry",
+        "leverage-engine"
+      ],
+      "not_in_scope": [
+        "automatic model dispatch",
+        "rewriting historical receipts",
+        "removing validation telemetry"
+      ]
+    },
+    {
+      "pattern_id": "IMP-GRAPH-RECEIPT-VISIBILITY",
+      "category": "graph-receipt-visibility",
+      "match_any": [
+        "browser prototype",
+        "does not render",
+        "not yet wired to receipts",
+        "browser interface"
+      ],
+      "objective": "Expose retained execution evidence in the Graph Engineering OS operator view without making the UI a new source of truth.",
+      "proposed_action": "Add a read-only adapter that renders canonical Leverage Engine receipts, context packages, routing decisions, and improvement analyses in Graph Engineering OS.",
+      "expected_leverage": "medium",
+      "scope": [
+        "graph-engineering-os",
+        "operator-visibility"
+      ],
+      "not_in_scope": [
+        "duplicating canonical storage",
+        "client-side authority decisions",
+        "customer-facing product work"
+      ]
+    },
+    {
+      "pattern_id": "IMP-ROUTING-EVIDENCE-SPARSITY",
+      "category": "routing-evidence-sparsity",
+      "match_any": [
+        "insufficient to meet the three-sample threshold",
+        "real sample history remains sparse",
+        "too small for an evidence-backed executor selection"
+      ],
+      "objective": "Increase comparable execution evidence without lowering routing confidence thresholds.",
+      "proposed_action": "Standardize receipt capture for repeated comparable repository tasks so routing profiles accumulate enough real samples to leave REVIEW honestly.",
+      "expected_leverage": "high",
+      "scope": [
+        "agent-routing",
+        "evaluation",
+        "execution-telemetry"
+      ],
+      "not_in_scope": [
+        "fabricating benchmark runs",
+        "lowering evidence thresholds solely to force a route",
+        "synthetic data in production routing"
+      ]
+    }
+  ]
+}

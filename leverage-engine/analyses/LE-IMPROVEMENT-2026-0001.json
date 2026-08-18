@@ -1,0 +1,178 @@
+{
+  "analysis_id": "LE-IMPA-0daa8980f6fbbb41",
+  "candidates": [
+    {
+      "category": "context-relevance",
+      "distinct_execution_count": 2,
+      "eligible": true,
+      "evidence_refs": [
+        "receipt:LE-EXEC-2026-0002:residual_risks:2",
+        "receipt:LE-EXEC-2026-0003:residual_risks:1"
+      ],
+      "expected_leverage": "high",
+      "not_in_scope": [
+        "LLM-only context admission",
+        "automatic policy changes",
+        "unbounded vector memory"
+      ],
+      "objective": "Improve context candidate recall without weakening deterministic admission controls.",
+      "occurrence_count": 2,
+      "pattern_id": "IMP-CONTEXT-RELEVANCE",
+      "proposed_action": "Add a bounded candidate-retrieval stage that may propose additional relevant receipt items, then require the existing Context Compiler to apply freshness, relation, budget, provenance, and authority-neutral admission controls.",
+      "scope": [
+        "context-compilation",
+        "graph-engineering-os",
+        "leverage-engine"
+      ],
+      "source_execution_ids": [
+        "LE-EXEC-2026-0002",
+        "LE-EXEC-2026-0003"
+      ]
+    },
+    {
+      "category": "graph-receipt-visibility",
+      "distinct_execution_count": 2,
+      "eligible": true,
+      "evidence_refs": [
+        "receipt:LE-EXEC-2026-0001:residual_risks:3",
+        "receipt:LE-EXEC-2026-0002:residual_risks:3"
+      ],
+      "expected_leverage": "medium",
+      "not_in_scope": [
+        "client-side authority decisions",
+        "customer-facing product work",
+        "duplicating canonical storage"
+      ],
+      "objective": "Expose retained execution evidence in the Graph Engineering OS operator view without making the UI a new source of truth.",
+      "occurrence_count": 2,
+      "pattern_id": "IMP-GRAPH-RECEIPT-VISIBILITY",
+      "proposed_action": "Add a read-only adapter that renders canonical Leverage Engine receipts, context packages, routing decisions, and improvement analyses in Graph Engineering OS.",
+      "scope": [
+        "graph-engineering-os",
+        "operator-visibility"
+      ],
+      "source_execution_ids": [
+        "LE-EXEC-2026-0001",
+        "LE-EXEC-2026-0002"
+      ]
+    },
+    {
+      "category": "tracking-hygiene",
+      "distinct_execution_count": 2,
+      "eligible": true,
+      "evidence_refs": [
+        "receipt:LE-EXEC-2026-0002:friction:1",
+        "receipt:LE-EXEC-2026-0003:friction:2"
+      ],
+      "expected_leverage": "medium",
+      "not_in_scope": [
+        "changing operator authority",
+        "deleting valid historical decisions",
+        "merging unrelated directives"
+      ],
+      "objective": "Reduce repository tracking noise and duplicate control records.",
+      "occurrence_count": 2,
+      "pattern_id": "IMP-TRACKING-HYGIENE",
+      "proposed_action": "Add an idempotent canonical-directive lookup before creating tracking records and require one bounded directive issue to remain the source of truth for each increment.",
+      "scope": [
+        "directive-management",
+        "repository-engineering"
+      ],
+      "source_execution_ids": [
+        "LE-EXEC-2026-0002",
+        "LE-EXEC-2026-0003"
+      ]
+    },
+    {
+      "category": "executor-identity",
+      "distinct_execution_count": 1,
+      "eligible": false,
+      "evidence_refs": [
+        "receipt:LE-EXEC-2026-0004:friction:2",
+        "receipt:LE-EXEC-2026-0004:residual_risks:2"
+      ],
+      "expected_leverage": "high",
+      "not_in_scope": [
+        "automatic model dispatch",
+        "removing validation telemetry",
+        "rewriting historical receipts"
+      ],
+      "objective": "Keep executor performance history stable across incidental validation and observability tooling changes.",
+      "occurrence_count": 2,
+      "pattern_id": "IMP-EXECUTOR-IDENTITY",
+      "proposed_action": "Add an explicit capability_toolset field for routing identity while retaining the complete tools list as execution telemetry.",
+      "scope": [
+        "agent-routing",
+        "execution-telemetry",
+        "leverage-engine"
+      ],
+      "source_execution_ids": [
+        "LE-EXEC-2026-0004"
+      ]
+    },
+    {
+      "category": "routing-evidence-sparsity",
+      "distinct_execution_count": 1,
+      "eligible": false,
+      "evidence_refs": [
+        "receipt:LE-EXEC-2026-0004:friction:1",
+        "receipt:LE-EXEC-2026-0004:residual_risks:1"
+      ],
+      "expected_leverage": "high",
+      "not_in_scope": [
+        "fabricating benchmark runs",
+        "lowering evidence thresholds solely to force a route",
+        "synthetic data in production routing"
+      ],
+      "objective": "Increase comparable execution evidence without lowering routing confidence thresholds.",
+      "occurrence_count": 2,
+      "pattern_id": "IMP-ROUTING-EVIDENCE-SPARSITY",
+      "proposed_action": "Standardize receipt capture for repeated comparable repository tasks so routing profiles accumulate enough real samples to leave REVIEW honestly.",
+      "scope": [
+        "agent-routing",
+        "evaluation",
+        "execution-telemetry"
+      ],
+      "source_execution_ids": [
+        "LE-EXEC-2026-0004"
+      ]
+    }
+  ],
+  "decision": "PROPOSE",
+  "execution_authorized": false,
+  "generated_at": "2026-08-18T15:13:00Z",
+  "min_distinct_executions": 2,
+  "project_id": "dburt-proex/operator-intelligence:leverage-engine",
+  "registry_version": "0.1.0",
+  "selected_proposal": {
+    "category": "context-relevance",
+    "distinct_execution_count": 2,
+    "evidence_refs": [
+      "receipt:LE-EXEC-2026-0002:residual_risks:2",
+      "receipt:LE-EXEC-2026-0003:residual_risks:1"
+    ],
+    "execution_authorized": false,
+    "expected_leverage": "high",
+    "not_in_scope": [
+      "LLM-only context admission",
+      "automatic policy changes",
+      "unbounded vector memory"
+    ],
+    "objective": "Improve context candidate recall without weakening deterministic admission controls.",
+    "occurrence_count": 2,
+    "pattern_id": "IMP-CONTEXT-RELEVANCE",
+    "proposal_id": "LE-IMPROVE-dbfc7509df5b19c7",
+    "proposed_action": "Add a bounded candidate-retrieval stage that may propose additional relevant receipt items, then require the existing Context Compiler to apply freshness, relation, budget, provenance, and authority-neutral admission controls.",
+    "rationale": "Pattern IMP-CONTEXT-RELEVANCE matched 2 explicit retained signal(s) across 2 distinct execution(s) and ranked first under recurrence-first deterministic ordering.",
+    "required_gate": "REVIEW",
+    "scope": [
+      "context-compilation",
+      "graph-engineering-os",
+      "leverage-engine"
+    ],
+    "source_execution_ids": [
+      "LE-EXEC-2026-0002",
+      "LE-EXEC-2026-0003"
+    ]
+  }
+}
