@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "execution-receipt.schema.json",
+  "title": "Leverage Engine Execution Receipt",
+  "description": "Machine-readable experience record linking an approved directive to actual execution, validation, friction, learning, and the next improvement proposal.",
+  "type": "object",
+  "required": [
+    "execution_id",
+    "directive_id",
+    "project_id",
+    "started_at",
+    "ended_at",
+    "executor",
+    "context_refs",
+    "evidence_refs",
+    "decision_refs",
+    "tools",
+    "actions",
+    "changes",
+    "validation",
+    "operator_interventions",
+    "review_events",
+    "failures",
+    "friction",
+    "reusable_learnings",
+    "residual_risks",
+    "completion_status",
+    "completion_evidence",
+    "gate_result",
+    "gate_reasons",
+    "next_improvement",
+    "recorded_at"
+  ],
+  "properties": {
+    "execution_id": {"type": "string", "pattern": "^LE-EXEC-[0-9]{4}-[0-9]{4}$"},
+    "directive_id": {"type": "string", "pattern": "^LD-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}$"},
+    "project_id": {"type": "string", "minLength": 1},
+    "started_at": {"type": "string", "format": "date-time"},
+    "ended_at": {"type": "string", "format": "date-time"},
+    "executor": {
+      "type": "object",
+      "required": ["actor_type", "actor_id", "agent", "model"],
+      "properties": {
+        "actor_type": {"enum": ["human", "agent", "hybrid"]},
+        "actor_id": {"type": "string", "minLength": 1},
+        "agent": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "context_refs": {"$ref": "#/$defs/refArray"},
+    "evidence_refs": {"$ref": "#/$defs/refArray"},
+    "decision_refs": {"$ref": "#/$defs/refArray"},
+    "tools": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["sequence", "action", "result"],
+        "properties": {
+          "sequence": {"type": "integer", "minimum": 1},
+          "action": {"type": "string", "minLength": 1},
+          "result": {"enum": ["completed", "partial", "blocked", "failed", "skipped"]},
+          "evidence_refs": {"$ref": "#/$defs/refArray"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["target_type", "target_ref", "change_summary"],
+        "properties": {
+          "target_type": {"enum": ["file", "repository", "record", "service", "configuration", "artifact", "none"]},
+          "target_ref": {"type": "string", "minLength": 1},
+          "change_summary": {"type": "string", "minLength": 1},
+          "version_ref": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "validation": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["validator", "scope", "result", "evidence_refs"],
+        "properties": {
+          "validator": {"type": "string", "minLength": 1},
+          "scope": {"type": "string", "minLength": 1},
+          "result": {"enum": ["pass", "fail", "partial", "not_run"]},
+          "evidence_refs": {"$ref": "#/$defs/refArray"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "operator_interventions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["actor", "reason", "effect"],
+        "properties": {
+          "actor": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1},
+          "effect": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "review_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gate", "decision", "owner", "rationale", "recorded_at"],
+        "properties": {
+          "gate": {"type": "string", "minLength": 1},
+          "decision": {"enum": ["ALLOW", "REVIEW", "HALT"]},
+          "owner": {"type": "string", "minLength": 1},
+          "rationale": {"type": "string", "minLength": 1},
+          "recorded_at": {"type": "string", "format": "date-time"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "failures": {"$ref": "#/$defs/stringArray"},
+    "friction": {"$ref": "#/$defs/stringArray"},
+    "reusable_learnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["learning", "evidence_refs", "reuse_scope"],
+        "properties": {
+          "learning": {"type": "string", "minLength": 1},
+          "evidence_refs": {"$ref": "#/$defs/nonEmptyRefArray"},
+          "reuse_scope": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "residual_risks": {"$ref": "#/$defs/stringArray"},
+    "completion_status": {"enum": ["completed", "partial", "blocked", "failed", "abandoned"]},
+    "completion_evidence": {"$ref": "#/$defs/refArray"},
+    "gate_result": {"enum": ["ALLOW", "REVIEW", "HALT"]},
+    "gate_reasons": {"$ref": "#/$defs/stringArray"},
+    "next_improvement": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "required": ["objective", "rationale", "evidence_refs", "expected_leverage", "requires_review"],
+          "properties": {
+            "objective": {"type": "string", "minLength": 1},
+            "rationale": {"type": "string", "minLength": 1},
+            "evidence_refs": {"$ref": "#/$defs/nonEmptyRefArray"},
+            "expected_leverage": {"enum": ["low", "medium", "high", "unknown"]},
+            "requires_review": {"type": "boolean"}
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "recorded_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {
+    "refArray": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "nonEmptyRefArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"completion_status": {"const": "completed"}},
+        "required": ["completion_status"]
+      },
+      "then": {
+        "properties": {
+          "completion_evidence": {"minItems": 1},
+          "validation": {
+            "contains": {
+              "properties": {"result": {"const": "pass"}},
+              "required": ["result"]
+            },
+            "minContains": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"gate_result": {"const": "HALT"}},
+        "required": ["gate_result"]
+      },
+      "then": {
+        "not": {
+          "properties": {"completion_status": {"const": "completed"}},
+          "required": ["completion_status"]
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

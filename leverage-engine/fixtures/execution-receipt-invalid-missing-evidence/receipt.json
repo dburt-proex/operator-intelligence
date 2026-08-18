@@ -1,0 +1,53 @@
+{
+  "execution_id": "LE-EXEC-2026-0002",
+  "directive_id": "LD-2026-08-18-098",
+  "project_id": "sample/repository-engineering",
+  "started_at": "2026-08-18T14:00:00Z",
+  "ended_at": "2026-08-18T14:05:00Z",
+  "executor": {
+    "actor_type": "agent",
+    "actor_id": "sample-agent-02",
+    "agent": "repository-engineering-agent",
+    "model": "sample-model"
+  },
+  "context_refs": ["repo-snapshot:SAMPLE-SHA-010"],
+  "evidence_refs": ["directive:LD-2026-08-18-098"],
+  "decision_refs": ["decision:SAMPLE-ALLOW-010"],
+  "tools": ["git"],
+  "actions": [
+    {
+      "sequence": 1,
+      "action": "Apply a sample change.",
+      "result": "completed",
+      "evidence_refs": ["commit:SAMPLE-SHA-011"]
+    }
+  ],
+  "changes": [
+    {
+      "target_type": "file",
+      "target_ref": "sample/path/example.txt",
+      "change_summary": "Sample change with no retained completion evidence.",
+      "version_ref": "commit:SAMPLE-SHA-011"
+    }
+  ],
+  "validation": [
+    {
+      "validator": "sample-contract-check",
+      "scope": "sample/path/example.txt",
+      "result": "not_run",
+      "evidence_refs": []
+    }
+  ],
+  "operator_interventions": [],
+  "review_events": [],
+  "failures": [],
+  "friction": [],
+  "reusable_learnings": [],
+  "residual_risks": ["No validation evidence was retained."],
+  "completion_status": "completed",
+  "completion_evidence": [],
+  "gate_result": "ALLOW",
+  "gate_reasons": ["sample invalid fixture"],
+  "next_improvement": null,
+  "recorded_at": "2026-08-18T14:06:00Z"
+}
