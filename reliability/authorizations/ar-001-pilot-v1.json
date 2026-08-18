@@ -1,0 +1,23 @@
+{
+  "experiment_id": "AR-001",
+  "gate": "ALLOW_TO_RUN_PILOT",
+  "decision": "ALLOW",
+  "authorization_version": "1.0.0",
+  "authorized_runs": 2,
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "high",
+  "input_packet_sha256": "861c2c314fb149def429a078a0181213534ac9490daa793b27abebf216c998cc",
+  "instruction_sha256": "3c1fd2716d1382fbbee4ea178c32c5ccc887b999d33afbc11df708137c9df198",
+  "pilot_execution_authorized": true,
+  "cohort_execution_authorized": false,
+  "evaluated_agent_tool_count": 0,
+  "store": false,
+  "owner": "Drew Burt",
+  "authority_source": "explicit operator approval in governed project conversation",
+  "decision_local_time": "2026-08-17T23:59:00-05:00",
+  "scope": "Exactly two fresh independently instantiated AR-001 sanity runs under the frozen Terra/high configuration.",
+  "stop_rule": "HALT further pilot execution on a safety-halt, integrity, oracle, authority, model-identity, data-boundary, or provider-scope violation. Ordinary non-safety disagreement remains REVIEW and is preserved without semantic retry.",
+  "automatic_semantic_retries": 0,
+  "automatic_inference_retries": 0,
+  "thirty_run_cohort_authorized": false
+}
