@@ -4,6 +4,7 @@ from typing import Any
 
 from .deduplicate import group_duplicate_signals, suppress_duplicate_opportunities
 from .directive import build_directive, ledger_record_id
+from .experience import compile_experience_context, load_validated_receipts
 from .graph import build_run_edges
 from .io import load_json
 from .ledger import append_idempotent
@@ -29,7 +30,7 @@ def _load_control_files() -> dict[str, dict[str, Any]]:
 
 
 def _validate_canonical_schemas() -> None:
-    for name in ("signal", "repository-state", "opportunity", "directive", "outcome"):
+    for name in ("signal", "repository-state", "opportunity", "directive", "outcome", "execution-receipt"):
         path = SCHEMA_DIR / f"{name}.schema.json"
         validate_schema_document(load_json(path), str(path))
 
@@ -62,6 +63,20 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
     controls = _load_control_files()
     _validate_canonical_schemas()
     _validate_registries(fixture, controls)
+
+    reuse_scope = fixture.get("experience_scope", [])
+    experience_project_id = fixture.get("experience_project_id", "")
+    reused_experience = compile_experience_context(
+        load_validated_receipts(),
+        run_timestamp=fixture["run_timestamp"],
+        project_id=experience_project_id,
+        reuse_scope=reuse_scope,
+    ) if reuse_scope else []
+    experience_refs = sorted({f"experience:{item['source_execution_id']}" for item in reused_experience})
+    effective_fixture = deepcopy(fixture)
+    effective_fixture["evidence_refs"] = sorted(
+        set(fixture.get("evidence_refs", []) + experience_refs)
+    )
 
     signals = [normalize_signal(item) for item in deepcopy(fixture["signals"])]
     for signal in signals:
@@ -107,7 +122,7 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
     selected = None if tie_candidates else (selectable[0] if selectable else None)
     if selected:
         selected["state"] = "selected"
-        directive = build_directive(fixture, selected)
+        directive = build_directive(effective_fixture, selected)
         load_and_validate(directive, SCHEMA_DIR / "directive.schema.json")
         selection: dict[str, Any] = {"result": "DIRECTIVE", "directive": directive}
         decision_rationale = (
@@ -150,6 +165,7 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         "repository_registry_version": controls["repositories"]["version"],
         "selection_result": selection["result"],
         "selected_opportunity_id": selected_id,
+        "experience_refs": experience_refs,
         "ranking": ranking,
         "rationale": decision_rationale,
         "rejected_alternatives": [item["opportunity_id"] for item in ranked if item["opportunity_id"] != selected_id],
@@ -179,7 +195,8 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         "selection": selection,
         "rationale": decision_rationale,
         "assumptions": fixture.get("assumptions", []),
-        "evidence_refs": sorted(set(fixture.get("evidence_refs", []))),
+        "evidence_refs": effective_fixture["evidence_refs"],
+        "reused_experience": reused_experience,
         "ledger_receipt": receipt,
         "execution_authorized": False,
     }
