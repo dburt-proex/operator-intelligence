@@ -2,9 +2,10 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
+from .context import compile_context_package, load_context_relations
 from .deduplicate import group_duplicate_signals, suppress_duplicate_opportunities
 from .directive import build_directive, ledger_record_id
-from .experience import compile_experience_context, load_validated_receipts
+from .experience import load_validated_receipts
 from .graph import build_run_edges
 from .io import load_json
 from .ledger import append_idempotent
@@ -30,7 +31,16 @@ def _load_control_files() -> dict[str, dict[str, Any]]:
 
 
 def _validate_canonical_schemas() -> None:
-    for name in ("signal", "repository-state", "opportunity", "directive", "outcome", "execution-receipt"):
+    for name in (
+        "signal",
+        "repository-state",
+        "opportunity",
+        "directive",
+        "outcome",
+        "execution-receipt",
+        "context-package",
+        "context-relations",
+    ):
         path = SCHEMA_DIR / f"{name}.schema.json"
         validate_schema_document(load_json(path), str(path))
 
@@ -65,13 +75,19 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
     _validate_registries(fixture, controls)
 
     reuse_scope = fixture.get("experience_scope", [])
-    experience_project_id = fixture.get("experience_project_id", "")
-    reused_experience = compile_experience_context(
-        load_validated_receipts(),
+    experience_project_id = fixture.get("experience_project_id") or fixture.get("target_system", "unspecified")
+    context_budget = fixture.get("context_budget", {})
+    compiled_context = compile_context_package(
+        load_validated_receipts() if reuse_scope else [],
         run_timestamp=fixture["run_timestamp"],
         project_id=experience_project_id,
         reuse_scope=reuse_scope,
-    ) if reuse_scope else []
+        relations=load_context_relations(),
+        max_items=int(context_budget.get("max_items", 12)),
+        max_chars=int(context_budget.get("max_chars", 6000)),
+        max_age_days=int(context_budget.get("max_age_days", 90)),
+    )
+    reused_experience = compiled_context["included"]
     experience_refs = sorted({f"experience:{item['source_execution_id']}" for item in reused_experience})
     effective_fixture = deepcopy(fixture)
     effective_fixture["evidence_refs"] = sorted(
@@ -165,6 +181,7 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         "repository_registry_version": controls["repositories"]["version"],
         "selection_result": selection["result"],
         "selected_opportunity_id": selected_id,
+        "context_id": compiled_context["context_id"],
         "experience_refs": experience_refs,
         "ranking": ranking,
         "rationale": decision_rationale,
@@ -196,6 +213,7 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         "rationale": decision_rationale,
         "assumptions": fixture.get("assumptions", []),
         "evidence_refs": effective_fixture["evidence_refs"],
+        "compiled_context": compiled_context,
         "reused_experience": reused_experience,
         "ledger_receipt": receipt,
         "execution_authorized": False,

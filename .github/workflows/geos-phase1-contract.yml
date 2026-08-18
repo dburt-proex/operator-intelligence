@@ -1,14 +1,9 @@
-name: GEOS Phase 1 Contract
+name: Leverage Engine Regression
 
 on:
   pull_request:
     paths:
-      - 'leverage-engine/schemas/execution-receipt.schema.json'
-      - 'leverage-engine/src/leverage_engine/schema_validation.py'
-      - 'leverage-engine/tests/test_execution_receipt.py'
-      - 'leverage-engine/fixtures/execution-receipt-*/**'
-      - 'leverage-engine/receipts/**'
-      - 'leverage-engine/architecture/closed-loop-execution-v0.1.md'
+      - 'leverage-engine/**'
       - '.github/workflows/geos-phase1-contract.yml'
   workflow_dispatch:
 
@@ -16,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  validate-contract:
+  validate-leverage-engine:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,14 +22,12 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Validate JSON syntax
+      - name: Validate repository JSON syntax
         run: |
-          python -m json.tool leverage-engine/schemas/execution-receipt.schema.json >/dev/null
-          python -m json.tool leverage-engine/fixtures/execution-receipt-valid/receipt.json >/dev/null
-          python -m json.tool leverage-engine/fixtures/execution-receipt-invalid-missing-evidence/receipt.json >/dev/null
-          for receipt in leverage-engine/receipts/*.json; do
-            python -m json.tool "$receipt" >/dev/null
-          done
+          find leverage-engine/schemas leverage-engine/config leverage-engine/fixtures leverage-engine/receipts \
+            -type f -name '*.json' -print0 | while IFS= read -r -d '' file; do
+              python -m json.tool "$file" >/dev/null
+            done
 
       - name: Install Leverage Engine locally
         run: python -m pip install -e ./leverage-engine
