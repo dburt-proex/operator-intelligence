@@ -1,0 +1,8 @@
+{
+  "run_timestamp": "2026-08-18T14:30:00Z",
+  "project_id": "dburt-proex/operator-intelligence:leverage-engine",
+  "reuse_scope": ["leverage-engine", "graph-engineering-os"],
+  "max_items": 6,
+  "max_chars": 4000,
+  "max_age_days": 90
+}
