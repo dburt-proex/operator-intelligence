@@ -38,6 +38,20 @@ class ExecutionReceiptTests(unittest.TestCase):
         with self.assertRaises(SchemaValidationError):
             load_and_validate(receipt, schema_path)
 
+    def test_next_improvement_requires_supporting_evidence(self):
+        schema_path = SCHEMA_DIR / "execution-receipt.schema.json"
+        receipt = load_json(self.fixture("execution-receipt-valid"))
+        receipt["next_improvement"]["evidence_refs"] = []
+        with self.assertRaises(SchemaValidationError):
+            load_and_validate(receipt, schema_path)
+
+    def test_reusable_learning_requires_supporting_evidence(self):
+        schema_path = SCHEMA_DIR / "execution-receipt.schema.json"
+        receipt = load_json(self.fixture("execution-receipt-valid"))
+        receipt["reusable_learnings"][0]["evidence_refs"] = []
+        with self.assertRaises(SchemaValidationError):
+            load_and_validate(receipt, schema_path)
+
 
 if __name__ == "__main__":
     unittest.main()
