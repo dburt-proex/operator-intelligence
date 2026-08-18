@@ -1,0 +1,316 @@
+{
+  "execution_id": "LE-EXEC-2026-0002",
+  "directive_id": "LD-2026-08-18-042",
+  "project_id": "dburt-proex/operator-intelligence:leverage-engine",
+  "started_at": "2026-08-18T14:16:00Z",
+  "ended_at": "2026-08-18T14:22:34Z",
+  "executor": {
+    "actor_type": "hybrid",
+    "actor_id": "chatgpt-session-with-operator-authorization",
+    "agent": "VIN execution lead",
+    "model": "GPT-5.6 Sol"
+  },
+  "context_refs": [
+    "experience:LE-EXEC-2026-0001",
+    "github:commit:bebc8639bd1e80bb7ff18cfe6e1fa2925beab4b9",
+    "github:issue:dburt-proex/operator-intelligence#42",
+    "repo:leverage-engine/src/leverage_engine/runner.py",
+    "repo:leverage-engine/src/leverage_engine/paths.py",
+    "repo:leverage-engine/src/leverage_engine/schema_validation.py"
+  ],
+  "evidence_refs": [
+    "experience:LE-EXEC-2026-0001",
+    "github:issue:dburt-proex/operator-intelligence#42",
+    "github:pr:dburt-proex/operator-intelligence#44",
+    "github:workflow-run:32147912127",
+    "github:workflow-run:32147912082",
+    "github:workflow-run:32147912049"
+  ],
+  "decision_refs": [
+    "github:issue:dburt-proex/operator-intelligence#42:bounded-implementation-ALLOW",
+    "github:pr:dburt-proex/operator-intelligence#44:merge-REVIEW"
+  ],
+  "tools": [
+    "GitHub connector",
+    "GitHub Actions",
+    "DiffWall PR Firewall"
+  ],
+  "actions": [
+    {
+      "sequence": 1,
+      "action": "Read LE-EXEC-2026-0001 and inspect the existing Leverage Engine runner, paths, schema validator, and receipt contract before designing Phase 2.",
+      "result": "completed",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0001",
+        "github:commit:bebc8639bd1e80bb7ff18cfe6e1fa2925beab4b9"
+      ]
+    },
+    {
+      "sequence": 2,
+      "action": "Create LD-2026-08-18-042 and isolate Phase 2 on feature/geos-phase2-experience-reuse.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:issue:dburt-proex/operator-intelligence#42",
+        "github:branch:feature/geos-phase2-experience-reuse"
+      ]
+    },
+    {
+      "sequence": 3,
+      "action": "Extend the existing path spine with RECEIPT_DIR and add a minimal validated experience projector instead of creating a parallel memory or validation subsystem.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:commit:3736de30ff305188d8db5164f30bc4bfb9066fc7",
+        "github:commit:13c698870092f86bf307620eb98dd0309d9588bf"
+      ]
+    },
+    {
+      "sequence": 4,
+      "action": "Wire relevant prior experience into the existing deterministic run path and generated directive evidence while keeping execution_authorized false.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:commit:acd7cf66408fd58d586470df7f0ca227db346610"
+      ]
+    },
+    {
+      "sequence": 5,
+      "action": "Extend the existing execution-receipt schema with a backward-compatible reused_experience record that requires supporting evidence.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:commit:49b51fec7ba037c43cfea9b614ce9bce2972a99e"
+      ]
+    },
+    {
+      "sequence": 6,
+      "action": "Add an N+1 fixture and tests proving Phase 1 experience is consumed, unrelated scope is excluded, future receipts cannot leak into replay, and prior authority state is not projected.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:commit:00bd81718412d14622eb72e56e4b76c5092c34cb",
+        "github:commit:3090632b019f1603815856137f70e7a2a9158bc7",
+        "github:commit:c85517fa2aab75429b170d2b731af42baa465042"
+      ]
+    },
+    {
+      "sequence": 7,
+      "action": "Open PR #44 and run the existing GEOS contract/regression workflow, repository-map validation, and DiffWall review without modifying protected CI infrastructure.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:pr:dburt-proex/operator-intelligence#44",
+        "github:workflow-run:32147912127",
+        "github:workflow-run:32147912082",
+        "github:workflow-run:32147912049"
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/paths.py",
+      "change_summary": "Added the canonical retained execution-receipt directory path.",
+      "version_ref": "github:commit:3736de30ff305188d8db5164f30bc4bfb9066fc7"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/experience.py",
+      "change_summary": "Added deterministic validated receipt loading and authority-neutral experience projection.",
+      "version_ref": "github:commit:13c698870092f86bf307620eb98dd0309d9588bf"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/runner.py",
+      "change_summary": "Added explicit prior-experience projection into run evidence, directive evidence, ledger records, and run output.",
+      "version_ref": "github:commit:acd7cf66408fd58d586470df7f0ca227db346610"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/schemas/execution-receipt.schema.json",
+      "change_summary": "Added backward-compatible reused_experience evidence records.",
+      "version_ref": "github:commit:49b51fec7ba037c43cfea9b614ce9bce2972a99e"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/fixtures/experience-reuse-valid/run.json",
+      "change_summary": "Added the first N+1 fixture that explicitly requests relevant Phase 1 experience.",
+      "version_ref": "github:commit:00bd81718412d14622eb72e56e4b76c5092c34cb"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/tests/test_experience_reuse.py",
+      "change_summary": "Added positive and negative cross-run reuse tests.",
+      "version_ref": "github:commit:3090632b019f1603815856137f70e7a2a9158bc7"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/tests/test_execution_receipt.py",
+      "change_summary": "Added validation coverage for evidence-backed reused_experience records.",
+      "version_ref": "github:commit:c85517fa2aab75429b170d2b731af42baa465042"
+    }
+  ],
+  "validation": [
+    {
+      "validator": "GEOS contract and Leverage Engine regression workflow",
+      "scope": "execution-receipt contract, N+1 experience-reuse tests, and full Leverage Engine regression suite",
+      "result": "pass",
+      "evidence_refs": [
+        "github:workflow-run:32147912127"
+      ]
+    },
+    {
+      "validator": "DiffWall PR Firewall",
+      "scope": "Phase 2 repository change-time risk",
+      "result": "pass",
+      "evidence_refs": [
+        "github:workflow-run:32147912082",
+        "github:pr:dburt-proex/operator-intelligence#44:DiffWall-ALLOW-3-of-100"
+      ]
+    },
+    {
+      "validator": "Validate registry and repository map",
+      "scope": "Operator Intelligence repository registry and map integrity",
+      "result": "pass",
+      "evidence_refs": [
+        "github:workflow-run:32147912049"
+      ]
+    }
+  ],
+  "operator_interventions": [
+    {
+      "actor": "Drew Burt",
+      "reason": "Approved Phase 1 merge after being told approval would immediately continue into the N+1 reuse directive.",
+      "effect": "Phase 1 was merged and bounded Phase 2 implementation proceeded; no Phase 2 merge authority has been granted yet."
+    }
+  ],
+  "review_events": [
+    {
+      "gate": "Phase 1 merge and Phase 2 bounded continuation",
+      "decision": "ALLOW",
+      "owner": "Drew Burt",
+      "rationale": "Operator explicitly approved the Phase 1 merge after the continuation path to N+1 was stated.",
+      "recorded_at": "2026-08-18T14:14:31Z"
+    },
+    {
+      "gate": "Phase 2 PR merge",
+      "decision": "REVIEW",
+      "owner": "Drew Burt",
+      "rationale": "Implementation and automated validation are complete, but PR #44 has not received operator merge approval.",
+      "recorded_at": "2026-08-18T14:22:34Z"
+    }
+  ],
+  "failures": [],
+  "friction": [
+    "A redundant scratch issue #43 was accidentally created during Phase 2 routing and immediately closed as not planned; #42 remains the single source of truth.",
+    "The existing CI workflow name still says GEOS Phase 1 Contract even though its full regression suite correctly validates Phase 2; renaming the protected workflow was intentionally avoided to prevent unnecessary scope and review overhead."
+  ],
+  "reusable_learnings": [
+    {
+      "learning": "Cross-run reuse can be added as a deterministic projection over validated receipts without creating a separate memory service, validator, or authority plane.",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0001",
+        "github:commit:13c698870092f86bf307620eb98dd0309d9588bf",
+        "github:workflow-run:32147912127"
+      ],
+      "reuse_scope": [
+        "graph-engineering-os",
+        "leverage-engine",
+        "repository-engineering",
+        "context-compilation"
+      ]
+    },
+    {
+      "learning": "Historical experience reuse requires an explicit time cutoff and relevance boundary; otherwise replay can leak future knowledge or unrelated context into a run.",
+      "evidence_refs": [
+        "github:commit:13c698870092f86bf307620eb98dd0309d9588bf",
+        "github:commit:3090632b019f1603815856137f70e7a2a9158bc7",
+        "github:workflow-run:32147912127"
+      ],
+      "reuse_scope": [
+        "graph-engineering-os",
+        "leverage-engine",
+        "context-compilation",
+        "deterministic-replay"
+      ]
+    },
+    {
+      "learning": "Repository tracking should preserve one canonical directive issue per bounded increment; redundant scratch records add navigation cost without adding decision value.",
+      "evidence_refs": [
+        "github:issue:dburt-proex/operator-intelligence#42",
+        "github:issue:dburt-proex/operator-intelligence#43:closed-not-planned"
+      ],
+      "reuse_scope": [
+        "repository-engineering",
+        "directive-management"
+      ]
+    }
+  ],
+  "reused_experience": [
+    {
+      "source_execution_id": "LE-EXEC-2026-0001",
+      "kind": "learning",
+      "statement": "Graph Engineering OS should extend the existing Leverage Engine contracts and validation spine rather than create parallel backend/control infrastructure.",
+      "application": "Phase 2 inspected and extended paths.py, runner.py, the existing execution-receipt schema, and the existing schema validator contract instead of introducing a new memory database, validator, or authority engine.",
+      "observed_effect": "The N+1 capability was implemented in seven bounded files with no protected workflow change; DiffWall routed the PR ALLOW at 3/100 risk.",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0001",
+        "github:commit:13c698870092f86bf307620eb98dd0309d9588bf",
+        "github:commit:acd7cf66408fd58d586470df7f0ca227db346610",
+        "github:workflow-run:32147912082"
+      ]
+    },
+    {
+      "source_execution_id": "LE-EXEC-2026-0001",
+      "kind": "learning",
+      "statement": "A proposed improvement is not admissible to the compounding loop unless its supporting evidence references are non-empty and retained learnings should meet the same standard.",
+      "application": "The new reused_experience receipt record requires non-empty supporting evidence and has positive/negative schema tests.",
+      "observed_effect": "Unsupported reuse claims are rejected by the same canonical receipt contract used for retained execution history.",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0001",
+        "github:commit:49b51fec7ba037c43cfea9b614ce9bce2972a99e",
+        "github:commit:c85517fa2aab75429b170d2b731af42baa465042",
+        "github:workflow-run:32147912127"
+      ]
+    },
+    {
+      "source_execution_id": "LE-EXEC-2026-0001",
+      "kind": "next_improvement",
+      "statement": "Make the next Leverage Engine repository run ingest relevant prior execution receipts and reusable learnings as explicit context, then prove Run N+1 used LE-EXEC-2026-0001.",
+      "application": "The experience-reuse-valid fixture requests Phase 1 scopes/project identity; run_fixture loads the retained receipt, projects relevant experience, and adds experience:LE-EXEC-2026-0001 to both run evidence and generated directive evidence.",
+      "observed_effect": "The N+1 fixture and full regression suite passed, while negative tests exclude unrelated scope, future receipts, and prior authority state.",
+      "evidence_refs": [
+        "experience:LE-EXEC-2026-0001",
+        "github:commit:00bd81718412d14622eb72e56e4b76c5092c34cb",
+        "github:commit:3090632b019f1603815856137f70e7a2a9158bc7",
+        "github:workflow-run:32147912127"
+      ]
+    }
+  ],
+  "residual_risks": [
+    "PR #44 is validated but not merged, so Phase 2 remains partial.",
+    "Experience relevance is currently deterministic exact scope/project matching; supersession, contradiction resolution, and context-budget limits are not yet implemented.",
+    "Graph Engineering OS still does not render or query these receipts directly in its browser interface.",
+    "The experience projector is suitable for the bounded proof but has not yet been validated across multiple heterogeneous repositories or large receipt histories."
+  ],
+  "completion_status": "partial",
+  "completion_evidence": [
+    "github:pr:dburt-proex/operator-intelligence#44",
+    "github:workflow-run:32147912127",
+    "github:workflow-run:32147912082",
+    "github:workflow-run:32147912049"
+  ],
+  "gate_result": "REVIEW",
+  "gate_reasons": [
+    "Phase 2 implementation and automated validation pass",
+    "DiffWall route is ALLOW at 3/100 risk",
+    "operator merge approval for PR #44 remains required"
+  ],
+  "next_improvement": {
+    "objective": "After Phase 2 merge, define Context Compiler v0.1 with supersession/contradiction handling and a bounded context budget before broadening receipt reuse across the ecosystem.",
+    "rationale": "N+1 proves that retained experience can alter a later execution; the next compounding constraint is selecting only current, non-contradicted, task-relevant experience without unbounded context growth.",
+    "evidence_refs": [
+      "github:issue:dburt-proex/operator-intelligence#42",
+      "github:pr:dburt-proex/operator-intelligence#44",
+      "github:workflow-run:32147912127"
+    ],
+    "expected_leverage": "high",
+    "requires_review": true
+  },
+  "recorded_at": "2026-08-18T14:22:34Z"
+}
