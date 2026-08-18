@@ -1,0 +1,47 @@
+{
+  "registry_version": "1.0.0",
+  "registry_host": "dburt-proex/operator-intelligence",
+  "registry_host_authority_boundary": "Hosting this registry does not transfer primitive authority. Each primitive has exactly one canonical repository authority.",
+  "classifications": ["CORE", "CONSUMER", "REFERENCE", "EXPERIMENT", "LEGACY", "ARCHIVED"],
+  "authority_rule": "Exactly one repository may be canonical_authority=true for any primitive.",
+  "primitives": [
+    {"id":"assessment_and_implementation_routing","authority":"dburt-proex/operator-intelligence","purpose":"Evidence-backed assessment, scoring, findings, recommendations, package eligibility, roadmap and governed implementation routing."},
+    {"id":"instruction_and_capability_control","authority":"dburt-proex/PromptBP","purpose":"Intent routing, instruction contracts, capability composition, scoring and bounded recursive improvement."},
+    {"id":"signal_scoring_and_intake_routing","authority":"dburt-proex/VIL_deterministic_scoring_engine","purpose":"Evidence-capped signal scoring and pre-execution routing."},
+    {"id":"reasoning_operator_routing","authority":"dburt-proex/Cognitive-routing-layer","purpose":"Deterministic selection, sequencing and audit of analytical operators with structured decision receipts."},
+    {"id":"execution_governance_control_plane","authority":"dburt-proex/casa","purpose":"Canonical ALLOW/REVIEW/HALT execution authority, policy control, routing and replayable governance records."},
+    {"id":"change_time_enforcement","authority":"dburt-proex/diffwall","purpose":"Deterministic enforcement for repository diffs and structured change actions."},
+    {"id":"runtime_tool_enforcement","authority":"dburt-proex/Runwall","purpose":"Out-of-process deterministic mediation of live agent tool calls."},
+    {"id":"reusable_governance_contracts","authority":"dburt-proex/governance-harness-toolkit","purpose":"Portable schemas, policies, evaluators, fixtures and regression contracts for governed workflows."},
+    {"id":"artifact_intelligence_and_memory","authority":"dburt-proex/mirdexx","purpose":"Local-first retention, provenance and relationship mapping for valuable work artifacts and evidence."},
+    {"id":"operator_workspace","authority":"dburt-proex/Daxxer","purpose":"Local operator workspace for pages, databases, records and governed knowledge surfaces."}
+  ],
+  "repositories": [
+    {"repo":"dburt-proex/operator-intelligence","classification":"CORE","status":"ACTIVE","authority_for":["assessment_and_implementation_routing"],"may_define_new_primitives":true,"notes":"Registry host; registry hosting does not grant authority over sibling primitives."},
+    {"repo":"dburt-proex/PromptBP","classification":"CORE","status":"ACTIVE","authority_for":["instruction_and_capability_control"],"may_define_new_primitives":true},
+    {"repo":"dburt-proex/VIL_deterministic_scoring_engine","classification":"CORE","status":"ACTIVE","authority_for":["signal_scoring_and_intake_routing"],"may_define_new_primitives":true},
+    {"repo":"dburt-proex/Cognitive-routing-layer","classification":"CORE","status":"ACTIVE","authority_for":["reasoning_operator_routing"],"may_define_new_primitives":true},
+    {"repo":"dburt-proex/casa","classification":"CORE","status":"ACTIVE","authority_for":["execution_governance_control_plane"],"may_define_new_primitives":true,"supersedes":["dburt-proex/backend-c.c.p.","dburt-proex/casa-governance","dburt-proex/python-fastapi-backend","dburt-proex/legacy-archived-casa"]},
+    {"repo":"dburt-proex/diffwall","classification":"CORE","status":"ACTIVE","authority_for":["change_time_enforcement"],"may_define_new_primitives":true},
+    {"repo":"dburt-proex/Runwall","classification":"CORE","status":"ACTIVE","authority_for":["runtime_tool_enforcement"],"may_define_new_primitives":true},
+    {"repo":"dburt-proex/governance-harness-toolkit","classification":"CORE","status":"ACTIVE","authority_for":["reusable_governance_contracts"],"may_define_new_primitives":true},
+    {"repo":"dburt-proex/mirdexx","classification":"CORE","status":"SPECIFICATION","authority_for":["artifact_intelligence_and_memory"],"may_define_new_primitives":true},
+    {"repo":"dburt-proex/Daxxer","classification":"CORE","status":"ACTIVE","authority_for":["operator_workspace"],"may_define_new_primitives":true},
+
+    {"repo":"dburt-proex/agent-efficiency-os","classification":"CONSUMER","status":"ACTIVE","authority_for":[],"may_define_new_primitives":false,"consumes":["instruction_and_capability_control","signal_scoring_and_intake_routing","execution_governance_control_plane","change_time_enforcement","runtime_tool_enforcement"]},
+    {"repo":"dburt-proex/casa_construction_gatekeeper","classification":"CONSUMER","status":"ACTIVE","authority_for":[],"may_define_new_primitives":false,"consumes":["execution_governance_control_plane"],"notes":"Construction-specific vertical implementation; may not redefine CASA authority."},
+    {"repo":"dburt-proex/jobtap-V3","classification":"CONSUMER","status":"ACTIVE","authority_for":[],"may_define_new_primitives":false,"consumes":["signal_scoring_and_intake_routing","execution_governance_control_plane"]},
+    {"repo":"dburt-proex/DDBPORTFOLIO.git.io","classification":"REFERENCE","status":"ACTIVE","authority_for":[],"may_define_new_primitives":false,"consumes":["assessment_and_implementation_routing","instruction_and_capability_control","signal_scoring_and_intake_routing","execution_governance_control_plane","change_time_enforcement","runtime_tool_enforcement"],"notes":"Public evidence and claim map; technical authority remains in project repositories."},
+    {"repo":"dburt-proex/Staxx-v1","classification":"CONSUMER","status":"ACTIVE","authority_for":[],"may_define_new_primitives":false,"notes":"Governed learning surface; not an ecosystem control authority."},
+    {"repo":"dburt-proex/dburt-proex","classification":"REFERENCE","status":"ACTIVE","authority_for":[],"may_define_new_primitives":false,"notes":"GitHub profile/router only."},
+
+    {"repo":"dburt-proex/guardian-agent","classification":"REFERENCE","status":"ACTIVE","authority_for":[],"may_define_new_primitives":false,"consumes":["signal_scoring_and_intake_routing","execution_governance_control_plane","change_time_enforcement","instruction_and_capability_control"],"notes":"Reference integration runtime. Must not compete with CASA or Runwall authority."},
+    {"repo":"dburt-proex/caas-zero-trust-regulatory-gateway","classification":"EXPERIMENT","status":"PROTOTYPE","authority_for":[],"may_define_new_primitives":false},
+
+    {"repo":"dburt-proex/backend-c.c.p.","classification":"LEGACY","status":"FROZEN","authority_for":[],"may_define_new_primitives":false,"superseded_by":"dburt-proex/casa"},
+    {"repo":"dburt-proex/casa-governance","classification":"LEGACY","status":"FROZEN","authority_for":[],"may_define_new_primitives":false,"superseded_by":"dburt-proex/casa"},
+    {"repo":"dburt-proex/python-fastapi-backend","classification":"LEGACY","status":"FROZEN","authority_for":[],"may_define_new_primitives":false,"superseded_by":"dburt-proex/casa"},
+    {"repo":"dburt-proex/legacy-archived-casa","classification":"ARCHIVED","status":"ARCHIVED","authority_for":[],"may_define_new_primitives":false,"superseded_by":"dburt-proex/casa"},
+    {"repo":"dburt-proex/skills-github-pages","classification":"ARCHIVED","status":"NON_STRATEGIC","authority_for":[],"may_define_new_primitives":false,"notes":"GitHub training exercise; no ecosystem authority."}
+  ]
+}
