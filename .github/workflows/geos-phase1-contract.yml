@@ -4,7 +4,8 @@ on:
   pull_request:
     paths:
       - 'leverage-engine/schemas/execution-receipt.schema.json'
-      - 'leverage-engine/scripts/validate_execution_receipt.py'
+      - 'leverage-engine/src/leverage_engine/schema_validation.py'
+      - 'leverage-engine/tests/test_execution_receipt.py'
       - 'leverage-engine/fixtures/execution-receipt-*/**'
       - 'leverage-engine/architecture/closed-loop-execution-v0.1.md'
       - '.github/workflows/geos-phase1-contract.yml'
@@ -31,13 +32,11 @@ jobs:
           python -m json.tool leverage-engine/fixtures/execution-receipt-valid/receipt.json >/dev/null
           python -m json.tool leverage-engine/fixtures/execution-receipt-invalid-missing-evidence/receipt.json >/dev/null
 
-      - name: Accept valid execution receipt
-        run: |
-          python leverage-engine/scripts/validate_execution_receipt.py \
-            leverage-engine/fixtures/execution-receipt-valid/receipt.json
+      - name: Install Leverage Engine locally
+        run: python -m pip install -e ./leverage-engine
 
-      - name: Reject false completion without evidence
-        run: |
-          python leverage-engine/scripts/validate_execution_receipt.py \
-            --expect-invalid \
-            leverage-engine/fixtures/execution-receipt-invalid-missing-evidence/receipt.json
+      - name: Validate execution receipt contract
+        run: python -m unittest discover -s leverage-engine/tests -p 'test_execution_receipt.py' -v
+
+      - name: Run Leverage Engine regression suite
+        run: python -m unittest discover -s leverage-engine/tests -v
