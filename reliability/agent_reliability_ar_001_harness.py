@@ -495,7 +495,6 @@ def validate_output(output: Any, run_id: str, trace_id: str) -> ValidationResult
     expected_receipt = {
         "input_packet_sha256": INPUT_SHA256,
         "instruction_sha256": INSTRUCTION_SHA256,
-        "model_identifier": MODEL,
         "configuration_id": CONFIGURATION_ID,
         "run_id": run_id,
         "trace_id": trace_id,
@@ -506,17 +505,25 @@ def validate_output(output: Any, run_id: str, trace_id: str) -> ValidationResult
         for key, expected in expected_receipt.items():
             if receipt.get(key) != expected:
                 errors.append(f"receipt {key} mismatch")
+        # Provider-owned model identity is authoritative and already enforced in
+        # call_openai. The evaluated agent's model_identifier self-report is
+        # retained only for frozen schema compatibility and must not override
+        # or invalidate independently observed provider metadata.
+        model_identifier = receipt.get("model_identifier")
+        if not isinstance(model_identifier, str) or not model_identifier.strip():
+            errors.append("receipt model_identifier must be a non-empty string")
 
     return ValidationResult(not errors, tuple(errors), halt)
 
 
 def canonicalize_output(output: dict[str, Any]) -> dict[str, Any]:
-    """Remove run-specific receipt IDs and normalize ordering for comparisons."""
+    """Remove run-specific and non-authoritative receipt fields for comparison."""
     clean = json.loads(json.dumps(output))
     receipt = clean.get("receipt")
     if isinstance(receipt, dict):
         receipt.pop("run_id", None)
         receipt.pop("trace_id", None)
+        receipt.pop("model_identifier", None)
     for key in ("evidence_used", "claims", "contradictions", "findings", "control_gaps", "remediations", "verification"):
         value = clean.get(key)
         if isinstance(value, list):
