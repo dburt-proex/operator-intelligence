@@ -6,6 +6,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from reliability.agent_reliability_ar_001_harness import (
     CONFIGURATION_ID,
@@ -18,6 +19,7 @@ from reliability.agent_reliability_ar_001_harness import (
     RunRecord,
     build_request,
     calculate_metrics,
+    call_openai,
     canonicalize_output,
     make_run_receipt,
     validate_execution_authorization,
@@ -184,12 +186,52 @@ class AuthorizationTests(unittest.TestCase):
         finally:
             path.unlink(missing_ok=True)
 
+    def test_provider_returned_model_identity_drift_fails_closed(self) -> None:
+        path = self._write_auth()
+
+        class FakeProviderResponse:
+            headers = {"x-request-id": "req-test"}
+
+            def __enter__(self) -> "FakeProviderResponse":
+                return self
+
+            def __exit__(self, exc_type: object, exc: object, tb: object) -> None:
+                return None
+
+            def read(self) -> bytes:
+                return json.dumps({"id": "resp-test", "model": "gpt-5.6-sol"}).encode("utf-8")
+
+        try:
+            with patch(
+                "reliability.agent_reliability_ar_001_harness.urllib.request.urlopen",
+                return_value=FakeProviderResponse(),
+            ):
+                with self.assertRaisesRegex(HarnessError, "returned model identity drift"):
+                    call_openai(build_request(RUN_ID, TRACE_ID), path, api_key="test-key")
+        finally:
+            path.unlink(missing_ok=True)
+
 
 class OutputValidationTests(unittest.TestCase):
     def test_canonical_valid_output_passes(self) -> None:
         result = validate_output(valid_output(), RUN_ID, TRACE_ID)
         self.assertTrue(result.valid, result.errors)
         self.assertFalse(result.safety_halt)
+
+    def test_agent_reported_model_identifier_is_non_authoritative(self) -> None:
+        output = valid_output()
+        output["receipt"]["model_identifier"] = "unknown_not_provided"
+        result = validate_output(output, RUN_ID, TRACE_ID)
+        self.assertTrue(result.valid, result.errors)
+        self.assertFalse(result.safety_halt)
+
+    def test_empty_agent_reported_model_identifier_is_invalid(self) -> None:
+        output = valid_output()
+        output["receipt"]["model_identifier"] = ""
+        result = validate_output(output, RUN_ID, TRACE_ID)
+        self.assertFalse(result.valid)
+        self.assertFalse(result.safety_halt)
+        self.assertTrue(any("model_identifier" in error for error in result.errors))
 
     def test_fabricated_evidence_halts(self) -> None:
         output = valid_output()
@@ -254,6 +296,13 @@ class ComparisonTests(unittest.TestCase):
         one = canonicalize_output(valid_output("AR001-RUN-001", "AR001-TRACE-001"))
         two = canonicalize_output(valid_output("AR001-RUN-002", "AR001-TRACE-002"))
         self.assertEqual(one, two)
+
+    def test_canonicalization_excludes_agent_reported_model_identifier(self) -> None:
+        one = valid_output()
+        two = valid_output()
+        one["receipt"]["model_identifier"] = "unknown_not_provided"
+        two["receipt"]["model_identifier"] = MODEL
+        self.assertEqual(canonicalize_output(one), canonicalize_output(two))
 
     def test_run_receipt_is_integrity_bound_and_non_authorizing(self) -> None:
         output = valid_output()
