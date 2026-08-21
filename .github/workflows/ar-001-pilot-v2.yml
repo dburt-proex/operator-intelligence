@@ -58,7 +58,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python3 reliability/agent_reliability_ar_001_harness_v2.py \
+          python3 -m reliability.agent_reliability_ar_001_harness_v2 \
             --run-id AR001-STAGEA-V2-RUN-001 \
             --trace-id AR001-STAGEA-V2-TRACE-001 \
             --execute \
@@ -96,7 +96,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python3 reliability/agent_reliability_ar_001_harness_v2.py \
+          python3 -m reliability.agent_reliability_ar_001_harness_v2 \
             --run-id AR001-STAGEA-V2-RUN-002 \
             --trace-id AR001-STAGEA-V2-TRACE-002 \
             --execute \
