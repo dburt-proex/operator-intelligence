@@ -6,6 +6,7 @@
     {"path": "assessment-evidence-graph", "artifact_type": "assessment-evidence-graph", "authority_state": "approved_extension", "release_scope": "post-v1"},
     {"path": "assets", "artifact_type": "asset-specification", "authority_state": "canonical", "release_scope": "commercial-v1"},
     {"path": "docs", "artifact_type": "documentation", "authority_state": "canonical", "release_scope": "commercial-v1"},
+    {"path": "ecosystem", "artifact_type": "ecosystem-governance", "authority_state": "canonical", "release_scope": "repository-control"},
     {"path": "examples", "artifact_type": "example-or-fixture", "authority_state": "canonical", "release_scope": "commercial-v1-and-post-v1"},
     {"path": "framework", "artifact_type": "framework-authority", "authority_state": "canonical", "release_scope": "commercial-v1"},
     {"path": "governance-platform", "artifact_type": "public-governance-view", "authority_state": "approved_extension", "release_scope": "public-support"},
@@ -20,7 +21,9 @@
     {"path": "generated", "artifact_type": "generated-map", "authority_state": "generated", "release_scope": "post-v1"},
     {"path": "leverage-engine", "artifact_type": "decision-engine", "authority_state": "approved_extension", "release_scope": "post-v1"}
   ],
-  "tracked_file_ignores": [],
+  "tracked_file_ignores": [
+    {"path": "ECOSYSTEM.json", "reason": "Compatibility projection that points to canonical ecosystem/registry.json; authority is held by the governed ecosystem root."}
+  ],
   "artifacts": [
     {"artifact_id":"OI-ART-0001","path":"README.md","title":"Repository README","artifact_type":"root-authority","domain":"repository","authority_state":"canonical","version":"commercial-v1.0","release_scope":"commercial-v1","folder_stage":"root","status":"approved","gate_ref":"COMMERCIAL_V1_COMPLETION.md","depends_on":["docs/index.md"],"downstream_consumers":[],"supersedes":null,"generated":false,"sensitivity":"public"},
     {"artifact_id":"OI-ART-0002","path":"ROADMAP.md","title":"Governed Roadmap","artifact_type":"root-authority","domain":"repository","authority_state":"canonical","version":"commercial-v1.0","release_scope":"commercial-v1-and-post-v1","folder_stage":"root","status":"approved","gate_ref":"COMMERCIAL_V1_COMPLETION.md","depends_on":[],"downstream_consumers":[],"supersedes":null,"generated":false,"sensitivity":"public"},
