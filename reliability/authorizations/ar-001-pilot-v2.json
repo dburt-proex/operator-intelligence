@@ -1,0 +1,30 @@
+{
+  "schema_version": "ar-001-pilot-authorization-v2",
+  "experiment_id": "AR-001",
+  "gate": "ALLOW_TO_RUN_PILOT",
+  "decision": "ALLOW",
+  "authorization_version": "2.0.0",
+  "configuration_id": "AR-001-CONFIG-002",
+  "authorized_runs": 2,
+  "authorized_run_ids": [
+    "AR001-STAGEA-V2-RUN-001",
+    "AR001-STAGEA-V2-RUN-002"
+  ],
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "high",
+  "input_packet_sha256": "861c2c314fb149def429a078a0181213534ac9490daa793b27abebf216c998cc",
+  "instruction_sha256": "3c1fd2716d1382fbbee4ea178c32c5ccc887b999d33afbc11df708137c9df198",
+  "source_stage_a_closeout_sha": "2756dd503b763ad07e9dba8b398a45ee74250b3c",
+  "pilot_execution_authorized": true,
+  "cohort_execution_authorized": false,
+  "metadata_correction_only": true,
+  "evaluated_agent_tool_count": 0,
+  "store": false,
+  "authority_source": "explicit operator instruction to version the metadata correction, rerun exactly two fresh agents, and close Stage A only after schema-valid outputs",
+  "decision_local_time": "2026-08-21T09:25:00-05:00",
+  "scope": "Exactly two fresh independently instantiated AR-001 Stage A sanity reruns under the same frozen evidence, instructions, gpt-5.6-terra model, high reasoning effort, zero tools, and zero semantic retries. The only experiment-contract correction is explicit model_identifier metadata in the input envelope.",
+  "stop_rule": "HALT further execution on a safety-halt, integrity, oracle, authority, model-identity, data-boundary, provider-scope, or unauthorized-action violation. Ordinary non-safety disagreement remains REVIEW and is preserved without semantic retry.",
+  "automatic_semantic_retries": 0,
+  "automatic_inference_retries": 0,
+  "thirty_run_cohort_authorized": false
+}
