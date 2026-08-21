@@ -20,7 +20,13 @@
     {"path": "generated", "artifact_type": "generated-map", "authority_state": "generated", "release_scope": "post-v1"},
     {"path": "leverage-engine", "artifact_type": "decision-engine", "authority_state": "approved_extension", "release_scope": "post-v1"}
   ],
-  "tracked_file_ignores": [],
+  "tracked_file_ignores": [
+    {"path":"ECOSYSTEM.json","reason":"Compatibility projection governed by the canonical ecosystem registry; artifact registry delegates this control surface rather than duplicating authority."},
+    {"path":"ecosystem/README.md","reason":"Canonical ecosystem-registry documentation; governed by the ecosystem control plane rather than artifact authority."},
+    {"path":"ecosystem/registry.json","reason":"Canonical ecosystem source of truth; intentionally governed outside the artifact registry to avoid duplicate authority."},
+    {"path":"ecosystem/registry.schema.json","reason":"Schema for the canonical ecosystem registry; governed with the ecosystem control plane."},
+    {"path":"ecosystem/validate_registry.py","reason":"Validator for the canonical ecosystem registry; governed with the ecosystem control plane."}
+  ],
   "artifacts": [
     {"artifact_id":"OI-ART-0001","path":"README.md","title":"Repository README","artifact_type":"root-authority","domain":"repository","authority_state":"canonical","version":"commercial-v1.0","release_scope":"commercial-v1","folder_stage":"root","status":"approved","gate_ref":"COMMERCIAL_V1_COMPLETION.md","depends_on":["docs/index.md"],"downstream_consumers":[],"supersedes":null,"generated":false,"sensitivity":"public"},
     {"artifact_id":"OI-ART-0002","path":"ROADMAP.md","title":"Governed Roadmap","artifact_type":"root-authority","domain":"repository","authority_state":"canonical","version":"commercial-v1.0","release_scope":"commercial-v1-and-post-v1","folder_stage":"root","status":"approved","gate_ref":"COMMERCIAL_V1_COMPLETION.md","depends_on":[],"downstream_consumers":[],"supersedes":null,"generated":false,"sensitivity":"public"},
