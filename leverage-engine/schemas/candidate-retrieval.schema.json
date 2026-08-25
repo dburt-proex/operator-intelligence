@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "candidate-retrieval.schema.json",
+  "title": "Leverage Engine Candidate Retrieval Result",
+  "description": "Deterministic bounded candidate proposals. Retrieval may propose item IDs but cannot admit context or authorize execution.",
+  "type": "object",
+  "required": [
+    "retrieval_id",
+    "run_timestamp",
+    "project_id",
+    "query",
+    "query_tokens",
+    "max_candidates",
+    "candidates",
+    "authority_neutral",
+    "execution_authorized"
+  ],
+  "properties": {
+    "retrieval_id": {"type": "string", "pattern": "^LE-RETR-[a-f0-9]{16}$"},
+    "run_timestamp": {"type": "string", "format": "date-time"},
+    "project_id": {"type": "string", "minLength": 1},
+    "query": {"type": "string", "minLength": 1},
+    "query_tokens": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "max_candidates": {"type": "integer", "minimum": 0},
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "item_id",
+          "source_execution_id",
+          "source_recorded_at",
+          "kind",
+          "statement",
+          "evidence_refs",
+          "match_type",
+          "matched_tokens",
+          "match_score"
+        ],
+        "properties": {
+          "item_id": {"type": "string", "minLength": 1},
+          "source_execution_id": {"type": "string", "minLength": 1},
+          "source_recorded_at": {"type": "string", "format": "date-time"},
+          "kind": {
+            "enum": [
+              "learning",
+              "next_improvement",
+              "failure",
+              "friction",
+              "residual_risk",
+              "evidence_ref",
+              "decision_ref"
+            ]
+          },
+          "statement": {"type": "string", "minLength": 1},
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          },
+          "match_type": {"enum": ["lexical", "graph_neighbor"]},
+          "matched_tokens": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          },
+          "match_score": {"type": "integer", "minimum": 0},
+          "neighbor_of": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "authority_neutral": {"const": true},
+    "execution_authorized": {"const": false}
+  },
+  "additionalProperties": false
+}

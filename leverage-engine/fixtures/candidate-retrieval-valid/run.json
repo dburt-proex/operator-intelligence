@@ -1,0 +1,120 @@
+{
+  "fixture_version": "0.6.0",
+  "run_id": "LE-RUN-2026-0066",
+  "run_timestamp": "2026-08-18T14:20:00Z",
+  "target_system": "Operator Intelligence",
+  "review_owner": "Drew Burt",
+  "partial_coverage": false,
+  "experience_project_id": "dburt-proex/operator-intelligence:leverage-engine",
+  "experience_scope": ["unrelated-domain"],
+  "candidate_retrieval": {
+    "enabled": true,
+    "query": "parallel backend control infrastructure",
+    "max_candidates": 5
+  },
+  "context_budget": {
+    "max_items": 8,
+    "max_chars": 5000,
+    "max_age_days": 90
+  },
+  "assumptions": ["Candidate retrieval may widen relevance but cannot bypass Context Compiler admission controls."],
+  "evidence_refs": [
+    "github:issue:dburt-proex/operator-intelligence#66",
+    "proposal:LE-IMPROVE-dbfc7509df5b19c7"
+  ],
+  "proposed_actions": {
+    "LE-OPP-2026-0066": "Add bounded candidate retrieval upstream of the existing deterministic Context Compiler without granting retrieval authority."
+  },
+  "signals": [
+    {
+      "signal_id": "LE-SIG-2026-0066",
+      "source_id": "fixture-manual",
+      "source_type": "user_directive",
+      "observed_at": "2026-08-18T14:16:00Z",
+      "retrieved_at": "2026-08-18T14:17:00Z",
+      "title": "Operator approved bounded candidate retrieval",
+      "summary": "Retriever proposes and Context Compiler admits; retrieval must improve recall without weakening deterministic controls.",
+      "evidence_refs": [
+        "github:issue:dburt-proex/operator-intelligence#66",
+        "proposal:LE-IMPROVE-dbfc7509df5b19c7"
+      ],
+      "affected_assets": ["leverage-engine"],
+      "freshness_state": "current",
+      "evidence_quality": 100,
+      "confidence": "high",
+      "validation_state": "validated"
+    }
+  ],
+  "repository_states": [
+    {
+      "snapshot_id": "LE-REP-2026-0066",
+      "repository_id": "operator-intelligence",
+      "canonical_ref": "main",
+      "commit_sha": "216993f8ded28ecce28c7bcdad0bbd2e6446505d",
+      "captured_at": "2026-08-18T14:17:00Z",
+      "inspection_scope": ["leverage-engine/**"],
+      "unfinished_items": ["bounded-candidate-retrieval"],
+      "blocked_items": [],
+      "duplicate_candidates": [],
+      "stale_candidates": [],
+      "evidence_gaps": [],
+      "commercial_assets": ["leverage-engine"],
+      "routing_restrictions": ["read-only"]
+    }
+  ],
+  "opportunities": [
+    {
+      "opportunity_id": "LE-OPP-2026-0066",
+      "objective": "Prove bounded candidate retrieval before context admission",
+      "opportunity_type": "product",
+      "supporting_signals": ["LE-SIG-2026-0066"],
+      "target_assets": ["leverage-engine"],
+      "dependencies": ["LE-IMPROVE-dbfc7509df5b19c7"],
+      "duplicates": [],
+      "expected_outcome": "A relevant item with no exact reuse-scope overlap is retrieved as a candidate and admitted only after passing the Context Compiler.",
+      "success_evidence": [
+        "candidate_retrieval returns at least one candidate",
+        "compiled_context includes an item with retrieval relevance basis and no exact scope match",
+        "execution_authorized remains false",
+        "full regression suite passes"
+      ],
+      "score_inputs": {
+        "value": {
+          "revenue_proximity": 25,
+          "existing_asset_leverage": 100,
+          "evidence_backed_demand": 100,
+          "strategic_alignment": 100,
+          "time_to_value": 100,
+          "compounding_value": 100,
+          "career_market_signal": 50
+        },
+        "friction": {
+          "effort": 25,
+          "technical_complexity": 25,
+          "external_dependencies": 0,
+          "maintenance_burden": 25
+        },
+        "risk": {
+          "authority_external_impact": 0,
+          "data_security_privacy": 0,
+          "financial_legal_exposure": 0,
+          "irreversibility": 0
+        }
+      },
+      "raw_value_score": 0,
+      "friction_score": 0,
+      "risk_score": 0,
+      "confidence": "high",
+      "confidence_factor": 0,
+      "evidence_quality": 100,
+      "urgency_bonus": 0,
+      "verified_deadline": null,
+      "leverage_index": 0,
+      "boundary_flags": [],
+      "gate_result": "REVIEW",
+      "gate_reasons": [],
+      "state": "discovered",
+      "assumptions": ["Lexical v0.1 retrieval is sufficient to prove the architecture without introducing semantic inference."]
+    }
+  ]
+}

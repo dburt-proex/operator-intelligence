@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "context-package.schema.json",
   "title": "Leverage Engine Context Package",
-  "description": "Deterministic authority-neutral execution context compiled from validated retained experience under explicit relevance, freshness, relation, and budget controls.",
+  "description": "Deterministic authority-neutral execution context compiled from validated retained experience under explicit relevance, freshness, relation, provenance, and budget controls.",
   "type": "object",
   "required": [
     "context_id",
@@ -70,7 +70,7 @@
       "items": {"type": "string", "minLength": 1},
       "uniqueItems": true
     },
-    "authority_neutral": {"type": "boolean"}
+    "authority_neutral": {"const": true}
   },
   "$defs": {
     "contextItem": {
@@ -85,6 +85,7 @@
         "statement",
         "evidence_refs",
         "matched_scope",
+        "relevance_basis",
         "cost_chars"
       ],
       "properties": {
@@ -93,7 +94,17 @@
         "source_directive_id": {"type": "string", "minLength": 1},
         "source_recorded_at": {"type": "string", "format": "date-time"},
         "source_project_id": {"type": "string", "minLength": 1},
-        "kind": {"enum": ["learning", "next_improvement"]},
+        "kind": {
+          "enum": [
+            "learning",
+            "next_improvement",
+            "failure",
+            "friction",
+            "residual_risk",
+            "evidence_ref",
+            "decision_ref"
+          ]
+        },
         "statement": {"type": "string", "minLength": 1},
         "evidence_refs": {
           "type": "array",
@@ -103,8 +114,13 @@
         },
         "matched_scope": {
           "type": "array",
-          "minItems": 1,
           "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "relevance_basis": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"enum": ["exact_scope", "retrieval"]},
           "uniqueItems": true
         },
         "cost_chars": {"type": "integer", "minimum": 1}

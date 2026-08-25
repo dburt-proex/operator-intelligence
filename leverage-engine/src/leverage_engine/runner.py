@@ -13,6 +13,7 @@ from .ledger import append_idempotent
 from .normalize import normalize_signal
 from .paths import CONFIG_DIR, SCHEMA_DIR
 from .profiles import validate_policy_profile, validate_scoring_profile
+from .retrieval import retrieve_candidates
 from .route import route_opportunity
 from .schema_validation import load_and_validate, validate_schema_document
 from .score import score_opportunity
@@ -42,6 +43,9 @@ def _validate_canonical_schemas() -> None:
         "context-package",
         "context-relations",
         "routing-decision",
+        "candidate-retrieval",
+        "improvement-patterns",
+        "improvement-analysis",
     ):
         path = SCHEMA_DIR / f"{name}.schema.json"
         validate_schema_document(load_json(path), str(path))
@@ -80,15 +84,33 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
     experience_project_id = fixture.get("experience_project_id") or fixture.get("target_system", "unspecified")
     routing_config = fixture.get("executor_routing", {})
     routing_enabled = bool(routing_config.get("enabled", False))
-    retained_receipts = load_validated_receipts() if (reuse_scope or routing_enabled) else []
+    retrieval_config = fixture.get("candidate_retrieval", {})
+    retrieval_query = str(retrieval_config.get("query", "")).strip()
+    retrieval_enabled = bool(retrieval_config.get("enabled", False) and retrieval_query)
+    retained_receipts = load_validated_receipts() if (reuse_scope or routing_enabled or retrieval_enabled) else []
+    context_relations = load_context_relations()
+
+    retrieval_result = None
+    retrieved_item_ids: set[str] = set()
+    if retrieval_enabled:
+        retrieval_result = retrieve_candidates(
+            retained_receipts,
+            run_timestamp=fixture["run_timestamp"],
+            project_id=experience_project_id,
+            query=retrieval_query,
+            relations=context_relations,
+            max_candidates=int(retrieval_config.get("max_candidates", 24)),
+        )
+        retrieved_item_ids = {item["item_id"] for item in retrieval_result["candidates"]}
 
     context_budget = fixture.get("context_budget", {})
     compiled_context = compile_context_package(
-        retained_receipts if reuse_scope else [],
+        retained_receipts if (reuse_scope or retrieval_enabled) else [],
         run_timestamp=fixture["run_timestamp"],
         project_id=experience_project_id,
         reuse_scope=reuse_scope,
-        relations=load_context_relations(),
+        relations=context_relations,
+        retrieved_item_ids=retrieved_item_ids,
         max_items=int(context_budget.get("max_items", 12)),
         max_chars=int(context_budget.get("max_chars", 6000)),
         max_age_days=int(context_budget.get("max_age_days", 90)),
@@ -198,6 +220,7 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         "selection_result": selection["result"],
         "selected_opportunity_id": selected_id,
         "context_id": compiled_context["context_id"],
+        "retrieval_id": retrieval_result["retrieval_id"] if retrieval_result else None,
         "routing_id": routing_decision["routing_id"] if routing_decision else None,
         "experience_refs": experience_refs,
         "ranking": ranking,
@@ -230,6 +253,7 @@ def run_fixture(fixture_path: Path, ledger_path: Path | None = None) -> dict[str
         "rationale": decision_rationale,
         "assumptions": fixture.get("assumptions", []),
         "evidence_refs": effective_fixture["evidence_refs"],
+        "candidate_retrieval": retrieval_result,
         "compiled_context": compiled_context,
         "reused_experience": reused_experience,
         "routing_decision": routing_decision,

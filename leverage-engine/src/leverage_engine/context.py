@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
+from .experience_items import build_receipt_items
 from .io import load_json
 from .paths import CONFIG_DIR, SCHEMA_DIR
 from .schema_validation import load_and_validate
@@ -27,40 +28,37 @@ def _candidate_items(
     *,
     project_id: str,
     reuse_scope: list[str],
+    retrieved_item_ids: set[str],
 ) -> list[dict[str, Any]]:
     scopes = set(reuse_scope)
     candidates: list[dict[str, Any]] = []
-    for receipt in receipts:
-        for index, learning in enumerate(receipt.get("reusable_learnings", []), 1):
-            matched_scope = sorted(scopes.intersection(learning["reuse_scope"]))
-            candidates.append(
-                {
-                    "item_id": f"{receipt['execution_id']}:learning:{index}",
-                    "source_execution_id": receipt["execution_id"],
-                    "source_directive_id": receipt["directive_id"],
-                    "source_recorded_at": receipt["recorded_at"],
-                    "source_project_id": receipt["project_id"],
-                    "kind": "learning",
-                    "statement": learning["learning"],
-                    "evidence_refs": sorted(set(learning["evidence_refs"])),
-                    "matched_scope": matched_scope,
-                }
-            )
-        next_improvement = receipt.get("next_improvement")
-        if next_improvement:
-            candidates.append(
-                {
-                    "item_id": f"{receipt['execution_id']}:next_improvement:1",
-                    "source_execution_id": receipt["execution_id"],
-                    "source_directive_id": receipt["directive_id"],
-                    "source_recorded_at": receipt["recorded_at"],
-                    "source_project_id": receipt["project_id"],
-                    "kind": "next_improvement",
-                    "statement": next_improvement["objective"],
-                    "evidence_refs": sorted(set(next_improvement["evidence_refs"])),
-                    "matched_scope": sorted(scopes) if receipt["project_id"] == project_id else [],
-                }
-            )
+    for base in build_receipt_items(receipts):
+        matched_scope: list[str] = []
+        if base["kind"] == "learning":
+            matched_scope = sorted(scopes.intersection(base["reuse_scope"]))
+        elif base["kind"] == "next_improvement" and base["source_project_id"] == project_id:
+            matched_scope = sorted(scopes)
+
+        relevance_basis: list[str] = []
+        if matched_scope:
+            relevance_basis.append("exact_scope")
+        if base["item_id"] in retrieved_item_ids:
+            relevance_basis.append("retrieval")
+
+        candidates.append(
+            {
+                "item_id": base["item_id"],
+                "source_execution_id": base["source_execution_id"],
+                "source_directive_id": base["source_directive_id"],
+                "source_recorded_at": base["source_recorded_at"],
+                "source_project_id": base["source_project_id"],
+                "kind": base["kind"],
+                "statement": base["statement"],
+                "evidence_refs": base["evidence_refs"],
+                "matched_scope": matched_scope,
+                "relevance_basis": sorted(relevance_basis),
+            }
+        )
     return candidates
 
 
@@ -69,7 +67,8 @@ def _item_cost(item: dict[str, Any]) -> int:
         1,
         len(item["statement"])
         + sum(len(value) for value in item["evidence_refs"])
-        + sum(len(value) for value in item["matched_scope"]),
+        + sum(len(value) for value in item["matched_scope"])
+        + sum(len(value) for value in item["relevance_basis"]),
     )
 
 
@@ -91,15 +90,17 @@ def compile_context_package(
     project_id: str,
     reuse_scope: list[str],
     relations: list[dict[str, Any]] | None = None,
+    retrieved_item_ids: set[str] | None = None,
     max_items: int = 12,
     max_chars: int = 6000,
     max_age_days: int = 90,
 ) -> dict[str, Any]:
     """Compile deterministic, bounded, authority-neutral execution context.
 
-    Historical receipts remain immutable. Supersession, contradiction, and
-    invalidation are expressed in a separate evidence-backed relation registry.
-    No prior approval, permission, policy, or gate field is projected.
+    Retrieval is only an additional relevance basis. Every retrieved item still
+    passes the compiler's future, freshness, relation, provenance, and budget
+    controls. Historical approvals, permissions, policies, and gates are never
+    projected into the package.
     """
     if max_items < 0 or max_chars < 0 or max_age_days < 0:
         raise ValueError("context budgets must be non-negative")
@@ -107,8 +108,13 @@ def compile_context_package(
     cutoff = _timestamp(run_timestamp)
     stale_before = cutoff - timedelta(days=max_age_days)
     relation_records = relations if relations is not None else load_context_relations()
-    candidates = _candidate_items(receipts, project_id=project_id, reuse_scope=reuse_scope)
-    by_id = {item["item_id"]: item for item in candidates}
+    retrieval_ids = set(retrieved_item_ids or set())
+    candidates = _candidate_items(
+        receipts,
+        project_id=project_id,
+        reuse_scope=reuse_scope,
+        retrieved_item_ids=retrieval_ids,
+    )
 
     eligible: dict[str, dict[str, Any]] = {}
     excluded: dict[str, dict[str, Any]] = {}
@@ -119,7 +125,7 @@ def compile_context_package(
             excluded[item["item_id"]] = _exclusion(item, "future")
         elif recorded_at < stale_before:
             excluded[item["item_id"]] = _exclusion(item, "stale")
-        elif not item["matched_scope"]:
+        elif not item["relevance_basis"]:
             excluded[item["item_id"]] = _exclusion(item, "unrelated")
         else:
             eligible[item["item_id"]] = item
@@ -152,10 +158,19 @@ def compile_context_package(
             excluded[source_id] = _exclusion(source, "unresolved_contradiction", target_id)
             excluded[target_id] = _exclusion(target, "unresolved_contradiction", source_id)
 
+    kind_priority = {
+        "next_improvement": 0,
+        "learning": 1,
+        "failure": 2,
+        "residual_risk": 3,
+        "friction": 4,
+        "decision_ref": 5,
+        "evidence_ref": 6,
+    }
     ordered = sorted(
         eligible.values(),
         key=lambda item: (
-            0 if item["kind"] == "next_improvement" else 1,
+            kind_priority[item["kind"]],
             -_timestamp(item["source_recorded_at"]).timestamp(),
             item["item_id"],
         ),
