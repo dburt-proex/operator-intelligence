@@ -1,0 +1,265 @@
+{
+  "execution_id": "LE-EXEC-2026-0006",
+  "directive_id": "LD-2026-08-25-066",
+  "project_id": "dburt-proex/operator-intelligence:leverage-engine",
+  "started_at": "2026-08-25T13:10:22Z",
+  "ended_at": "2026-08-25T13:18:14Z",
+  "executor": {
+    "actor_type": "hybrid",
+    "actor_id": "chatgpt-session-with-operator-authorization",
+    "agent": "VIN execution lead",
+    "model": "GPT-5.6 Sol"
+  },
+  "context_refs": [
+    "proposal:LE-IMPROVE-dbfc7509df5b19c7",
+    "analysis:LE-IMPA-0daa8980f6fbbb41",
+    "github:issue:dburt-proex/operator-intelligence#66",
+    "repo:standards/evidence-standard.md",
+    "repo:standards/decision-ledger-standard.md"
+  ],
+  "evidence_refs": [
+    "github:issue:dburt-proex/operator-intelligence#66",
+    "github:pr:dburt-proex/operator-intelligence#67",
+    "github:commit:d0a334317c35789b28e54600700f8846f77eef85",
+    "github:workflow-run:32852374149",
+    "github:workflow-run:32852373938",
+    "github:workflow-run:32852374071"
+  ],
+  "decision_refs": [
+    "proposal:LE-IMPROVE-dbfc7509df5b19c7:ALLOW",
+    "github:issue:dburt-proex/operator-intelligence#66:ALLOW"
+  ],
+  "tools": [
+    "GitHub connector",
+    "GitHub Actions",
+    "DiffWall PR Firewall"
+  ],
+  "actions": [
+    {
+      "sequence": 1,
+      "action": "Convert the Phase 5 generated context-relevance proposal into bounded directive LD-2026-08-25-066 after explicit operator ALLOW.",
+      "result": "completed",
+      "evidence_refs": [
+        "proposal:LE-IMPROVE-dbfc7509df5b19c7",
+        "github:issue:dburt-proex/operator-intelligence#66"
+      ]
+    },
+    {
+      "sequence": 2,
+      "action": "Add a canonical candidate-retrieval result contract and a shared authority-neutral receipt-item projection for learnings, next improvements, failures, friction, residual risks, evidence references, and decision references.",
+      "result": "completed",
+      "evidence_refs": [
+        "repo:leverage-engine/schemas/candidate-retrieval.schema.json",
+        "repo:leverage-engine/src/leverage_engine/experience_items.py"
+      ]
+    },
+    {
+      "sequence": 3,
+      "action": "Implement deterministic lexical candidate retrieval with hard candidate limits, future cutoff, same-project boundary, and one-hop expansion through governed context relations.",
+      "result": "completed",
+      "evidence_refs": [
+        "repo:leverage-engine/src/leverage_engine/retrieval.py"
+      ]
+    },
+    {
+      "sequence": 4,
+      "action": "Modify the Context Compiler so retrieval is only an additional relevance basis and all existing freshness, supersession, invalidation, contradiction, provenance, and context-budget controls remain authoritative.",
+      "result": "completed",
+      "evidence_refs": [
+        "repo:leverage-engine/src/leverage_engine/context.py",
+        "repo:leverage-engine/schemas/context-package.schema.json"
+      ]
+    },
+    {
+      "sequence": 5,
+      "action": "Wire explicit task retrieval through the runner before context compilation and expose separate candidate_retrieval and compiled_context records while leaving execution_authorized false.",
+      "result": "completed",
+      "evidence_refs": [
+        "repo:leverage-engine/src/leverage_engine/runner.py",
+        "repo:leverage-engine/fixtures/candidate-retrieval-valid/run.json"
+      ]
+    },
+    {
+      "sequence": 6,
+      "action": "Add positive and adversarial regression tests proving improved recall beyond exact scope and continued compiler rejection of future, stale, superseded, contradicted, zero-overlap, and over-budget candidates.",
+      "result": "completed",
+      "evidence_refs": [
+        "repo:leverage-engine/tests/test_candidate_retrieval.py",
+        "github:workflow-run:32852374149"
+      ]
+    },
+    {
+      "sequence": 7,
+      "action": "Run the generalized Leverage Engine regression suite, DiffWall, and repository-map validation, then merge PR #67 under explicit operator authorization.",
+      "result": "completed",
+      "evidence_refs": [
+        "github:workflow-run:32852374149",
+        "github:workflow-run:32852373938",
+        "github:workflow-run:32852374071",
+        "github:commit:d0a334317c35789b28e54600700f8846f77eef85"
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/retrieval.py",
+      "change_summary": "Added deterministic bounded candidate retrieval before context admission.",
+      "version_ref": "github:commit:d0a334317c35789b28e54600700f8846f77eef85"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/context.py",
+      "change_summary": "Added retrieval as an explicit relevance basis without weakening existing compiler gates.",
+      "version_ref": "github:commit:d0a334317c35789b28e54600700f8846f77eef85"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/experience_items.py",
+      "change_summary": "Centralized authority-neutral receipt item projection for retrieval and compilation.",
+      "version_ref": "github:commit:d0a334317c35789b28e54600700f8846f77eef85"
+    },
+    {
+      "target_type": "file",
+      "target_ref": "leverage-engine/src/leverage_engine/runner.py",
+      "change_summary": "Wired candidate retrieval before Context Compiler and retained separation from execution authority.",
+      "version_ref": "github:commit:d0a334317c35789b28e54600700f8846f77eef85"
+    }
+  ],
+  "validation": [
+    {
+      "validator": "Leverage Engine Regression",
+      "scope": "candidate retrieval contract, retrieval-first fixture, adversarial retrieval/compiler boundaries, and all prior Leverage Engine regression behavior",
+      "result": "pass",
+      "evidence_refs": [
+        "github:workflow-run:32852374149"
+      ]
+    },
+    {
+      "validator": "DiffWall PR Firewall",
+      "scope": "Phase 6 repository change-time risk",
+      "result": "pass",
+      "evidence_refs": [
+        "github:workflow-run:32852373938",
+        "github:pr:dburt-proex/operator-intelligence#67:DiffWall-ALLOW-15-of-100"
+      ]
+    },
+    {
+      "validator": "Validate registry and repository map",
+      "scope": "Operator Intelligence registry and generated repository-map integrity",
+      "result": "pass",
+      "evidence_refs": [
+        "github:workflow-run:32852374071"
+      ]
+    }
+  ],
+  "operator_interventions": [
+    {
+      "actor": "Drew Burt",
+      "reason": "Explicitly authorized generated proposal LE-IMPROVE-dbfc7509df5b19c7 and restated the required Retriever proposes / Compiler admits architecture.",
+      "effect": "Phase 6 implementation and merge were authorized within the bounded candidate-retrieval scope; no subsequent source-adapter expansion was authorized."
+    }
+  ],
+  "review_events": [
+    {
+      "gate": "Generated context-relevance improvement",
+      "decision": "ALLOW",
+      "owner": "Drew Burt",
+      "rationale": "Operator explicitly issued LE-IMPROVE-dbfc7509df5b19c7:allow.",
+      "recorded_at": "2026-08-25T13:09:00Z"
+    },
+    {
+      "gate": "Phase 6 merge",
+      "decision": "ALLOW",
+      "owner": "Drew Burt",
+      "rationale": "Explicit Phase 6 authorization combined with passing Leverage Engine regression, DiffWall ALLOW, and repository-map validation permitted the bounded merge.",
+      "recorded_at": "2026-08-25T13:18:14Z"
+    }
+  ],
+  "failures": [],
+  "friction": [
+    "The current repository exposes evidence and decision standards/templates but does not expose a single canonical machine-readable evidence-object and decision-object store suitable for direct retriever ingestion.",
+    "v0.1 retrieval is deliberately lexical and same-project; this proves the control architecture but does not yet provide semantic or cross-project recall."
+  ],
+  "reusable_learnings": [
+    {
+      "learning": "Candidate recall can be widened safely when retrieval produces only item IDs and provenance while the deterministic Context Compiler remains the sole admission boundary for agent context.",
+      "evidence_refs": [
+        "github:workflow-run:32852374149",
+        "repo:leverage-engine/src/leverage_engine/retrieval.py",
+        "repo:leverage-engine/src/leverage_engine/context.py"
+      ],
+      "reuse_scope": [
+        "graph-engineering-os",
+        "leverage-engine",
+        "context-compilation",
+        "candidate-retrieval"
+      ]
+    },
+    {
+      "learning": "Evidence references and decision references can be retrieved as authority-neutral historical context, but a reference string must not be treated as equivalent to a canonical evidence or decision object.",
+      "evidence_refs": [
+        "repo:standards/evidence-standard.md",
+        "repo:standards/decision-ledger-standard.md",
+        "repo:leverage-engine/src/leverage_engine/experience_items.py"
+      ],
+      "reuse_scope": [
+        "graph-engineering-os",
+        "evidence",
+        "decisions",
+        "candidate-retrieval"
+      ]
+    }
+  ],
+  "reused_experience": [
+    {
+      "source_execution_id": "LE-EXEC-2026-0005",
+      "kind": "next_improvement",
+      "statement": "Improve context candidate recall without weakening deterministic admission controls.",
+      "application": "Phase 6 added bounded deterministic candidate retrieval before the existing Context Compiler and represented retrieval as relevance evidence rather than admission authority.",
+      "observed_effect": "A test run with intentionally unrelated exact scope can retrieve a relevant prior item, while stale, future, superseded, contradicted, and over-budget retrieved items remain rejected by the compiler and execution_authorized remains false.",
+      "evidence_refs": [
+        "proposal:LE-IMPROVE-dbfc7509df5b19c7",
+        "github:workflow-run:32852374149",
+        "github:commit:d0a334317c35789b28e54600700f8846f77eef85"
+      ]
+    }
+  ],
+  "residual_risks": [
+    "Candidate retrieval is lexical rather than semantic; relevant concepts expressed with disjoint vocabulary will not be proposed.",
+    "Retrieval is currently bounded to retained receipts in the same project; direct adapters for canonical evidence, decision, source-registry, or cross-project graph stores are not implemented.",
+    "Evidence and decision candidates currently contain retained references rather than fetched canonical object content.",
+    "One-hop graph expansion uses the existing context relation registry, which currently models supersession, contradiction, and invalidation rather than a broad operational knowledge graph.",
+    "Graph Engineering OS browser UI still does not render retrieval results or compiled context directly."
+  ],
+  "completion_status": "completed",
+  "completion_evidence": [
+    "github:pr:dburt-proex/operator-intelligence#67",
+    "github:commit:d0a334317c35789b28e54600700f8846f77eef85",
+    "github:workflow-run:32852374149",
+    "github:workflow-run:32852373938",
+    "github:workflow-run:32852374071"
+  ],
+  "gate_result": "ALLOW",
+  "gate_reasons": [
+    "operator explicitly authorized LE-IMPROVE-dbfc7509df5b19c7",
+    "retriever proposes and Context Compiler remains the sole admission boundary",
+    "full Leverage Engine regression suite passes",
+    "DiffWall routes Phase 6 ALLOW at 15/100",
+    "repository registry/map validation passes",
+    "PR #67 merged successfully"
+  ],
+  "next_improvement": {
+    "objective": "Define bounded source-adapter contracts for canonical evidence and decision objects before expanding candidate retrieval beyond receipt-local references.",
+    "rationale": "Phase 6 safely retrieves receipt-local evidence and decision references, but repository inspection found standards/templates rather than a single canonical machine-readable evidence/decision object store. Direct source expansion should therefore begin with an explicit adapter and object contract instead of treating references or markdown templates as authoritative objects.",
+    "evidence_refs": [
+      "repo:standards/evidence-standard.md",
+      "repo:standards/decision-ledger-standard.md",
+      "repo:templates/evidence-register.md",
+      "github:issue:dburt-proex/operator-intelligence#66"
+    ],
+    "expected_leverage": "high",
+    "requires_review": true
+  },
+  "recorded_at": "2026-08-25T13:20:00Z"
+}
