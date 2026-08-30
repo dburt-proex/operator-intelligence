@@ -1,5 +1,7 @@
 # Operator Intelligence™
 
+**Portfolio evidence:** [Systems & proof](https://drew-burt-portfolio.daxxer-os.chatgpt.site/systems) · [Assessment](https://drew-burt-portfolio.daxxer-os.chatgpt.site/assess) · [Agentic Readiness Audit](https://drew-burt-portfolio.daxxer-os.chatgpt.site/agentic-readiness-audit)
+
 ## Governed Business Growth Systems Assessment
 
 **Current repository state:** Commercial v1.0 content complete and release-gated  
