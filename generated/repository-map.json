@@ -14,7 +14,7 @@
     {"artifact_id":"OI-ART-0013","artifact_type":"generated-map","authority_state":"generated","path":"generated/repository-map.json","release_scope":"post-v1","status":"generated"},
     {"artifact_id":"OI-ART-0012","artifact_type":"generated-map","authority_state":"generated","path":"generated/repository-map.md","release_scope":"post-v1","status":"generated"},
     {"artifact_id":"OI-ART-0014","artifact_type":"generated-map","authority_state":"generated","path":"generated/repository-map.mmd","release_scope":"post-v1","status":"generated"},
-    {"artifact_id":"OI-ART-0006","artifact_type":"assessment-profile-source","authority_state":"proposed","path":"playbooks/agentic-ai-governance-readiness-assessment.md","release_scope":"future-profile","status":"internal-only-draft"},
+    {"artifact_id":"OI-ART-0006","artifact_type":"assessment-profile-source","authority_state":"proposed","path":"playbooks/agentic-ai-governance-readiness-assessment.md","release_scope":"future-profile","status":"Commercial pilot candidate; buyer validation required"},
     {"artifact_id":"OI-ART-0017","artifact_type":"engagement-profile","authority_state":"approved_extension","path":"playbooks/agentic-control-platform-readiness/README.md","release_scope":"post-v1","status":"governed-working"},
     {"artifact_id":"OI-ART-0019","artifact_type":"assessment-questionnaire","authority_state":"approved_extension","path":"playbooks/agentic-control-platform-readiness/assessment-questionnaire.md","release_scope":"post-v1","status":"governed-working"},
     {"artifact_id":"OI-ART-0021","artifact_type":"control-map","authority_state":"approved_extension","path":"playbooks/agentic-control-platform-readiness/control-mapping.md","release_scope":"post-v1","status":"governed-working"},
