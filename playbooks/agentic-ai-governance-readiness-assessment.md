@@ -454,7 +454,29 @@ implementation_authorized: false
 ledger_refs: []
 ```
 
-The record may be serialized into the existing finding/export schemas. This section does not create a new canonical schema.
+The internal AICR finding record is richer than the reused ACPR export finding object and **must not be serialized verbatim** into `playbooks/agentic-control-platform-readiness/export-schema.json`.
+
+When an AICR finding is emitted through that existing export schema, apply this deterministic transformation:
+
+| AICR source | ACPR export field |
+|---|---|
+| internal `finding_id` | map to stable `ACPR-F-D[1-7]-NNN` export ID |
+| `domain_id` | `domain_id` |
+| control-map classification | `control_plane` |
+| `state` | `state` |
+| `severity` | `severity` |
+| `observation` | `observation` |
+| `gap_or_condition` + bounded control interpretation | `interpretation` |
+| `risk_or_business_impact` + decision-effect rationale | `platform_decision_effect` |
+| `evidence.refs` | `evidence_refs` |
+| `confidence` | `confidence` |
+| `owner` or explicit owner-gap text | `owner` |
+| roadmap/decision gate | `target_gate` |
+| `verification_requirement` | `acceptance_criteria` |
+| `control_gate` | `control_gate` |
+| `ledger_refs` | `ledger_refs` |
+
+The exported finding must contain every field required by the reused schema and no additional properties. The AICR internal identifier remains valid inside this assessment; the ACPR-form identifier is the schema-compatible export identity. This section does not create a new canonical schema.
 
 ---
 
@@ -885,7 +907,7 @@ The decision remains `REVIEW` because the score is in the conditional band and m
 - **Evidence:** `SYN-EV-004`, `SYN-EV-005`, `SYN-EV-011`, `SYN-EV-012`
 - **Observation:** the approval matrix says outbound email is recipient-restricted, while the reviewed tool policy allows broader recipient scope; no independent safe-test result is available.
 - **Control expectation:** consequential external communication should be limited to the authorized recipient/action scope and retain the approval/action evidence.
-- **State:** `PARTIAL_CONTROL`
+- **State:** `UNKNOWN`
 - **Severity:** high
 - **Risk / business impact:** scope expansion could increase externally consequential communication before the effective recipient boundary is proven.
 - **Confidence:** medium because the artifacts conflict and runtime validation is absent.
@@ -894,6 +916,7 @@ The decision remains `REVIEW` because the score is in the conditional band and m
 - **Recommended next action:** validate the effective runtime recipient boundary; if absent, implement an explicit allowlist/approval enforcement point before expansion.
 - **Candidate remediation:** customer-native email policy first; CASA/Runwall only if a deterministic agent runtime gate is needed.
 - **Owner:** AI Platform Lead + Security/IAM owner.
+- **DecisionLedger:** `SYN-DL-001` — synthetic `REVIEW` event retaining the contradiction, unknown state, owner, and safe-test requirement.
 - **Verification:** authorized safe-test result, policy evidence, approval event, and action trace.
 - **Gate:** `REVIEW`.
 
@@ -910,6 +933,8 @@ The decision remains `REVIEW` because the score is in the conditional band and m
 - **Priority:** `90/100`.
 - **Recommended next action:** establish correlation/receipt requirements for material actions and preserve them through the existing system of record.
 - **Candidate remediation:** Mirdexx/shared DecisionLedger where integrated; otherwise the customer’s existing logging/SIEM/data platform.
+- **Owner status:** owner gap — AI Platform Lead owns remediation routing until the buyer names the authoritative logging/SIEM owner.
+- **DecisionLedger:** `SYN-DL-002` — synthetic `REVIEW` event recording the reconstruction gap, interim owner status, and replay acceptance evidence.
 - **Verification:** sample replay showing prompt/config version, decision, approval, tool action, result, verification, and final disposition.
 - **Gate:** `REVIEW`.
 
@@ -926,6 +951,8 @@ The decision remains `REVIEW` because the score is in the conditional band and m
 - **Priority:** `85/100`.
 - **Recommended next action:** define the buyer’s target agent-identity model and prove least-privilege/access-review behavior before expansion.
 - **Candidate remediation:** customer IAM/IGA platform; no Drew-owned subsystem is the primary IAM replacement.
+- **Owner:** Director, Identity & Platform Security.
+- **DecisionLedger:** `SYN-DL-003` — synthetic `REVIEW` event recording the shared-identity limitation, accountable owner, and pre-expansion verification gate.
 - **Verification:** per-agent or approved grouped identity design, entitlement export, sponsor/owner, access review, deprovisioning test.
 - **Gate:** `REVIEW`.
 
@@ -942,6 +969,8 @@ The decision remains `REVIEW` because the score is in the conditional band and m
 - **Priority:** `80/100`.
 - **Recommended next action:** run a bounded rollback/kill-switch exercise and retain timing, ownership, recovery, and residual-failure evidence.
 - **Candidate remediation:** customer incident/runbook controls first; Runwall/CASA only where the tested containment boundary is agent runtime/tool authority.
+- **Owner status:** owner gap — the buyer must name the authoritative incident/recovery owner; AI Platform Lead coordinates the bounded exercise until then.
+- **DecisionLedger:** `SYN-DL-004` — synthetic `REVIEW` event recording the unexercised recovery control, owner gap, and exercise requirement.
 - **Verification:** exercise record, alert-to-owner trace, containment result, recovery result, post-exercise decision.
 - **Gate:** `REVIEW`.
 
