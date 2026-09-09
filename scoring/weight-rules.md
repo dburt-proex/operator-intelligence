@@ -1,333 +1,327 @@
-# Operator Intelligence Weight Rules
+# Agentic AI Control Readiness Weight Rules
 
-Version: v0.1 scoring execution foundation  
-Stage alignment: Stage 3 — `scoring/`  
-Status: Draft foundation for commercial v1.0
+**Status:** Stage 3B canonical scoring control — proposed for review  
+**Version:** 0.1.0  
+**Authority:** Operator Intelligence assessment methodology  
+**Active model:** Agentic AI Control Readiness Assessment v0.1  
+**Implementation authorization created by this artifact:** `false`
 
 ## Purpose
 
-This file governs category and criterion weights used by the Operator Intelligence scoring system.
+Define the canonical weighting rules, category relationships, confidence treatment, and unknown-data behavior for the active Agentic AI Control Readiness Assessment.
 
-It prevents evaluators from changing weights to fit a preferred conclusion, hiding weak categories through normalization, or producing scores that cannot be compared or reproduced.
+This file is the single Stage 3B source for domain weights. Domain sheets may reference these weights but must not redefine, override, or duplicate them.
 
-This file supplements `scoring/weights.md`. The approved numeric profiles remain defined there. These rules govern selection, modification, calculation, approval, and disclosure.
+## Inputs
 
-## Core rules
+Canonical inputs:
 
-1. Every score run must use one named weight profile.
-2. Active category weights must total exactly 100% before publication.
-3. Weight changes must reflect assessment scope or business-model relevance, not observed performance.
-4. A weak category must not receive a lower weight because it would reduce the Operator Score.
-5. An unknown category must not be removed merely because evidence is unavailable.
-6. `not_applicable` exclusions require documented structural irrelevance and approval.
-7. Category and criterion weights must be fixed before scoring begins.
-8. Any weight change after evidence review requires a new score run.
-9. Original and adjusted profiles must remain traceable.
-10. Client-facing reports must disclose non-default profiles and their rationale.
+- `playbooks/agentic-ai-governance-readiness-assessment.md`
+- `playbooks/agentic-control-platform-readiness/scoring-profile.md`
+- `standards/evidence-standard.md`
+- `standards/confidence-standard.md`
+- `standards/publication-standard.md`
+- `standards/decision-ledger-standard.md`
 
-## Approved weight profiles
+Legacy contractor/local-service scoring artifacts are not inputs to the active Agentic AI Control Readiness model.
 
-### Default profile
+## Outputs and consumers
 
-Use the default profile when the assessment covers a general local-service or contractor business and no material operating-model difference requires adjustment.
+This file governs:
 
-Profile key:
+- domain-sheet weight references;
+- overall readiness-score calculation;
+- evidence-coverage calculation;
+- active-domain treatment;
+- weighted ownership boundaries;
+- publication and validation checks;
+- future worked scoring fixtures;
+- client-facing score explanations;
+- DecisionLedger scoring receipts.
 
-```text
-OI-WEIGHT-DEFAULT-01
-```
+Primary consumers are the AICR scoring profile, future AIGR domain sheets, scoring fixtures, executive decision brief, remediation roadmap, and evidence receipt.
 
-### Contractor-heavy profile
+## Canonical seven-domain weights
 
-Use the contractor-heavy profile only when the business materially depends on local high-intent discovery, estimate requests, rapid lead response, reputation, and service-area conversion.
+| Domain | Canonical weight |
+|---|---:|
+| `AIGR-D1` — Purpose and ownership | 10% |
+| `AIGR-D2` — Data and system access | 15% |
+| `AIGR-D3` — Tool and action authority | 15% |
+| `AIGR-D4` — Workflow approvals and human intervention | 15% |
+| `AIGR-D5` — Evaluation and failure testing | 15% |
+| `AIGR-D6` — Logging, evidence, and auditability | 15% |
+| `AIGR-D7` — Deployment, monitoring, rollback, and incident response | 15% |
+| **Total** | **100%** |
 
-Profile key:
+### Weight integrity rules
 
-```text
-OI-WEIGHT-CONTRACTOR-01
-```
+1. The seven canonical domain weights must total exactly 100%.
+2. Domain sheets must not contain competing or alternate domain weights.
+3. Engagement-specific reweighting is not permitted in v0.1 unless a separately versioned scoring profile is approved before evidence review.
+4. A high aggregate score never overrides a deterministic critical gate or `HALT` condition.
+5. `NOT_APPLICABLE` may remove a criterion from a domain denominator only when the exclusion is evidence-backed and buyer-side rationale is recorded.
+6. A whole domain may be excluded only when the assessment contract explicitly places it outside scope and the exclusion does not make the assessment incapable of answering its stated executive decision. Such exclusion requires a DecisionLedger record and publication review.
 
-The numeric values for both profiles are defined in `scoring/weights.md`.
+## Domain ownership and relationships
 
-## Profile selection gate
+Each commercial surface has one primary weighted owner. Other domains may reference the same evidence without receiving duplicate weighted credit.
 
-Select a profile before criterion scoring.
+| Surface | Primary weighted owner | Reference-only relationship |
+|---|---|---|
+| AI/agent inventory, purpose, owner, lifecycle | `AIGR-D1` | D6 may preserve discovery evidence |
+| Identity, access, entitlements, data exposure | `AIGR-D2` | D3 may reference access when it becomes action authority |
+| Tools, integrations, execution scopes and limits | `AIGR-D3` | D4 may reference approval boundaries; D7 may reference containment |
+| Human review, approval, override, escalation | `AIGR-D4` | D3 may reference gated actions |
+| Instructions, evaluations, failure/adversarial tests | `AIGR-D5` | D7 may reference release thresholds |
+| Logs, provenance, replay, auditability | `AIGR-D6` | all domains may supply reconstructable evidence |
+| Release, monitoring, rollback, incident response | `AIGR-D7` | D5 may reference failure thresholds and regression evidence |
 
-The score run must record:
+### No-double-counting rule
 
-```yaml
-weight_profile: OI-WEIGHT-DEFAULT-01
-profile_version: "0.1"
-selection_reason: ""
-selected_by: ""
-approved_by: ""
-selected_at: ""
-```
+The same control outcome must not earn weighted maturity credit in more than one domain.
 
-Use the default profile unless another approved profile is demonstrably better aligned to the business model.
+Evidence may support multiple domain interpretations, but each scored criterion must have exactly one weighted owner. Cross-domain references are contextual or dependency evidence only.
 
-A profile-selection rationale must reference observable characteristics such as:
+## Criterion weighting inside domains
 
-- primary buyer path
-- service urgency
-- transaction structure
-- geographic market dependence
-- sales-cycle length
-- lead-response requirements
-- repeat or subscription model
-- regulated operating constraints
+Until a domain sheet explicitly defines approved internal criterion weights, criteria inside that domain are **equally weighted among applicable criteria**.
 
-Do not select a profile based on:
+A future domain sheet may introduce unequal internal criterion weights only when:
 
-- which profile produces the highest score
-- which profile makes a package easier to sell
-- a client’s preferred result
-- incomplete evidence
-- evaluator intuition without documented business-model support
+- the weighting rationale is tied to control materiality rather than commercial preference;
+- all criterion weights in the domain sum to 100%;
+- examples demonstrate changed calculations;
+- duplicate ownership has been checked;
+- the change is versioned and approved before use in an assessment evidence snapshot.
 
-## Custom weight profiles
+No domain sheet may alter the seven domain-level weights in this file.
 
-A custom profile is permitted only when approved profiles materially misrepresent the business model.
+## Readiness calculation
 
-Custom profile key format:
-
-```text
-OI-WEIGHT-CUSTOM-YYYY-NNN
-```
-
-A custom profile requires:
-
-- business-model rationale
-- proposed category weights
-- confirmation that weights total 100%
-- comparison with the closest approved profile
-- documented effect on interpretation
-- named evaluator
-- independent reviewer approval
-- DecisionLedger reference
-- methodology version
-
-A custom profile must not be created solely for one weak or unknown category.
-
-## Category-weight integrity
-
-Before scoring, validate:
+For a domain:
 
 ```text
-Sum of Active Category Weights = 100%
+domain_score =
+  sum(known_criterion_score × criterion_weight)
+  / sum(known_criterion_weight)
 ```
 
-Blocking conditions:
-
-- total is below or above 100%
-- a required category has no state
-- duplicate category keys exist
-- a category weight is negative
-- a category weight exceeds 30% without methodology approval
-- profile version is missing
-- profile selection lacks rationale when non-default
-
-A failed integrity check sets the score-run publication state to `blocked`.
-
-## Category exclusion rules
-
-A category may be excluded only when every underlying criterion is approved as `not_applicable` or the assessment scope explicitly excludes the category for a valid structural reason.
-
-Evidence unavailable, access denied, or testing incomplete does not make a category not applicable.
-
-When a category is excluded:
-
-1. Record the category key.
-2. Record the structural reason.
-3. Record the affected criteria.
-4. Record evaluator and reviewer approval.
-5. Preserve the original profile.
-6. Create a derived active profile whose remaining weights total 100%.
-7. Disclose the exclusion in score methodology notes.
-
-Derived active weights are calculated as:
+For the overall observed readiness score:
 
 ```text
-Normalized Active Category Weight =
-Original Category Weight ÷ Sum of Remaining Original Weights
+readiness_score =
+  sum(domain_score × active_domain_weight)
+  / sum(active_domain_weight)
 ```
 
-Normalization is allowed only after an approved `not_applicable` exclusion. It must not be used to hide unknown, blocked, or low-coverage categories.
+The observed score represents control performance only for known evidence. It must be accompanied by evidence coverage, confidence, unknowns, contradictions, critical gates, and publication state.
 
-## Unknown and blocked categories
+## Unknown-data behavior
 
-Unknown and blocked categories retain their original category weight.
+`UNKNOWN`, `blocked`, and `NOT_APPLICABLE` are states, not numeric scores.
 
-They contribute to:
+### `UNKNOWN`
 
-- weighted evidence coverage
-- Operator Score minimum and maximum
-- publication-state determination
-- validation and escalation
+Use when admissible evidence is insufficient to determine the control state.
 
-They must not be silently dropped from the score model.
+Rules:
 
-## Criterion weights inside categories
+- never convert unknown to `0`;
+- retain the criterion inside applicable weight;
+- exclude it from known-weight maturity calculation;
+- reduce evidence coverage;
+- widen uncertainty or force validation/publication constraints as required;
+- route material unknowns to validation before remediation authority is inferred.
 
-Unless an approved category sheet states otherwise, applicable criteria within a category use equal weight.
+### `blocked`
+
+Use when a result cannot be determined because authority, safe access, evidence integrity, scope, handling, or another governed prerequisite prevents evaluation.
+
+Rules:
+
+- do not assign a numeric maturity score;
+- retain the applicable weight unless the assessment contract legitimately excludes the criterion;
+- record the blocking reason and owner/gate;
+- apply `HALT` when the block prevents a defensible assessment decision or violates a critical boundary.
+
+### `NOT_APPLICABLE`
+
+Use only when the control genuinely does not apply to the bounded subject and the rationale is documented.
+
+Rules:
+
+- remove the criterion from applicable criterion weight;
+- do not treat it as evidence of strength or weakness;
+- do not use `NOT_APPLICABLE` to hide missing evidence or weak controls.
+
+## Evidence coverage
+
+Evidence coverage remains separate from readiness:
 
 ```text
-Criterion Weight = 1 ÷ Applicable Criterion Count
+coverage =
+  sum(known_criterion_weight × domain_weight)
+  / sum(applicable_criterion_weight × domain_weight)
 ```
 
-`not_applicable` criteria are removed only after approval.
+Coverage answers how much of the applicable weighted control surface is supported by admissible evidence. It does not answer how mature the controls are.
 
-Unknown and blocked criteria remain in applicable criterion weight.
+## Confidence treatment
 
-A category sheet may define unequal criterion weights only when:
+Confidence is not a score multiplier and does not change the domain or readiness score.
 
-- the weights total 100% within the category
-- the rationale is tied to materiality, not observed performance
-- the weighting version is recorded
-- duplicate-signal controls pass
-- evaluator guidance is explicit
-- regression examples exist
+Confidence remains a separate signal derived from evidence quality, scope, recency, integrity, corroboration, and contradiction.
 
-## Weight freezing
+Confidence affects:
 
-Weights freeze when the score run enters evidence interpretation.
+- assertion strength;
+- validation requirements;
+- uncertainty/range treatment;
+- publication eligibility;
+- recommendation language;
+- DecisionLedger rationale.
 
-After freezing, changes to any of the following require a new score run or version:
+Confidence must not:
 
-- selected category profile
-- category exclusions
-- category weights
-- criterion applicability
-- criterion weights
-- category mapping
+- increase a weak control's maturity score;
+- decrease a strong control's maturity score;
+- convert missing evidence into failure;
+- resolve contradictory evidence by averaging;
+- authorize implementation.
 
-Narrative edits do not require a rerun unless they change evidence, applicability, score, confidence, or calculation inputs.
+## Publication relationship
 
-## Duplicate-signal control
+Weight completion alone never authorizes publication.
 
-Weights must not amplify one operational condition through overlapping criteria or categories.
+The active scoring profile requires, at minimum, for an `official` result:
 
-Before publication, confirm:
+- at least 80% evidence coverage;
+- known evidence in all seven domains;
+- no unresolved material contradiction;
+- independent review complete.
 
-- each criterion has one weighted category owner
-- cross-domain impacts are represented as dependencies, not duplicate scores
-- one evidence item may support several criteria only when each criterion measures a distinct condition
-- combined messaging and offer criteria remain inside the single `messaging_offer` category
-- social signals do not create invented social finding IDs
+A high readiness score with inadequate coverage or unresolved critical evidence remains provisional, range-only, blocked, or internal-only according to the publication standard.
 
-A material duplicate-signal failure blocks the Operator Score.
+## Critical-gate precedence
 
-## Sensitivity check
+Critical controls are not diluted by weights.
 
-Run a sensitivity check when:
+A verified condition such as unbounded consequential action authority, absent accountable ownership, inability to enforce least privilege for material access, missing required human decision boundaries, absent defensible evaluation/release gates, unreconstructable material actions, or absent critical containment/rollback/incident routes can route `HALT` regardless of aggregate score.
 
-- a custom profile is used
-- any category weight changes by 5 percentage points or more from the closest approved profile
-- one category receives 20% or more
-- the score result is within 3 points of a maturity-tier boundary
+## Examples and edge cases
 
-The sensitivity check compares the active result with the closest approved profile using the same category scores.
+### Example 1 — Unknown is not zero
 
-Record:
+A domain has four equally weighted applicable criteria. Three are scored `100`, `75`, and `50`; one is `UNKNOWN`.
 
-```yaml
-comparison_profile: ""
-active_operator_score: null
-comparison_operator_score: null
-absolute_difference: null
-tier_changed: false
-interpretation_changed: false
-review_required: false
+```text
+observed domain score = (100 + 75 + 50) / 3 = 75
+coverage = 3 / 4 = 75%
 ```
 
-A weight-driven tier change requires explicit review and disclosure.
+The unknown criterion is not scored as `0`. The domain reports observed performance `75` with 75% coverage and the unknown remains explicit.
 
-## Publication rules
+### Example 2 — Not applicable is excluded
 
-An Operator Score is not eligible for `official` publication unless:
+A domain has four equal criteria. One is legitimately `NOT_APPLICABLE`; the other three score `75`, `75`, and `100`.
 
-- the weight profile is approved
-- active weights total 100%
-- exclusions are valid and approved
-- weights were frozen before scoring
-- no performance-driven reweighting occurred
-- duplicate-signal checks pass
-- required sensitivity review is complete
-- profile and version are stored in score objects
-
-If the calculation is otherwise valid but a non-default profile materially changes interpretation, publication may be limited to `provisional` pending review.
-
-## DecisionLedger minimum record
-
-```yaml
-ledger_ref: OI-DL-YYYY-NNN
-score_run_id: OI-SCORE-YYYY-NNN
-weight_profile: OI-WEIGHT-DEFAULT-01
-profile_version: "0.1"
-original_weights: {}
-active_weights: {}
-excluded_categories: []
-selection_reason: ""
-custom_profile_reason: null
-weights_frozen_at: ""
-sensitivity_check_ref: null
-duplicate_check_passed: false
-selected_by: ""
-reviewed_by: ""
-approved_by: ""
-publication_effect: none
+```text
+observed domain score = (75 + 75 + 100) / 3 = 83.33
+applicable criteria = 3
+known criteria = 3
+coverage = 100%
 ```
 
-## Validation messages
+The excluded criterion neither helps nor harms the score.
 
-### Blocking errors
+### Example 3 — Contradictory evidence
 
-- `WEIGHT-TOTAL-001`: active category weights do not total 100%
-- `WEIGHT-PROFILE-001`: weight profile is missing or unsupported
-- `WEIGHT-RATIONALE-001`: non-default profile lacks rationale
-- `WEIGHT-EXCLUDE-001`: category exclusion lacks valid approval
-- `WEIGHT-FREEZE-001`: weights changed after scoring began without rerun
-- `WEIGHT-DUPLICATE-001`: duplicate weighting materially inflates a score
-- `WEIGHT-PERFORMANCE-001`: weights were adjusted in response to observed performance
-- `WEIGHT-VERSION-001`: profile or criterion-weight version is missing
+Configuration evidence indicates a tool action requires approval, while an authorized test demonstrates the action completing without the expected approval event.
 
-### Warnings
+Do not average the two observations into a numeric compromise. Preserve the contradiction, constrain confidence, determine whether the criterion is `PARTIAL_CONTROL`, `VERIFIED_GAP`, or `UNKNOWN` under the domain sheet, and apply the applicable governance gate.
 
-- `WEIGHT-SENSITIVITY-001`: sensitivity review is required
-- `WEIGHT-CONCENTRATION-001`: one category carries at least 20%
-- `WEIGHT-TIER-001`: profile choice changes the maturity tier
-- `WEIGHT-CUSTOM-001`: custom profile limits comparability
+### Example 4 — High aggregate score with critical failure
 
-## Client-facing language
+Six domains score highly, but admissible evidence shows an in-scope agent has unbounded consequential action authority with no enforceable approval boundary.
 
-Preferred:
+The aggregate weighted score may still exceed 75. The decision does **not** become `ALLOW`; the critical gate takes precedence and routes `HALT` / `NOT_READY` according to the scoring profile.
 
-> The assessment used the contractor-heavy weight profile because the business depends primarily on local high-intent search, estimate conversion, rapid response, and reputation. The profile was selected before scoring and is disclosed for comparability.
+### Example 5 — Cross-domain evidence without duplicate credit
 
-Preferred exclusion language:
+An IAM export shows an agent service identity has write access to a CRM. The same evidence may support:
 
-> One category was excluded because the approved assessment scope established that it was structurally not applicable. The remaining weights were normalized, and the exclusion is documented in the methodology notes.
+- D2: whether identity/access is least-privilege and understood;
+- D3: contextual proof that a tool can perform a consequential write action.
 
-Do not say:
+The access-control criterion receives weighted credit only in D2. D3 must score its own action-authority criterion using its own control expectation, even if it references the same evidence record.
 
-- weights were changed to better reflect the final score
-- weak areas were deprioritized
-- unknown categories were removed
-- the profile guarantees a more accurate business outcome
+## Legacy-model authority conflict
 
-## Completion check
+The existing `scoring/weights.md`, `scoring/category-sheets/website.md`, and related SEO/GBP/messaging/conversion category artifacts belong to the earlier Business Growth Systems Assessment / contractor-local-service model.
 
-Before publishing, confirm:
+They are not canonical inputs for the active Agentic AI Control Readiness Assessment.
 
-- one named profile is recorded
-- profile selection occurred before scoring
-- weights total 100%
-- non-default rationale is documented
-- exclusions are structurally valid
-- unknowns retained their weight
-- criterion weighting follows the category sheet or equal-weight default
-- weights were frozen
-- duplicate-signal checks pass
-- sensitivity review is complete when required
-- DecisionLedger traceability exists
-- client methodology notes disclose material deviations
+Therefore:
+
+- do not copy those weights into AICR domain sheets;
+- do not build `website.md` as the first active AICR category sheet;
+- do not delete or rewrite the legacy artifacts in this increment;
+- preserve them as legacy until a separately authorized archival, namespace, or migration decision is made;
+- the next active scoring-sheet work must use the seven `AIGR-D1..D7` domains.
+
+This resolves the Stage 3B website authority check as **HALT for active-model use**, not as a defect in the legacy product.
+
+## Governance states for this artifact
+
+**ALLOW**
+
+- seven domain weights match the canonical AICR scoring profile;
+- total equals 100%;
+- confidence remains separate from maturity;
+- unknown remains non-numeric;
+- critical gates override aggregate scores;
+- no duplicate weighted ownership exists.
+
+**REVIEW**
+
+- an internal criterion-weight proposal lacks validation examples;
+- a domain exclusion may materially weaken the assessment decision;
+- a new scoring profile is proposed but not yet approved.
+
+**HALT**
+
+- domain weights conflict with the canonical profile;
+- unknown is scored as zero;
+- confidence modifies maturity;
+- a critical gate is diluted by aggregation;
+- the same control earns weighted credit in multiple domains;
+- legacy contractor weights are presented as active AICR weights;
+- a domain sheet silently overrides this file.
+
+## Validation method
+
+Validation for this file requires:
+
+1. Recalculate the seven domain weights to confirm a 100% total.
+2. Compare every weight against `playbooks/agentic-control-platform-readiness/scoring-profile.md`.
+3. Confirm the domain names and ownership model match the AICR seven-domain contract.
+4. Run worked examples for complete evidence, unknown-heavy evidence, contradictory evidence, critical-gate precedence, and not-applicable exclusions.
+5. Confirm downstream domain sheets contain references only and no competing domain-level weights.
+
+## Known limitations
+
+- Internal criterion weights are not yet defined for the seven domains; equal applicable weighting is the controlled default.
+- Existing root `scoring/weights.md` and contractor category-sheet infrastructure remain in the repository and may confuse consumers until a separate legacy namespace/reconciliation decision is authorized.
+- No seven-domain Stage 3B domain sheets or regression fixtures are approved by this file alone.
+- This artifact does not validate field reliability, customer outcomes, compliance, security, ROI, or implementation effectiveness.
+
+## v1.0 connection
+
+This file does not rewrite the earlier Business Growth Systems Assessment v1.0 scoring model. It establishes the Stage 3B canonical weight control for the post-v1 Agentic AI Control Readiness commercial profile authorized in Issue #69 and merged through AICR v0.1.
+
+## Next action
+
+Create the first active AICR domain sheet for `AIGR-D1 — Purpose and ownership`, not `website.md`, after reviewing the canonical criteria/control mapping for D1 and defining a deterministic worked fixture.
+
+Do not modify legacy category sheets until a separate authority decision defines their archival or namespace treatment.
