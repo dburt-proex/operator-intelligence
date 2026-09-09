@@ -3,6 +3,9 @@
 Version: 0.1.0
 Status: Proposed deterministic profile
 Decision unit: One bounded organization, business unit, or platform scope
+Canonical methodology control: `scoring/aicr/weight-rules.md`
+
+Legacy contractor/local-service assessments remain governed by `scoring/weight-rules.md`; they must not consume this profile.
 
 ## 1. Scoring principles
 
@@ -10,6 +13,7 @@ Decision unit: One bounded organization, business unit, or platform scope
 - Unknown is never zero.
 - Evidence coverage and confidence remain separate from readiness.
 - Exactly seven canonical domains are weighted.
+- Whole-domain exclusion and six-domain normalization are prohibited in v0.1.
 - A high aggregate score cannot override a critical gate.
 - Publication and implementation authorization are separate decisions.
 
@@ -40,7 +44,9 @@ Decision unit: One bounded organization, business unit, or platform scope
 
 ## 4. Calculations
 
-For each domain:
+The complete calculation and edge-case authority is `scoring/aicr/weight-rules.md`.
+
+For each domain with known weighted evidence:
 
 ```text
 domain_score =
@@ -48,21 +54,39 @@ domain_score =
   / sum(known_criterion_weight)
 ```
 
-Overall observed readiness:
+When known criterion weight is zero:
 
 ```text
+domain_score = null
+domain_status = UNSCORED
+domain_coverage = 0
+```
+
+Overall observed readiness uses only canonical weights belonging to non-null domain scores:
+
+```text
+observed_domain_weight = canonical domain weight when domain_score is non-null; otherwise 0
+
 readiness_score =
-  sum(domain_score × active_domain_weight)
-  / sum(active_domain_weight)
+  sum(domain_score × observed_domain_weight)
+  / sum(observed_domain_weight)
 ```
 
-Evidence coverage:
+If total observed domain weight is zero, `readiness_score = null` and publication is blocked. This observed denominator does not remove a domain from the canonical profile.
+
+Evidence coverage always spans all seven canonical domains:
 
 ```text
+domain_coverage =
+  sum(known_criterion_weight)
+  / sum(applicable_criterion_weight)
+
 coverage =
-  sum(known_criterion_weight × domain_weight)
-  / sum(applicable_criterion_weight × domain_weight)
+  sum(domain_coverage × canonical_domain_weight)
+  / 100
 ```
+
+An all-unknown or all-blocked domain therefore contributes zero coverage while retaining its canonical weight. An attempted whole-domain exclusion invalidates the v0.1 run and routes `BLOCKED` / `HALT`; remaining domains are never normalized to create a six-domain profile.
 
 Confidence is assigned from evidence quality, scope, recency, integrity, corroboration, and contradiction. It never modifies the score.
 
@@ -146,8 +170,11 @@ evidence_snapshot_date: YYYY-MM-DD
 domain_results:
   - domain_id: AIGR-D1
     score: null
-    applicable_weight: 10
-    known_weight: 0
+    domain_status: UNSCORED
+    canonical_domain_weight: 10
+    observed_domain_weight: 0
+    applicable_criterion_weight: 100
+    known_criterion_weight: 0
     coverage: 0
     confidence: unknown
     finding_refs: []
