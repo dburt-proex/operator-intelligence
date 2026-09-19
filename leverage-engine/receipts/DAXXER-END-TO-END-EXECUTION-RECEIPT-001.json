@@ -3,7 +3,7 @@
   "directive_id": "LD-2026-09-19-001",
   "project_id": "DAXXER:AICR-FIRST-PAID-PILOT",
   "started_at": "2026-09-17T19:02:15Z",
-  "ended_at": "2026-09-19T22:06:00Z",
+  "ended_at": "2026-09-19T22:47:21.968Z",
   "executor": {
     "actor_type": "hybrid",
     "actor_id": "drew-burt+chatgpt-daxxer-commercial-execution",
@@ -30,12 +30,15 @@
     "github:pr:dburt-proex/operator-intelligence#72",
     "github:pr:dburt-proex/Daxxer#38",
     "github:pr:dburt-proex/governance-harness-toolkit#34",
-    "github:pr:dburt-proex/Runwall#8"
+    "github:pr:dburt-proex/Runwall#8",
+    "gmail:message:1a0b92e1357f8532",
+    "gmail:thread:1a0b0bf0a96ec0cd"
   ],
   "decision_refs": [
     "operator:2026-09-17:LD-2026-09-17-DAXXER-3500-SURVIVAL-SPRINT-001",
     "notion:daily-ops:2026-09-19:Hyro-REVIEW_SEND",
-    "operator:2026-09-19:produce-DAXXER-END-TO-END-EXECUTION-RECEIPT-001"
+    "operator:2026-09-19:produce-DAXXER-END-TO-END-EXECUTION-RECEIPT-001",
+    "operator:2026-09-19:approve-exact-hyro-send"
   ],
   "tools": [
     "Notion",
@@ -85,19 +88,21 @@
     },
     {
       "sequence": 5,
-      "action": "Run final preflight and send the exact Hyro Gmail draft once under the existing outbound authority envelope.",
-      "result": "blocked",
+      "action": "Verify the exact Hyro outreach and preserve the single-send boundary. Gmail direct verification confirms the approved message to Rom Cohen was already in SENT at 2026-09-19T10:19:59 with message 1a0b92e1357f8532 / thread 1a0b0bf0a96ec0cd; a subsequent attempt using the stale draft ID returned NOT_FOUND and no duplicate send occurred.",
+      "result": "completed",
       "evidence_refs": [
-        "notion:page:3e058ca9-f74e-813f-9b7f-d8a8a5460db0"
+        "gmail:message:1a0b92e1357f8532",
+        "gmail:thread:1a0b0bf0a96ec0cd",
+        "notion:page:3de58ca9-f74e-81e4-aacd-dcab790d4876"
       ]
     },
     {
       "sequence": 6,
-      "action": "Capture external buyer response, discovery, proposal, payment, and AICR delivery evidence.",
-      "result": "blocked",
+      "action": "Capture external buyer-side evidence after the verified Hyro send. The Gmail thread currently contains one outbound message and no reply; discovery, proposal, payment, and AICR delivery evidence remain pending.",
+      "result": "partial",
       "evidence_refs": [
-        "notion:page:3dd58ca9-f74e-81c8-8ec0-dc5096fb81d6",
-        "notion:page:3e058ca9-f74e-813f-9b7f-d8a8a5460db0"
+        "gmail:thread:1a0b0bf0a96ec0cd",
+        "notion:page:3dd58ca9-f74e-81c8-8ec0-dc5096fb81d6"
       ]
     },
     {
@@ -130,9 +135,9 @@
       "change_summary": "Binds the verified workflow-specific cash state at USD 0 evidenced spent, USD 0 committed, zero Apollo credits consumed in the cited preparation receipt, and USD 0 evidenced revenue; shared subscription/model overhead remains unallocated."
     },
     {
-      "target_type": "none",
-      "target_ref": "external-outcome:pending",
-      "change_summary": "No paid pilot, buyer reply, discovery outcome, proposal acceptance, payment receipt, or customer delivery outcome is evidenced for this execution window."
+      "target_type": "record",
+      "target_ref": "external-outcome:hyro-outbound-verified",
+      "change_summary": "Gmail proves the exact Hyro outreach exists in SENT as message 1a0b92e1357f8532 / thread 1a0b0bf0a96ec0cd. No reply is present yet; send evidence is not delivery, buyer interest, or revenue evidence."
     }
   ],
   "validation": [
@@ -158,11 +163,12 @@
     },
     {
       "validator": "End-to-end commercial completion",
-      "scope": "outbound send through reply, discovery, proposal, payment, AICR delivery, and sanitized customer outcome evidence",
+      "scope": "verified Hyro outbound through reply, discovery, proposal, payment, AICR delivery, and sanitized customer outcome evidence",
       "result": "partial",
       "evidence_refs": [
-        "notion:page:3dd58ca9-f74e-81c8-8ec0-dc5096fb81d6",
-        "notion:page:3e058ca9-f74e-813f-9b7f-d8a8a5460db0"
+        "gmail:message:1a0b92e1357f8532",
+        "gmail:thread:1a0b0bf0a96ec0cd",
+        "notion:page:3dd58ca9-f74e-81c8-8ec0-dc5096fb81d6"
       ]
     }
   ],
@@ -176,6 +182,11 @@
       "actor": "Drew Burt",
       "reason": "Requested DAXXER-END-TO-END-EXECUTION-RECEIPT-001 as the next highest-leverage evidence increment.",
       "effect": "This run records the existing commercial execution chain without adding a new architecture or fabricating a paid outcome."
+    },
+    {
+      "actor": "Drew Burt",
+      "reason": "Explicitly approved the exact Hyro send in the current session.",
+      "effect": "Gmail verification showed the exact message had already been sent earlier the same day, so the approval was not used to create a second send. Duplicate-send prevention took precedence."
     }
   ],
   "review_events": [
@@ -192,17 +203,25 @@
       "owner": "Drew Burt",
       "rationale": "The current operating brief requires explicit authorization of the exact Hyro draft before the external send; no send receipt currently exists.",
       "recorded_at": "2026-09-19T15:14:13Z"
+    },
+    {
+      "gate": "Current-session exact Hyro send authorization",
+      "decision": "ALLOW",
+      "owner": "Drew Burt",
+      "rationale": "Drew explicitly approved sending the exact Hyro message. Direct Gmail verification found the exact message already in SENT; no second message was sent. This current approval is retained as present authority and is not represented as retroactive proof of pre-send authorization.",
+      "recorded_at": "2026-09-19T22:47:21.968Z"
     }
   ],
   "failures": [
     "Apollo People Match API was inaccessible on the Free plan for the approved preparation path; the retry was not repeated and zero credits were consumed.",
     "No paid buyer evidence exists yet.",
-    "No buyer replies were found in the recorded Gmail reconciliation since September 17."
+    "A send attempt against stored draft ID r-6842434096337827551 returned NOT_FOUND because the draft no longer existed; direct Gmail verification showed the exact message was already in SENT, and no duplicate send occurred.",
+    "No buyer reply is present in Gmail thread 1a0b0bf0a96ec0cd at reconciliation time."
   ],
   "friction": [
-    "The most execution-ready current commercial action is blocked at a deliberate human send gate.",
     "One screening-qualified prospect, Ankit Jain at Infinitus, still lacks a sufficiently verified work email.",
-    "The existing execution-receipt schema does not expose dedicated commercial cost or external-outcome fields, so those states are bound through ordered actions and change records without changing the schema."
+    "The existing execution-receipt schema does not expose dedicated commercial cost or external-outcome fields, so those states are bound through ordered actions and change records without changing the schema.",
+    "The live Notion Hyro page contained contradictory state: database properties recorded a send receipt while the page body still described the draft as unsent. Gmail was treated as the authoritative provider record for reconciliation."
   ],
   "reusable_learnings": [
     {
@@ -233,7 +252,7 @@
     }
   ],
   "residual_risks": [
-    "The requested end-to-end commercial chain is not complete because no current send, buyer response, discovery, proposal acceptance, payment, or paid AICR delivery is evidenced.",
+    "The requested end-to-end commercial chain is not complete beyond verified outbound because no buyer response, discovery, proposal acceptance, payment, or paid AICR delivery is evidenced.",
     "No causal revenue or conversion claim can be made from internal preparation.",
     "Workflow-specific cash spend is evidenced at zero for the cited window, but shared subscription and model costs are not allocated and must not be represented as zero total cost.",
     "A future paid-pilot receipt must sanitize customer-sensitive evidence before public portfolio use."
@@ -248,21 +267,22 @@
   "gate_result": "REVIEW",
   "gate_reasons": [
     "AICR productization is repository-evidenced and commercially packaged.",
-    "Astra has produced verified prospect and draft preparation evidence.",
-    "The current Hyro send is a consequential external action and remains at REVIEW without an exact send authorization/receipt.",
-    "No buyer reply, discovery, payment, paid pilot, or customer delivery evidence exists yet.",
+    "Astra prospect preparation is evidenced and the exact Hyro outbound is now verified in Gmail SENT.",
+    "The current Gmail thread contains no buyer reply; discovery, proposal, payment, paid pilot, and customer delivery evidence remain absent.",
+    "The current-session owner approval is retained as present authority but is not used as retroactive proof of pre-send authorization.",
     "Completion and commercial-outcome claims therefore remain prohibited."
   ],
   "next_improvement": {
-    "objective": "After one immediate final preflight, obtain operator authorization for the exact Hyro Gmail draft, send once, record the send receipt, and use the resulting buyer-side signal to continue toward one paid AICR pilot.",
-    "rationale": "The current evidence identifies the Hyro draft as the smallest available action that converts verified internal preparation into external buyer evidence without additional cash spend; the first paid AICR remains the explicit commercial validation gate.",
+    "objective": "Monitor the verified Hyro thread for a buyer reply; stop further outreach immediately on reply/opt-out/bounce/OOO, otherwise prepare the single concise follow-up due September 22 for separate approval while continuing the qualified AICR cohort toward one paid pilot.",
+    "rationale": "The first external action is now evidenced. The next credibility and revenue increment is buyer-side response evidence, not another architecture or duplicate send.",
     "evidence_refs": [
-      "notion:page:3e058ca9-f74e-813f-9b7f-d8a8a5460db0",
-      "notion:page:3de58ca9-f74e-812e-9f1a-cb4e9fe62b2c",
+      "gmail:message:1a0b92e1357f8532",
+      "gmail:thread:1a0b0bf0a96ec0cd",
+      "notion:page:3de58ca9-f74e-81e4-aacd-dcab790d4876",
       "github:issue:dburt-proex/operator-intelligence#69"
     ],
     "expected_leverage": "high",
     "requires_review": true
   },
-  "recorded_at": "2026-09-19T22:06:00Z"
+  "recorded_at": "2026-09-19T22:47:21.968Z"
 }
