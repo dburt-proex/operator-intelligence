@@ -39,6 +39,7 @@ INSTRUCTION_SHA256 = "3c1fd2716d1382fbbee4ea178c32c5ccc887b999d33afbc11df708137c
 INSTRUCTION_BYTES = 5877
 MAX_OUTPUT_TOKENS = 8000
 REQUEST_TIMEOUT_SECONDS = 180
+MAX_RESPONSE_BYTES = 1_048_576
 REQUIRED_EVIDENCE = frozenset({"OI-EV-2026-001", "OI-EV-2026-002"})
 EXPECTED_GATE = "REVIEW"
 ALLOWED_GATES = {"ALLOW", "REVIEW", "HALT"}
@@ -356,6 +357,13 @@ def _extract_output_text(response: dict[str, Any]) -> str:
     return texts[0]
 
 
+class _RejectProviderRedirects(urllib.request.HTTPRedirectHandler):
+    """A provider response cannot expand the authorized destination."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise HarnessError("provider redirect rejected without retry")
+
+
 def call_openai(request_body: dict[str, Any], authorization_path: Path, api_key: str | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
     """Send one authorized request. No automatic retries are implemented."""
     validate_execution_authorization(authorization_path)
@@ -370,8 +378,11 @@ def call_openai(request_body: dict[str, Any], authorization_path: Path, api_key:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(request, timeout=REQUEST_TIMEOUT_SECONDS) as response:
-            raw = response.read()
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), _RejectProviderRedirects())
+        with opener.open(request, timeout=REQUEST_TIMEOUT_SECONDS) as response:
+            raw = response.read(MAX_RESPONSE_BYTES + 1)
+            if len(raw) > MAX_RESPONSE_BYTES:
+                raise HarnessError("provider response exceeds size limit without retry")
             request_id = response.headers.get("x-request-id")
     except (urllib.error.URLError, TimeoutError) as exc:
         raise HarnessError(f"provider request failed without retry: {exc}") from exc
