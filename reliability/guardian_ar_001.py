@@ -1,4 +1,4 @@
-"""Audited AR-001 subprocess admission; no provider calls during verification.
+"""Audited AR-001 in-process admission; no provider calls during verification.
 
 Run as `python3 -m reliability.guardian_ar_001` from the repository root.
 The committed v1 authorization is consumed: current closeout evidence HALTs.
@@ -10,7 +10,6 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "guardian_vendor"))
@@ -27,6 +26,14 @@ PINS = {
     HARNESS: "cac1fc79f6dbd2d8002f110338df705a5fc7b630d53edde79d58fdb416196778",
 }
 CLOSEOUT = "reliability/receipts/ar-001-stage-a-v2-closeout.json"
+
+
+class HarnessExecutionError(RuntimeError):
+    """Preserve the harness exit contract without spawning a child process."""
+
+    def __init__(self, exit_code: int):
+        super().__init__("AR-001 harness execution failed; reconcile receipt before retry")
+        self.exit_code = exit_code
 
 
 def action_for(run_id, trace_id):
@@ -81,8 +88,30 @@ def verify_authority(envelope, root=ROOT, environment=None):
     return True
 
 
+def _run_harness_in_process(governed, root):
+    """Invoke the pinned harness functions only after Guardian has ALLOWed."""
+    params = governed.params
+    run_id, trace_id = params["argv"][3], params["argv"][5]
+    authorization_path = root / AUTH
+    try:
+        request_body = harness.build_request(run_id, trace_id)
+        output, metadata = harness.call_openai(request_body, authorization_path)
+        validation = harness.validate_output(output, run_id, trace_id)
+        record = harness.RunRecord(run_id, trace_id, output, validation, metadata)
+        payload = {"output": output, "receipt": harness.make_run_receipt(record)}
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        if not validation.valid:
+            raise HarnessExecutionError(2)
+        return "AR-001 harness returned success; inspect its independent receipt"
+    except HarnessExecutionError:
+        raise
+    except harness.HarnessError as exc:
+        print(f"AR-001 HALT: {exc}", file=sys.stderr)
+        raise HarnessExecutionError(3) from exc
+
+
 def execute_run(run_id, trace_id, *, root=ROOT, verifier=verify_authority,
-                execute=subprocess.run):
+                execute=None):
     action = action_for(run_id, trace_id)
     ledger_path = root / "ar001-guardian-ledger.jsonl"
     # Admission is durable even when host validation fails. The verifier never
@@ -99,17 +128,22 @@ def execute_run(run_id, trace_id, *, root=ROOT, verifier=verify_authority,
         "source_pointers": [AUTH, HARNESS, CLOSEOUT],
         "metadata": {"scope": "AR-001", "gate": "ALLOW_TO_RUN_PILOT",
                      "data_class": "SYNTHETIC_EXPERIMENT_EVIDENCE", "tools": 0, "retries": 0}}}
+    runner = _run_harness_in_process if execute is None else execute
     status = 3
+
     def invoke(governed):
         nonlocal status
-        # Freeze executable/arguments; shell=False; inherited stdout/stderr keep
-        # the existing harness receipt contract. Return codes are not success.
-        completed = execute(governed.params["argv"], cwd=str(root), shell=False,
-                            timeout=harness.REQUEST_TIMEOUT_SECONDS + 30, check=False)
-        status = completed.returncode
-        if status != 0:
-            raise RuntimeError("harness failed; reconcile its receipt before retry")
-        return "AR-001 harness returned success; inspect its independent receipt"
+        try:
+            result = runner(governed, root)
+            status = 0
+            return result
+        except HarnessExecutionError as exc:
+            status = exc.exit_code
+            raise
+        except Exception:
+            status = 3
+            raise
+
     decision = agent.govern_and_execute(envelope, invoke)
     receipt = decision.to_dict()
     receipt.pop("execution_result")
