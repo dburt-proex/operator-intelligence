@@ -2,7 +2,6 @@
 import json
 from pathlib import Path
 import tempfile
-from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -19,12 +18,12 @@ class TestGuardianAR001(unittest.TestCase):
     def tearDown(self):
         self.directory.cleanup()
 
-    def execute(self, argv, **kwargs):
-        self.assertIs(kwargs["shell"], False)
+    def execute(self, action, root):
+        self.assertEqual(root, self.root)
         ledger = AuditLedger(str(self.root / "ar001-guardian-ledger.jsonl"))
         self.assertEqual(ledger.entries()[-1]["record"]["verdict"], "ALLOW")
-        self.calls.append(argv)
-        return SimpleNamespace(returncode=0)
+        self.calls.append(action.params["argv"])
+        return "mock harness success"
 
     def run_gate(self, verifier=lambda envelope: True, executor=None):
         return gate.execute_run("AR001-PILOT-RUN-001", "AR001-PILOT-TRACE-001",
@@ -51,8 +50,10 @@ class TestGuardianAR001(unittest.TestCase):
         self.assertEqual(self.run_gate(), 3)
         self.assertEqual(len(self.calls), 1)
 
-    def test_nonzero_exit_is_execution_failure(self):
-        self.assertEqual(self.run_gate(executor=lambda *a, **kw: SimpleNamespace(returncode=2)), 3)
+    def test_harness_failure_is_execution_failure(self):
+        def fail(action, root):
+            raise gate.HarnessExecutionError(2)
+        self.assertEqual(self.run_gate(executor=fail), 3)
         receipt = json.loads((self.root / "ar001-guardian-AR001-PILOT-RUN-001.json").read_text())
         self.assertTrue(receipt["attempted"])
         self.assertFalse(receipt["executed"])
