@@ -9,7 +9,6 @@ import os
 from pathlib import Path
 import platform
 import socket
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -21,12 +20,50 @@ from guardian.audit import AuditLedger
 DIRECTIVE = "DAXXER-GUARDIAN-AR001-CI-INTEGRATION-001"
 
 
+def _git_directory(root: Path) -> Path:
+    marker = root / ".git"
+    if marker.is_dir():
+        return marker
+    raw = marker.read_text(encoding="utf-8").strip()
+    if not raw.startswith("gitdir: "):
+        raise AssertionError("Cannot resolve checkout git directory")
+    target = Path(raw.removeprefix("gitdir: ").strip())
+    return target if target.is_absolute() else (root / target).resolve()
+
+
+def _checkout_head_sha(root: Path) -> str:
+    """Resolve the checked-out commit without spawning git or another process."""
+    git_dir = _git_directory(root)
+    head = (git_dir / "HEAD").read_text(encoding="utf-8").strip()
+    if not head.startswith("ref: "):
+        if len(head) != 40 or any(ch not in "0123456789abcdef" for ch in head.lower()):
+            raise AssertionError("Detached HEAD is not a full commit SHA")
+        return head.lower()
+
+    ref = head.removeprefix("ref: ").strip()
+    loose = git_dir / ref
+    if loose.exists():
+        value = loose.read_text(encoding="utf-8").strip()
+        if len(value) == 40:
+            return value.lower()
+
+    packed = git_dir / "packed-refs"
+    if packed.exists():
+        for line in packed.read_text(encoding="utf-8").splitlines():
+            if not line or line.startswith(("#", "^")):
+                continue
+            value, name = line.split(" ", 1)
+            if name == ref and len(value) == 40:
+                return value.lower()
+    raise AssertionError("Unable to resolve checkout HEAD ref")
+
+
 def main():
     root = gate.ROOT
     evidence = root / "guardian-ci-evidence"
     evidence.mkdir(exist_ok=True)
-    sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-    expected = os.environ.get("EXPECTED_HEAD_SHA", sha)
+    sha = _checkout_head_sha(root)
+    expected = os.environ.get("EXPECTED_HEAD_SHA", sha).lower()
     receipt = {"directive_id": DIRECTIVE, "tested_sha": sha, "expected_sha": expected,
                "python": platform.python_version(), "platform": platform.platform(),
                "workflow_run_id": os.environ.get("GITHUB_RUN_ID"), "gate": "HALT",
@@ -35,15 +72,19 @@ def main():
                "publication_actions": 0, "test_results": {}, "guardian_gate": [],
                "provider_monitor_scope": "production_gate_probes",
                "network_monitor_scope": "all_suites_and_gate_probes"}
+
     def forbidden_executor(*args, **kwargs):
         receipt["executor_calls"] += 1
         raise AssertionError("CI must never invoke the harness executor")
+
     def forbidden_provider(*args, **kwargs):
         receipt["provider_calls"] += 1
         raise AssertionError("CI must never invoke the provider")
+
     def forbidden_network(*args, **kwargs):
         receipt["network_attempts"] += 1
         raise AssertionError("CI validation forbids network access")
+
     try:
         if sha != expected:
             raise AssertionError("Checkout does not match the requested exact head")
