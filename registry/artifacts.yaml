@@ -25,7 +25,8 @@
     {"path":"ecosystem/README.md","reason":"Canonical ecosystem-registry documentation; governed by the ecosystem control plane rather than artifact authority."},
     {"path":"ecosystem/registry.json","reason":"Canonical ecosystem source of truth; intentionally governed outside the artifact registry to avoid duplicate authority."},
     {"path":"ecosystem/registry.schema.json","reason":"Schema for the canonical ecosystem registry; governed with the ecosystem control plane."},
-    {"path":"ecosystem/validate_registry.py","reason":"Validator for the canonical ecosystem registry; governed with the ecosystem control plane."}
+    {"path":"ecosystem/validate_registry.py","reason":"Validator for the canonical ecosystem registry; governed with the ecosystem control plane."},
+    {"path":"rules/default.yml","reason":"Caller-local DiffWall policy; governance is enforced by the DiffWall PR firewall and kept outside artifact-authority classification to avoid duplicate control ownership."}
   ],
   "artifacts": [
     {"artifact_id":"OI-ART-0001","path":"README.md","title":"Repository README","artifact_type":"root-authority","domain":"repository","authority_state":"canonical","version":"commercial-v1.0","release_scope":"commercial-v1","folder_stage":"root","status":"approved","gate_ref":"COMMERCIAL_V1_COMPLETION.md","depends_on":["docs/index.md"],"downstream_consumers":[],"supersedes":null,"generated":false,"sensitivity":"public"},

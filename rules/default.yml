@@ -1,0 +1,9 @@
+# Operator Intelligence DiffWall policy.
+# Keep the shipped thresholds, protected paths, and halt patterns unchanged.
+# Only deliberate negative-test fixtures that necessarily contain destructive
+# strings are excluded from content scanning.
+ignorePaths:
+  - "docs/**"
+  - "*.md"
+  - "reliability/guardian_vendor/tests/test_guardian.py"
+  - "reliability/guardian_vendor/tests/test_inference.py"
