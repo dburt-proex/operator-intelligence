@@ -19,14 +19,19 @@ jobs:
   pre-pilot-verification:
     name: Pre-pilot deterministic verification
     runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ''
+      EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 verified 2026-10-02
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Compile reliability modules
         run: python3 -m compileall -q reliability
 
-      - name: Run reliability regression suite
-        run: python3 -m unittest discover -s reliability -p 'test_*.py' -v
+      - name: Validate exact-head Guardian and AR-001 contracts without inference
+        run: python3 -m reliability.guardian_ci_validation
 
       - name: Verify AR-001 dry-run request construction
         run: |
@@ -60,3 +65,12 @@ jobs:
           test "$status" -eq 3
           grep -q -- '--execute requires --pilot-authorization' /tmp/ar001-blocked.err
           echo 'AR-001 unauthorized execution gate: PASS'
+
+      - name: Upload exact-head Guardian validation evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6 verified 2026-10-02
+        with:
+          name: guardian-ar001-ci-${{ github.event.pull_request.head.sha || github.sha }}
+          path: guardian-ci-evidence/
+          if-no-files-found: error
+          retention-days: 90
